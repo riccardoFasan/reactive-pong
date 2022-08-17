@@ -9,7 +9,7 @@ import {
 import { isIonicReady } from 'src/utilities';
 import { HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
-import { BallService } from '../services';
+import { CollisionService } from '../services';
 
 @Directive({
   selector: '[appBaseController]',
@@ -30,10 +30,15 @@ export class BaseControllerDirective
   protected fieldHeight: number = 0;
   protected fieldWidth: number = 0;
 
-  constructor(private ref: ElementRef, protected ball: BallService) {}
+  constructor(private ref: ElementRef, private collision: CollisionService) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.init();
+  }
+
+  private init(): void {
+    this.collision.registerPaddle(this.ref.nativeElement);
     this.centerPaddle();
   }
 
@@ -52,5 +57,10 @@ export class BaseControllerDirective
     const field: HTMLElement = this.ref.nativeElement.parentElement;
     this.fieldHeight = field.offsetHeight;
     this.fieldWidth = field.offsetWidth;
+  }
+
+  protected canMove(positionY: number): boolean {
+    const bottomPosition: number = positionY + this.paddleHeight;
+    return positionY >= 0 && bottomPosition <= this.fieldHeight;
   }
 }
