@@ -1,46 +1,14 @@
-import {
-  Directive,
-  ElementRef,
-  HostBinding,
-  HostListener,
-} from '@angular/core';
-import { isIonicReady } from 'src/utilities';
+import { AfterViewInit, Directive, HostListener } from '@angular/core';
 import { PaddleController } from '../interfaces';
-import { BallService } from '../services';
+import { BaseControllerDirective } from './base-controller.directive';
 
 @Directive({
   selector: '[appUserController]',
 })
-export class UserControllerDirective implements PaddleController {
-  @HostBinding('style.left.px')
-  x: number = 0;
-
-  @HostBinding('style.top.px')
-  y: number = 0;
-
-  private paddleHeight: number = 0;
-  private fieldHeight: number = 0;
-
-  constructor(private ref: ElementRef, private ball: BallService) {}
-
-  async ngAfterViewInit(): Promise<void> {
-    await isIonicReady();
-    this.centerPaddle();
-  }
-
-  private centerPaddle(): void {
-    this.setSizes();
-    this.y = this.fieldHeight / 2 - this.paddleHeight / 2;
-  }
-
-  @HostListener('window:resize')
-  private setSizes(): void {
-    this.paddleHeight = this.ref.nativeElement.offsetHeight;
-    const parent: HTMLElement =
-      this.ref.nativeElement.parentElement.parentElement;
-    this.fieldHeight = parent.offsetHeight;
-  }
-
+export class UserControllerDirective
+  extends BaseControllerDirective
+  implements AfterViewInit, PaddleController
+{
   @HostListener('touchmove', ['$event'])
   private onTouchMove(e: TouchEvent): void {
     const touch: Touch = e.touches[0];

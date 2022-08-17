@@ -1,4 +1,7 @@
 <div>
-  <app-user-paddle></app-user-paddle>
-  <app-computer-paddle></app-computer-paddle>
+  <app-paddle
+    appComputerController
+    [halfField]="computerPaddleHalfField"
+  ></app-paddle>
+  <app-paddle appUserController [halfField]="userPaddleHalfField"></app-paddle>
 </div>
