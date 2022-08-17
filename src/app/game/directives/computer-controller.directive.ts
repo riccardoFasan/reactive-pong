@@ -3,8 +3,8 @@ import {
   Directive,
   ElementRef,
   HostBinding,
+  HostListener,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { PaddleController } from '../interfaces';
 
@@ -14,20 +14,18 @@ import { PaddleController } from '../interfaces';
 export class ComputerControllerDirective
   implements AfterViewInit, PaddleController
 {
-  x$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  y$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-
-  constructor(private ref: ElementRef) {}
-
   @HostBinding('style.left.px')
-  get x(): number {
-    return this.x$.getValue();
-  }
+  x: number = 0;
 
   @HostBinding('style.top.px')
-  get y(): number {
-    return this.y$.getValue();
-  }
+  y: number = 0;
+
+  private paddleHeight: number = 0;
+  private paddleWidth: number = 0;
+  private fieldHeight: number = 0;
+  private fieldWidth: number = 0;
+
+  constructor(private ref: ElementRef) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
@@ -35,13 +33,18 @@ export class ComputerControllerDirective
   }
 
   private centerPaddle(): void {
-    const parent: HTMLElement =
+    this.setSizes();
+    this.x = this.fieldWidth - this.paddleWidth;
+    this.y = this.fieldHeight / 2 - this.paddleHeight / 2;
+  }
+
+  @HostListener('window:resize')
+  private setSizes(): void {
+    this.paddleHeight = this.ref.nativeElement.offsetHeight;
+    this.paddleWidth = this.ref.nativeElement.offsetWidth;
+    const field: HTMLElement =
       this.ref.nativeElement.parentElement.parentElement;
-    const parentWidth: number = parent.offsetWidth;
-    const parentHeight: number = parent.offsetHeight;
-    const width: number = this.ref.nativeElement.offsetWidth;
-    const height: number = this.ref.nativeElement.offsetHeight;
-    this.x$.next(parentWidth - width);
-    this.y$.next(parentHeight / 2 - height / 2);
+    this.fieldHeight = field.offsetHeight;
+    this.fieldWidth = field.offsetWidth;
   }
 }
