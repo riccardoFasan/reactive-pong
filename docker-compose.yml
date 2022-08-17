@@ -1,10 +1,10 @@
 version: '3.9'
 services:
-  mycv:
+  ping-pong-ui:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - '8100:8100'
     volumes:
-      - ./src:/retroGame/src
+      - ./src:/ping-pong-ui/src

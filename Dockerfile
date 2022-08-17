@@ -1,10 +1,10 @@
 FROM node:latest
 
-WORKDIR /retroGame
+WORKDIR /ping-pong-ui
 ENV PATH /node_modules/.bin:$PATH
-COPY package*.json /retroGame
+COPY package*.json /ping-pong-ui
 RUN npm i -g @ionic/cli native-run cordova-res
 RUN npm i
-COPY . /retroGame
+COPY . /ping-pong-ui
 EXPOSE 8100
 CMD ionic serve --host 0.0.0.0
