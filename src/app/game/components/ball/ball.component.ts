@@ -113,12 +113,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.groundWidth <= this.x) {
-      this.score.addPoint(Player.Player2);
+      this.score.addPoint(Player.Player1);
       this.init();
     }
 
     if (this.x < 0) {
-      this.score.addPoint(Player.Player1);
+      this.score.addPoint(Player.Player2);
       this.init();
     }
 
