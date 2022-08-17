@@ -1,15 +1,21 @@
 :host {
-  position: relative;
   height: 100vh;
-  &::after {
-    content: "";
-    position: absolute;
+  padding: 0.5rem;
+
+  div {
+    position: relative;
     height: 100%;
-    width: 0.25vw;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--ion-text-color);
-    opacity: 0.25;
+
+    &::after {
+      content: "";
+      height: 100%;
+      position: absolute;
+      width: 0.25vw;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--ion-text-color);
+      opacity: 0.25;
+    }
   }
 }
