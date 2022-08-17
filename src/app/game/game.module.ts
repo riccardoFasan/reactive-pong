@@ -3,7 +3,11 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { GameRoutingModule } from './game-routing.module';
 
-import { FieldComponent, PaddleComponent, BallComponent } from './components';
+import {
+  PlayGroundComponent,
+  PaddleComponent,
+  BallComponent,
+} from './components';
 
 import {
   UserControllerDirective,
@@ -14,7 +18,7 @@ import {
 @NgModule({
   declarations: [
     PaddleComponent,
-    FieldComponent,
+    PlayGroundComponent,
     BallComponent,
     UserControllerDirective,
     ComputerControllerDirective,

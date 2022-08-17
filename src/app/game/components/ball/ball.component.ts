@@ -32,8 +32,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private ballWidth: number = 0;
   private ballHeight: number = 0;
-  private fieldHeight: number = 0;
-  private fieldWidth: number = 0;
+  private groundHeight: number = 0;
+  private groundWidth: number = 0;
 
   private direction: Coordinates = { x: 0, y: 0 };
 
@@ -74,14 +74,14 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private setSizes(): void {
     this.ballWidth = this.ref.nativeElement.offsetWidth;
     this.ballHeight = this.ref.nativeElement.offsetHeight;
-    const field: HTMLElement = this.ref.nativeElement.parentElement;
-    this.fieldHeight = field.offsetHeight;
-    this.fieldWidth = field.offsetWidth;
+    const ground: HTMLElement = this.ref.nativeElement.parentElement;
+    this.groundHeight = ground.offsetHeight;
+    this.groundWidth = ground.offsetWidth;
   }
 
   private centerBall(): void {
-    this.x = this.fieldWidth / 2 - this.ballWidth / 2;
-    this.y = this.fieldHeight / 2 - this.ballHeight / 2;
+    this.x = this.groundWidth / 2 - this.ballWidth / 2;
+    this.y = this.groundHeight / 2 - this.ballHeight / 2;
   }
 
   private setRandomDirection(): void {
@@ -104,7 +104,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(delta: number): void {
     const bottomPosition: number = this.y + this.ballHeight;
-    if (!(this.y >= 0 && bottomPosition <= this.fieldHeight)) {
+    if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
       this.direction.y *= -1;
     }
 
@@ -112,7 +112,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       this.direction.x *= -1;
     }
 
-    if (this.fieldWidth <= this.x) {
+    if (this.groundWidth <= this.x) {
       this.score.addPoint(Player.Player2);
       this.init();
     }

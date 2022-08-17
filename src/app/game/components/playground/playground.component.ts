@@ -4,11 +4,11 @@ import { HalfField } from '../../enums';
 import { ControlsService, ScoreService } from '../../services';
 
 @Component({
-  selector: 'app-field',
-  templateUrl: './field.component.html',
-  styleUrls: ['./field.component.scss'],
+  selector: 'app-playground',
+  templateUrl: './playground.component.html',
+  styleUrls: ['./playground.component.scss'],
 })
-export class FieldComponent implements AfterViewInit {
+export class PlayGroundComponent implements AfterViewInit {
   userPaddleHalfField: HalfField = HalfField.Right;
   computerPaddleHalfField: HalfField = HalfField.Left;
 

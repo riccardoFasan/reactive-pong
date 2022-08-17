@@ -27,8 +27,8 @@ export class BaseControllerDirective
 
   protected paddleHeight: number = 0;
   protected paddleWidth: number = 0;
-  protected fieldHeight: number = 0;
-  protected fieldWidth: number = 0;
+  protected groundHeight: number = 0;
+  protected groundWidth: number = 0;
 
   constructor(private ref: ElementRef, private collision: CollisionService) {}
 
@@ -45,22 +45,22 @@ export class BaseControllerDirective
   private centerPaddle(): void {
     this.setSizes();
     if (this.halfField === HalfField.Right) {
-      this.x = this.fieldWidth - this.paddleWidth;
+      this.x = this.groundWidth - this.paddleWidth;
     }
-    this.y = this.fieldHeight / 2 - this.paddleHeight / 2;
+    this.y = this.groundHeight / 2 - this.paddleHeight / 2;
   }
 
   @HostListener('window:resize')
   private setSizes(): void {
     this.paddleHeight = this.ref.nativeElement.offsetHeight;
     this.paddleWidth = this.ref.nativeElement.offsetWidth;
-    const field: HTMLElement = this.ref.nativeElement.parentElement;
-    this.fieldHeight = field.offsetHeight;
-    this.fieldWidth = field.offsetWidth;
+    const ground: HTMLElement = this.ref.nativeElement.parentElement;
+    this.groundHeight = ground.offsetHeight;
+    this.groundWidth = ground.offsetWidth;
   }
 
   protected canMove(positionY: number): boolean {
     const bottomPosition: number = positionY + this.paddleHeight;
-    return positionY >= 0 && bottomPosition <= this.fieldHeight;
+    return positionY >= 0 && bottomPosition <= this.groundHeight;
   }
 }
