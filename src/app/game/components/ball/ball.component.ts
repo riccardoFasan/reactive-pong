@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
+import { EventName, Player } from '../../enums';
 
 import { Coordinates } from '../../models/coordinates.model';
 import {
   CollisionService,
   ControlsService,
   EventBusService,
+  ScoreService,
 } from '../../services';
 
 @Component({
@@ -46,7 +48,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private ref: ElementRef,
     private collision: CollisionService,
     private bus: EventBusService,
-    private controls: ControlsService
+    private controls: ControlsService,
+    private score: ScoreService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -107,6 +110,16 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
     if (this.collision.thereIsACollision) {
       this.direction.x *= -1;
+    }
+
+    if (this.fieldWidth <= this.x) {
+      this.score.addPoint(Player.Player2);
+      this.init();
+    }
+
+    if (this.x < 0) {
+      this.score.addPoint(Player.Player1);
+      this.init();
     }
 
     this.currentSpeed += this.speedIncrease * delta;

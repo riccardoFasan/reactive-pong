@@ -1,4 +1,12 @@
-<div>
+<div class="score" *ngIf="score.points$ | async as score">
+  <div>
+    <b>{{ score.player2 }}</b>
+  </div>
+  <div>
+    <b>{{ score.player1 }}</b>
+  </div>
+</div>
+<div class="playglound">
   <app-paddle
     appComputerController
     [halfField]="computerPaddleHalfField"

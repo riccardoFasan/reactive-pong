@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { isIonicReady } from 'src/utilities';
 import { HalfField } from '../../enums';
-import { ControlsService } from '../../services';
+import { ControlsService, ScoreService } from '../../services';
 
 @Component({
   selector: 'app-field',
@@ -9,10 +9,10 @@ import { ControlsService } from '../../services';
   styleUrls: ['./field.component.scss'],
 })
 export class FieldComponent implements AfterViewInit {
-  userPaddleHalfField: HalfField = HalfField.Left;
-  computerPaddleHalfField: HalfField = HalfField.Right;
+  userPaddleHalfField: HalfField = HalfField.Right;
+  computerPaddleHalfField: HalfField = HalfField.Left;
 
-  constructor(private controls: ControlsService) {}
+  constructor(public score: ScoreService, private controls: ControlsService) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();

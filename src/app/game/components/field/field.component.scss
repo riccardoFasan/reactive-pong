@@ -1,8 +1,26 @@
 :host {
   height: 100vh;
-  padding: 0.5rem;
+  padding: 0.75rem;
+  position: relative;
 
-  div {
+  .score {
+    position: absolute;
+    top: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25vw;
+    max-width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      opacity: 0.75;
+      font-size: 1.5rem;
+    }
+  }
+
+  .playglound {
     position: relative;
     height: 100%;
 
