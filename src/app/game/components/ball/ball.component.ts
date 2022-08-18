@@ -6,9 +6,11 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
+import { EMPTY, iif } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Player } from '../../enums';
+import { GameStatus, Player } from '../../enums';
 
 import { Coordinates } from '../../models/coordinates.model';
 import {
@@ -53,12 +55,32 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.init();
-    this.onFrameUpdated();
+    this.onStatusChanged();
   }
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  private onStatusChanged(): void {
+    this.subSink.sink = this.controls.statusChanged$
+      .pipe(
+        tap(() => {
+          this.init();
+        }),
+        switchMap((status: GameStatus) =>
+          iif(
+            () => status === GameStatus.Running,
+            this.controls.deltaChanged$.pipe(
+              tap((delta: number) => {
+                this.move(delta);
+              })
+            ),
+            EMPTY
+          )
+        )
+      )
+      .subscribe();
   }
 
   private init(): void {
@@ -94,14 +116,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       const heading: number = randomNumberBetween(0, 2 * Math.PI);
       this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
     }
-  }
-
-  private onFrameUpdated(): void {
-    this.subSink.sink = this.controls.deltaChanged$.subscribe(
-      (delta: number) => {
-        this.move(delta);
-      }
-    );
   }
 
   private move(delta: number): void {

@@ -5,17 +5,19 @@ import {
   HostBinding,
   HostListener,
   Input,
+  OnDestroy,
 } from '@angular/core';
 import { isIonicReady } from 'src/utilities';
-import { HalfField } from '../enums';
+import { SubSink } from 'subsink';
+import { GameStatus, HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
-import { CollisionService } from '../services';
+import { CollisionService, GameControlsService } from '../services';
 
 @Directive({
   selector: '[appBaseController]',
 })
 export class BaseControllerDirective
-  implements AfterViewInit, PaddleController
+  implements AfterViewInit, OnDestroy, PaddleController
 {
   @Input() halfField!: HalfField;
 
@@ -30,16 +32,33 @@ export class BaseControllerDirective
   protected groundHeight: number = 0;
   protected groundWidth: number = 0;
 
-  constructor(private ref: ElementRef, private collision: CollisionService) {}
+  protected subSink: SubSink = new SubSink();
+
+  constructor(
+    private ref: ElementRef,
+    private collision: CollisionService,
+    protected controls: GameControlsService
+  ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.init();
-  }
-
-  private init(): void {
     this.collision.registerPaddle(this.ref.nativeElement);
     this.centerPaddle();
+    this.onStatusChanged();
+  }
+
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+  }
+
+  private onStatusChanged(): void {
+    this.subSink.sink = this.controls.statusChanged$.subscribe(
+      (status: GameStatus) => {
+        if (status === GameStatus.Stopped) {
+          this.centerPaddle();
+        }
+      }
+    );
   }
 
   private centerPaddle(): void {

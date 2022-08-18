@@ -1,4 +1,9 @@
-import { AfterViewInit, Directive, HostListener } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  HostListener,
+  OnDestroy,
+} from '@angular/core';
 import { PaddleController } from '../interfaces';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -7,7 +12,7 @@ import { BaseControllerDirective } from './base-controller.directive';
 })
 export class UserControllerDirective
   extends BaseControllerDirective
-  implements AfterViewInit, PaddleController
+  implements AfterViewInit, OnDestroy, PaddleController
 {
   @HostListener('touchmove', ['$event'])
   private onTouchMove(e: TouchEvent): void {

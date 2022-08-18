@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { EventName, HalfField, Player } from '../../enums';
+import { EventName, GameStatus, HalfField, Player } from '../../enums';
 import {
   GameControlsService,
   EventBusService,
@@ -14,7 +15,7 @@ import {
   templateUrl: './playground.component.html',
   styleUrls: ['./playground.component.scss'],
 })
-export class PlayGroundComponent implements AfterViewInit, OnDestroy {
+export class PlayGroundComponent implements OnDestroy {
   player: Player = Player.Player1;
   opponent: Player = Player.Player2;
 
@@ -25,6 +26,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   private subSink: SubSink = new SubSink();
 
+  gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
+
   constructor(
     public score: ScoreService,
     private controls: GameControlsService,
@@ -32,13 +35,19 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     private bus: EventBusService
   ) {}
 
-  async ngAfterViewInit(): Promise<void> {
+  ngOnDestroy(): void {
+    this.stop();
+  }
+
+  async start(): Promise<void> {
     await isIonicReady();
     this.controls.start();
     this.onGameOver();
   }
 
-  ngOnDestroy(): void {
+  stop(): void {
+    this.controls.stop();
+    this.score.resetScore();
     this.subSink.unsubscribe();
   }
 
@@ -51,8 +60,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   private async presentAlert(message: string): Promise<void> {
     const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Game over',
-      message,
+      header: 'Game Over',
+      subHeader: message,
       buttons: ['OK'],
     });
     await alert.present();

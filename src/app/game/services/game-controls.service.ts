@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { GameStatus } from '../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,17 @@ export class GameControlsService {
   private deltaStore$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   deltaChanged$: Observable<number> = this.deltaStore$.asObservable();
 
+  private statusStore$: BehaviorSubject<GameStatus> =
+    new BehaviorSubject<GameStatus>(GameStatus.Stopped);
+  statusChanged$: Observable<GameStatus> = this.statusStore$.asObservable();
+
   start(): void {
+    this.statusStore$.next(GameStatus.Running);
     this.onFrameChanged();
+  }
+
+  stop(): void {
+    this.statusStore$.next(GameStatus.Stopped);
   }
 
   private onFrameChanged(): void {

@@ -39,6 +39,11 @@ export class ScoreService {
     this.notifyIfThereIsAWinner();
   }
 
+  resetScore(): void {
+    this.player1ScoreStore$.next(0);
+    this.player2ScoreStore$.next(0);
+  }
+
   private notifyIfThereIsAWinner(): void {
     let winner: Player | undefined = this.getWinner();
     if (winner) {
@@ -62,10 +67,5 @@ export class ScoreService {
 
   private isWinner(score: number): boolean {
     return score >= this.maximumScore;
-  }
-
-  private resetScore(): void {
-    this.player1ScoreStore$.next(0);
-    this.player2ScoreStore$.next(0);
   }
 }

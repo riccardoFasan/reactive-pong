@@ -14,27 +14,12 @@ export class ComputerControllerDirective
   private readonly speed: number = 0.02;
   private readonly inaccuracy: number = 0.825; // .825, .75, .66, .5,
 
-  private subSink: SubSink = new SubSink();
-
   private previousBallPositionY: number = this.ballY;
-
-  constructor(
-    ref: ElementRef,
-    collision: CollisionService,
-    private controls: GameControlsService
-  ) {
-    super(ref, collision);
-  }
 
   override async ngAfterViewInit(): Promise<void> {
     super.ngAfterViewInit();
     this.movePaddle();
   }
-
-  ngOnDestroy(): void {
-    this.subSink.unsubscribe();
-  }
-
   private get ballY(): number {
     const ball: HTMLElement | null = document.querySelector('app-ball');
     if (ball === null) return 0;
