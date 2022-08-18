@@ -1,0 +1,27 @@
+<ion-list *ngIf="points$ | async as score">
+  <ion-item>
+    <ion-badge slot="end">
+      <b>{{ score.player1 }}</b>
+    </ion-badge>
+    <ion-label>Player 1</ion-label>
+  </ion-item>
+  <ion-item *ngIf="gameStatus$ | async as status">
+    <ion-button (click)="start()" *ngIf="status === 'STOPPED'" color="primary">
+      Start
+    </ion-button>
+    <ion-button
+      (click)="stop()"
+      *ngIf="status === 'RUNNING'"
+      fill="outline"
+      color="primary"
+    >
+      Stop
+    </ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-badge slot="end">
+      <b>{{ score.player2 }}</b>
+    </ion-badge>
+    <ion-label>Player 2</ion-label>
+  </ion-item>
+</ion-list>

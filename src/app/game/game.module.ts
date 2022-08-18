@@ -7,6 +7,7 @@ import {
   PlayGroundComponent,
   PaddleComponent,
   BallComponent,
+  GameBarComponent,
 } from './components';
 
 import {
@@ -20,6 +21,7 @@ import {
     PaddleComponent,
     PlayGroundComponent,
     BallComponent,
+    GameBarComponent,
     UserControllerDirective,
     ComputerControllerDirective,
     BaseControllerDirective,
