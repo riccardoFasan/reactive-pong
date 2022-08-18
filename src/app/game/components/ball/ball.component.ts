@@ -8,13 +8,12 @@ import {
 } from '@angular/core';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { EventName, Player } from '../../enums';
+import { Player } from '../../enums';
 
 import { Coordinates } from '../../models/coordinates.model';
 import {
   CollisionService,
   ControlsService,
-  EventBusService,
   ScoreService,
 } from '../../services';
 
@@ -37,8 +36,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private direction: Coordinates = { x: 0, y: 0 };
 
-  private readonly startingSpeed: number = 0.025;
-  private readonly speedIncrease: number = 0.00001;
+  private readonly startingSpeed: number = 0.05;
+  private readonly speedIncrease: number = 0.000005;
 
   currentSpeed: number = this.startingSpeed;
 
@@ -47,7 +46,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   constructor(
     private ref: ElementRef,
     private collision: CollisionService,
-    private bus: EventBusService,
     private controls: ControlsService,
     private score: ScoreService
   ) {}
@@ -85,13 +83,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private setRandomDirection(): void {
-    while (
-      Math.abs(this.direction.x) <= 0.2 ||
-      Math.abs(this.direction.x) >= 0.9
-    ) {
-      const heading: number = randomNumberBetween(0, 2 * Math.PI);
-      this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
-    }
+    const heading: number = randomNumberBetween(0, 2 * Math.PI);
+    this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
   }
 
   private onFrameUpdated(): void {
@@ -103,27 +96,44 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private move(delta: number): void {
-    const bottomPosition: number = this.y + this.ballHeight;
-    if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
-      this.direction.y *= -1;
-    }
-
-    if (this.collision.thereIsACollision) {
-      this.direction.x *= -1;
-    }
-
-    if (this.groundWidth <= this.x) {
-      this.score.addPoint(Player.Player1);
+    const didAnyoneWin: boolean = this.didAnyoneWin();
+    if (didAnyoneWin) {
+      this.addPoints();
       this.init();
+      return;
     }
 
-    if (this.x < 0) {
-      this.score.addPoint(Player.Player2);
-      this.init();
-    }
+    this.checkForDirectionAdjustment();
 
     this.currentSpeed += this.speedIncrease * delta;
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
+  }
+
+  private didAnyoneWin(): boolean {
+    return this.groundWidth <= this.x || this.x < 0;
+  }
+
+  private addPoints(): void {
+    if (this.groundWidth <= this.x) {
+      this.score.addPoint(Player.Player1);
+      return;
+    }
+
+    this.score.addPoint(Player.Player2);
+  }
+
+  private checkForDirectionAdjustment(): void {
+    if (this.collision.thereIsACollision) {
+      this.direction.x *= -1;
+      this.direction.x += 0.1 * Math.sign(this.direction.x);
+      return;
+    }
+
+    const bottomPosition: number = this.y + this.ballHeight;
+    if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
+      this.direction.y *= -1;
+      this.direction.y += 0.1 * Math.sign(this.direction.y);
+    }
   }
 }

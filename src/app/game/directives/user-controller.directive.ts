@@ -17,7 +17,8 @@ export class UserControllerDirective
 
   @HostListener('window:mousemove', ['$event'])
   private onMouseMove(e: MouseEvent): void {
-    this.movePaddle(e.clientY);
+    const halfHeight: number = this.paddleHeight / 2;
+    this.movePaddle(e.clientY - halfHeight);
   }
 
   private get oneTenthPaddleHeight(): number {

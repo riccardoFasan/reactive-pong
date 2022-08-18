@@ -24,7 +24,7 @@ export class ScoreService {
     }))
   );
 
-  private readonly maximumScore: number = 2;
+  private readonly maximumScore: number = 10;
 
   constructor(private bus: EventBusService) {}
 
@@ -32,32 +32,36 @@ export class ScoreService {
     if (player === Player.Player1) {
       const currentScore: number = this.player1ScoreStore$.getValue();
       this.player1ScoreStore$.next(currentScore + 1);
-      return;
+    } else {
+      const currentScore: number = this.player2ScoreStore$.getValue();
+      this.player2ScoreStore$.next(currentScore + 1);
     }
-    const currentScore: number = this.player2ScoreStore$.getValue();
-    this.player2ScoreStore$.next(currentScore + 1);
     this.notifyIfThereIsAWinner();
   }
 
   private notifyIfThereIsAWinner(): void {
     let winner: Player | undefined = this.getWinner();
     if (winner) {
+      this.resetScore();
       this.bus.emit({
         name: EventName.GameOver,
         value: winner,
       });
-      this.resetScore();
     }
   }
 
   private getWinner(): Player | undefined {
-    if (this.player1ScoreStore$.getValue() === this.maximumScore) {
+    if (this.isWinner(this.player1ScoreStore$.getValue())) {
       return Player.Player1;
     }
-    if (this.player2ScoreStore$.getValue() === this.maximumScore) {
+    if (this.isWinner(this.player2ScoreStore$.getValue())) {
       return Player.Player2;
     }
     return;
+  }
+
+  private isWinner(score: number): boolean {
+    return score >= this.maximumScore;
   }
 
   private resetScore(): void {

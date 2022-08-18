@@ -34,8 +34,9 @@ export class ComputerControllerDirective
   private movePaddle(): void {
     this.subSink.sink = this.controls.deltaChanged$.subscribe(
       (delta: number) => {
+        const halfHeight: number = this.paddleHeight / 2;
         const positionY: number =
-          this.y + this.speed * delta * (this.ballY - this.y);
+          this.y + this.speed * delta * (this.ballY - halfHeight - this.y);
         if (this.canMove(positionY)) {
           this.y = positionY;
         }
