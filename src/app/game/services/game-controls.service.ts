@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ControlsService {
+export class GameControlsService {
   private lastTime: DOMHighResTimeStamp | undefined;
 
   private deltaStore$: BehaviorSubject<number> = new BehaviorSubject<number>(0);

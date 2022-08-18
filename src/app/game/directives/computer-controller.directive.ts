@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { PaddleController } from '../interfaces';
-import { CollisionService, ControlsService } from '../services';
+import { CollisionService, GameControlsService } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
 @Directive({
@@ -21,7 +21,7 @@ export class ComputerControllerDirective
   constructor(
     ref: ElementRef,
     collision: CollisionService,
-    private controls: ControlsService
+    private controls: GameControlsService
   ) {
     super(ref, collision);
   }

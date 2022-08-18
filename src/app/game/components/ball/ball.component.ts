@@ -13,7 +13,7 @@ import { Player } from '../../enums';
 import { Coordinates } from '../../models/coordinates.model';
 import {
   CollisionService,
-  ControlsService,
+  GameControlsService,
   ScoreService,
 } from '../../services';
 
@@ -47,7 +47,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   constructor(
     private ref: ElementRef,
     private collision: CollisionService,
-    private controls: ControlsService,
+    private controls: GameControlsService,
     private score: ScoreService
   ) {}
 

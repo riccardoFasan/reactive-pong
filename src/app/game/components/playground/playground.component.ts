@@ -3,7 +3,11 @@ import { AlertController } from '@ionic/angular';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { EventName, HalfField, Player } from '../../enums';
-import { ControlsService, EventBusService, ScoreService } from '../../services';
+import {
+  GameControlsService,
+  EventBusService,
+  ScoreService,
+} from '../../services';
 
 @Component({
   selector: 'app-playground',
@@ -23,7 +27,7 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     public score: ScoreService,
-    private controls: ControlsService,
+    private controls: GameControlsService,
     private alertController: AlertController,
     private bus: EventBusService
   ) {}
