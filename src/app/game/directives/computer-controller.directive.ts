@@ -1,7 +1,5 @@
-import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
-import { SubSink } from 'subsink';
+import { AfterViewInit, Directive, OnDestroy } from '@angular/core';
 import { PaddleController } from '../interfaces';
-import { CollisionService, GameControlsService } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
 @Directive({
@@ -12,7 +10,7 @@ export class ComputerControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
   private readonly speed: number = 0.02;
-  private readonly inaccuracy: number = 0.825; // .825, .75, .66, .5,
+  private readonly inaccuracy: number = 0.75; // .75, .66, .575,
 
   private previousBallPositionY: number = this.ballY;
 

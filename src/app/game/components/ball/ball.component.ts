@@ -39,8 +39,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private direction: Coordinates = { x: 0, y: 0 };
 
   private readonly startingSpeed: number = 0.075;
-  private readonly speedIncrease: number = 0.0005;
-  private readonly maximumSpeed: number = 0.25; // .25, .33 and .45
+  private readonly speedIncrease: number = 0.0005; // 0.0005, 0.00075 and 0.001
+  private readonly maximumSpeed: number = 0.25; // .25, .33 and .41
 
   currentSpeed: number = this.startingSpeed;
 
