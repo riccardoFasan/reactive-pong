@@ -36,8 +36,9 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private direction: Coordinates = { x: 0, y: 0 };
 
-  private readonly startingSpeed: number = 0.05;
-  private readonly speedIncrease: number = 0.000005;
+  private readonly startingSpeed: number = 0.075;
+  private readonly speedIncrease: number = 0.0005;
+  private readonly maximumSpeed: number = 0.25; // .25, .33 and .45
 
   currentSpeed: number = this.startingSpeed;
 
@@ -65,7 +66,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.centerBall();
     this.collision.registerBall(this.ref.nativeElement);
     this.setRandomDirection();
-    this.currentSpeed = this.startingSpeed;
+    this.currentSpeed = randomNumberBetween(
+      this.startingSpeed,
+      this.maximumSpeed
+    );
   }
 
   @HostListener('window:resize')
@@ -83,8 +87,13 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private setRandomDirection(): void {
-    const heading: number = randomNumberBetween(0, 2 * Math.PI);
-    this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
+    while (
+      Math.abs(this.direction.x) <= 0.2 ||
+      Math.abs(this.direction.x) >= 0.9
+    ) {
+      const heading: number = randomNumberBetween(0, 2 * Math.PI);
+      this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
+    }
   }
 
   private onFrameUpdated(): void {
@@ -96,16 +105,21 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private move(delta: number): void {
-    const didAnyoneWin: boolean = this.didAnyoneWin();
-    if (didAnyoneWin) {
-      this.addPoints();
-      this.init();
-      return;
+    const thereWasACollision: boolean = this.thereWasACollision();
+
+    if (thereWasACollision) {
+      this.checkForDirectionAdjustment(delta);
     }
 
-    this.checkForDirectionAdjustment();
+    if (!thereWasACollision) {
+      const didAnyoneWin: boolean = this.didAnyoneWin();
+      if (didAnyoneWin) {
+        this.addPoints();
+        this.init();
+        return;
+      }
+    }
 
-    this.currentSpeed += this.speedIncrease * delta;
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
   }
@@ -115,25 +129,36 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private addPoints(): void {
-    if (this.groundWidth <= this.x) {
-      this.score.addPoint(Player.Player1);
-      return;
-    }
-
-    this.score.addPoint(Player.Player2);
+    const player: Player =
+      this.groundWidth <= this.x ? Player.Player1 : Player.Player2;
+    this.score.addPoint(player);
   }
 
-  private checkForDirectionAdjustment(): void {
+  private thereWasACollision(): boolean {
+    return (
+      this.collision.thereIsACollision ||
+      !(this.y >= 0 && this.y + this.ballHeight <= this.groundHeight)
+    );
+  }
+
+  private checkForDirectionAdjustment(delta: number): void {
     if (this.collision.thereIsACollision) {
       this.direction.x *= -1;
-      this.direction.x += 0.1 * Math.sign(this.direction.x);
-      return;
+      this.direction.y += 0.1 * Math.sign(this.direction.y);
+      this.increaseSpeed(delta * 1.5);
     }
 
     const bottomPosition: number = this.y + this.ballHeight;
     if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
       this.direction.y *= -1;
-      this.direction.y += 0.1 * Math.sign(this.direction.y);
+      this.direction.x += 0.1 * Math.sign(this.direction.x);
+      this.increaseSpeed(delta);
+    }
+  }
+
+  private increaseSpeed(delta: number): void {
+    if (this.currentSpeed < this.maximumSpeed) {
+      this.currentSpeed += this.speedIncrease * delta;
     }
   }
 }
