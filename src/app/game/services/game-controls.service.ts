@@ -24,6 +24,14 @@ export class GameControlsService {
     this.statusStore$.next(GameStatus.Stopped);
   }
 
+  pause(): void {
+    this.statusStore$.next(GameStatus.Paused);
+  }
+
+  resume(): void {
+    this.statusStore$.next(GameStatus.Running);
+  }
+
   private onFrameChanged(): void {
     window.requestAnimationFrame((time: DOMHighResTimeStamp) => {
       this.update(time);

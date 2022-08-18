@@ -65,8 +65,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private onStatusChanged(): void {
     this.subSink.sink = this.controls.statusChanged$
       .pipe(
-        tap(() => {
-          this.init();
+        tap((status: GameStatus) => {
+          if (status === GameStatus.Stopped) {
+            this.init();
+          }
         }),
         switchMap((status: GameStatus) =>
           iif(

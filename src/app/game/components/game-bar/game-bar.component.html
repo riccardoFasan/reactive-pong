@@ -16,14 +16,14 @@
       Start
     </ion-button>
     <ion-button
-      (click)="stop()"
-      *ngIf="status === 'RUNNING'"
+      (click)="pause()"
+      *ngIf="status !== 'STOPPED'"
       fill="outline"
       color="primary"
       expand="block"
       size="defualt"
     >
-      Stop
+      Pause
     </ion-button>
   </ion-item>
   <ion-item>

@@ -42,25 +42,59 @@ export class GameBarComponent implements OnDestroy {
     this.onGameOver();
   }
 
-  stop(): void {
+  pause(): void {
+    this.controls.pause();
+    this.openPauseAlert();
+  }
+
+  private stop(): void {
     this.controls.stop();
     this.score.resetScore();
     this.subSink.unsubscribe();
+  }
+
+  private resume(): void {
+    this.controls.resume();
   }
 
   private onGameOver(): void {
     this.subSink.sink = this.bus.on(EventName.GameOver, (winner: Player) => {
       const message: string = winner === this.player ? 'You won' : 'Game lost';
       this.stop();
-      this.presentAlert(message);
+      this.openGameOverAlert(message);
     });
   }
 
-  private async presentAlert(message: string): Promise<void> {
+  private async openGameOverAlert(message: string): Promise<void> {
     const alert: HTMLIonAlertElement = await this.alertController.create({
       header: 'Game Over',
       subHeader: message,
       buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  private async openPauseAlert(): Promise<void> {
+    const alert: HTMLIonAlertElement = await this.alertController.create({
+      header: 'Pause',
+      message:
+        'The game is paused. Choose whether to resume the game from where it left off or close the game.',
+      buttons: [
+        {
+          text: 'Stop',
+          role: 'destructive',
+          handler: () => {
+            this.stop();
+          },
+        },
+        {
+          text: 'Resume',
+          role: 'confirm',
+          handler: () => {
+            this.resume();
+          },
+        },
+      ],
     });
     await alert.present();
   }
