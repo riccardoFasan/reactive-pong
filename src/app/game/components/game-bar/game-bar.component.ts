@@ -51,6 +51,7 @@ export class GameBarComponent implements OnDestroy {
   private onGameOver(): void {
     this.subSink.sink = this.bus.on(EventName.GameOver, (winner: Player) => {
       const message: string = winner === this.player ? 'You won' : 'Game lost';
+      this.stop();
       this.presentAlert(message);
     });
   }
