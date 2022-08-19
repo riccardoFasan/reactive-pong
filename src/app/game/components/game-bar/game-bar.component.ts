@@ -3,11 +3,12 @@ import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { EventName, GameStatus, Player } from '../../enums';
+import { EventName, GameStatus, Level, Player } from '../../enums';
 import { Score } from '../../models';
 import {
   EventBusService,
   GameControlsService,
+  LevelService,
   ScoreService,
 } from '../../services';
 
@@ -29,7 +30,8 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private bus: EventBusService
+    private bus: EventBusService,
+    private level: LevelService
   ) {}
 
   ngOnDestroy(): void {
@@ -38,8 +40,7 @@ export class GameBarComponent implements OnDestroy {
 
   async start(): Promise<void> {
     await isIonicReady();
-    this.controls.start();
-    this.onGameOver();
+    await this.askLevelAndPlay();
   }
 
   pause(): void {
@@ -55,6 +56,43 @@ export class GameBarComponent implements OnDestroy {
 
   private resume(): void {
     this.controls.resume();
+  }
+
+  private async askLevelAndPlay(): Promise<void> {
+    const alert: HTMLIonAlertElement = await this.alertController.create({
+      header: 'Choose difficulty level',
+      inputs: [
+        {
+          label: 'Easy',
+          type: 'radio',
+          value: Level.Easy,
+          checked: false,
+        },
+        {
+          label: 'Normal',
+          type: 'radio',
+          value: Level.Normal,
+          checked: true,
+        },
+        {
+          label: 'Hard',
+          type: 'radio',
+          value: Level.Hard,
+          checked: false,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Play',
+          handler: (level: Level) => {
+            this.level.set(level);
+            this.controls.start();
+            this.onGameOver();
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   private onGameOver(): void {
