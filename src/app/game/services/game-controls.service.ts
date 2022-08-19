@@ -6,14 +6,15 @@ import { GameStatus } from '../enums';
   providedIn: 'root',
 })
 export class GameControlsService {
-  private lastTime: DOMHighResTimeStamp | undefined;
-
   private deltaStore$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   deltaChanged$: Observable<number> = this.deltaStore$.asObservable();
 
   private statusStore$: BehaviorSubject<GameStatus> =
     new BehaviorSubject<GameStatus>(GameStatus.Stopped);
   statusChanged$: Observable<GameStatus> = this.statusStore$.asObservable();
+
+  private lastTime: DOMHighResTimeStamp | undefined;
+  private frameId: number = 0;
 
   start(): void {
     this.statusStore$.next(GameStatus.Running);
@@ -22,6 +23,7 @@ export class GameControlsService {
 
   stop(): void {
     this.statusStore$.next(GameStatus.Stopped);
+    window.cancelAnimationFrame(this.frameId);
   }
 
   pause(): void {
@@ -33,7 +35,7 @@ export class GameControlsService {
   }
 
   private onFrameChanged(): void {
-    window.requestAnimationFrame((time: DOMHighResTimeStamp) => {
+    this.frameId = window.requestAnimationFrame((time: DOMHighResTimeStamp) => {
       this.update(time);
     });
   }
