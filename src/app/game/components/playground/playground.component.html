@@ -1,9 +1,9 @@
 <app-game-bar [player]="player" [opponent]="opponent"></app-game-bar>
-<div class="playglound">
+<div class="playglound" #ground>
   <app-paddle
     appComputerController
-    [halfField]="computerPaddleHalfField"
+    [halfField]="opponentHalfField"
   ></app-paddle>
   <app-ball></app-ball>
-  <app-paddle appUserController [halfField]="userPaddleHalfField"></app-paddle>
+  <app-paddle appUserController [halfField]="playerHalfField"></app-paddle>
 </div>

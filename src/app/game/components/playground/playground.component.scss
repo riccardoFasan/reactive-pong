@@ -14,11 +14,14 @@
   .playglound {
     position: relative;
     height: 100%;
-    border-top: var(--playground-border-width) solid;
-    border-bottom: var(--playground-border-width) solid;
-    border-left: calc(var(--playground-border-width) * 3) dashed;
-    border-right: calc(var(--playground-border-width) * 3) dashed;
-    border-color: rgba(var(--ion-text-color-rgb), 0.25);
+    border-top: var(--playground-border-width) solid
+      rgba(var(--ion-text-color-rgb), 0.25);
+    border-bottom: var(--playground-border-width) solid
+      rgba(var(--ion-text-color-rgb), 0.25);
+    border-left: calc(var(--playground-border-width) * 3) dashed
+      rgba(var(--ion-text-color-rgb), 0.25);
+    border-right: calc(var(--playground-border-width) * 3) dashed
+      rgba(var(--ion-text-color-rgb), 0.25);
     border-radius: 1rem;
     cursor: none;
 

@@ -12,7 +12,9 @@ export class CollisionService {
 
   get thereIsAPaddleCollision(): boolean {
     if (!this.ball) return false;
-    return this.paddles.some((paddle) => areColliding(paddle, this.ball));
+    return this.paddles.some((paddle: HTMLElement) =>
+      areColliding(paddle, this.ball)
+    );
   }
 
   registerPaddle(paddle: HTMLElement): void {

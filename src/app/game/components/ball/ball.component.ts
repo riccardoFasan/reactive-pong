@@ -126,19 +126,20 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private setRandomDirection(): void {
+    this.direction = { x: 0, y: 0 };
     while (
       Math.abs(this.direction.x) <= 0.2 ||
       Math.abs(this.direction.x) >= 0.9
     ) {
       const headingX: number = randomNumberBetween(0, 2 * Math.PI);
-      const randomY: number = randomNumberBetween(-2, 2) / 10;
+      const randomY: number = randomNumberBetween(-1, 1) / 10;
       const randomX: number = Math.cos(headingX);
       this.direction = { x: randomX!, y: randomY };
     }
   }
 
   private move(delta: number): void {
-    this.checkForDirectionAdjustment(delta);
+    this.checkForDirectionAdjustment();
 
     if (!this.thereWasACollision) {
       const didAnyoneWin: boolean = this.didAnyoneWin();
@@ -149,6 +150,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       }
     }
 
+    this.increaseSpeed(delta);
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
   }
@@ -163,7 +165,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.score.addPoint(player);
   }
 
-  private checkForDirectionAdjustment(delta: number): void {
+  private checkForDirectionAdjustment(): void {
     if (
       (!this.thereWasACollision || this.latestCollision !== Collision.Paddle) &&
       this.collision.thereIsAPaddleCollision
@@ -172,7 +174,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       this.direction.y += 0.1 * Math.sign(this.direction.y);
       this.latestCollision = Collision.Paddle;
       this.thereWasACollision = true;
-      this.increaseSpeed(delta * 1.25);
       return;
     }
 
@@ -183,7 +184,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
         this.direction.x += 0.1 * Math.sign(this.direction.x);
         this.latestCollision = Collision.Edge;
         this.thereWasACollision = true;
-        this.increaseSpeed(delta);
         return;
       }
     }
