@@ -10,7 +10,7 @@ export class ComputerControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
   private readonly speed: number = 0.02;
-  private readonly inaccuracy: number = 0.75; // .75, .66, .575,
+  private readonly inaccuracy: number = 0.66; // .75, .66, .575,
 
   private previousBallPositionY: number = this.ballY;
 

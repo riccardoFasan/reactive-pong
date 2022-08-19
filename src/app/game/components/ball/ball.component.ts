@@ -31,6 +31,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   @HostBinding('style.top.px')
   y: number = 0;
 
+  private readonly startingSpeed: number = 0.075;
+  private readonly speedIncrease: number = 0.00075; // 0.0005, 0.00075 and 0.001
+  private readonly maximumSpeed: number = 0.33; // .25, .33 and .41
+
+  currentSpeed: number = this.startingSpeed;
+
   private ballWidth: number = 0;
   private ballHeight: number = 0;
   private groundHeight: number = 0;
@@ -38,11 +44,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private direction: Coordinates = { x: 0, y: 0 };
 
-  private readonly startingSpeed: number = 0.075;
-  private readonly speedIncrease: number = 0.0005; // 0.0005, 0.00075 and 0.001
-  private readonly maximumSpeed: number = 0.25; // .25, .33 and .41
-
-  currentSpeed: number = this.startingSpeed;
+  private thereWasACollision: boolean = false;
 
   private subSink: SubSink = new SubSink();
 
@@ -121,13 +123,15 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private move(delta: number): void {
-    const thereWasACollision: boolean = this.thereWasACollision();
+    const thereIsACollision: boolean = this.thereIsACollision();
 
-    if (thereWasACollision) {
+    if (!this.thereWasACollision && thereIsACollision) {
       this.checkForDirectionAdjustment(delta);
     }
 
-    if (!thereWasACollision) {
+    this.thereWasACollision = thereIsACollision;
+
+    if (!thereIsACollision) {
       const didAnyoneWin: boolean = this.didAnyoneWin();
       if (didAnyoneWin) {
         this.addPoints();
@@ -150,7 +154,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.score.addPoint(player);
   }
 
-  private thereWasACollision(): boolean {
+  private thereIsACollision(): boolean {
     return (
       this.collision.thereIsACollision ||
       !(this.y >= 0 && this.y + this.ballHeight <= this.groundHeight)
