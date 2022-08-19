@@ -20,6 +20,7 @@
     border-right: calc(var(--playground-border-width) * 3) dashed;
     border-color: rgba(var(--ion-text-color-rgb), 0.25);
     border-radius: 1rem;
+    cursor: none;
 
     &::after {
       content: "";
