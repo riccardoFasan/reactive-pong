@@ -10,7 +10,7 @@ export class CollisionService {
 
   constructor() {}
 
-  get thereIsACollision(): boolean {
+  get thereIsAPaddleCollision(): boolean {
     if (!this.ball) return false;
     return this.paddles.some((paddle) => areColliding(paddle, this.ball));
   }

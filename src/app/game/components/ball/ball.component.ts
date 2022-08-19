@@ -10,7 +10,7 @@ import { EMPTY, iif } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, Player } from '../../enums';
+import { Collision, GameStatus, Player } from '../../enums';
 import { Ball, LevelSettings } from '../../models';
 
 import { Coordinates } from '../../models/coordinates.model';
@@ -46,6 +46,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private direction: Coordinates = { x: 0, y: 0 };
 
   private thereWasACollision: boolean = false;
+  private latestCollision: Collision = Collision.Edge;
 
   private subSink: SubSink = new SubSink();
 
@@ -129,21 +130,17 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       Math.abs(this.direction.x) <= 0.2 ||
       Math.abs(this.direction.x) >= 0.9
     ) {
-      const heading: number = randomNumberBetween(0, 2 * Math.PI);
-      this.direction = { x: Math.cos(heading), y: Math.sin(heading) };
+      const headingX: number = randomNumberBetween(0, 2 * Math.PI);
+      const randomY: number = randomNumberBetween(-2, 2) / 10;
+      const randomX: number = Math.cos(headingX);
+      this.direction = { x: randomX!, y: randomY };
     }
   }
 
   private move(delta: number): void {
-    const thereIsACollision: boolean = this.thereIsACollision();
+    this.checkForDirectionAdjustment(delta);
 
-    if (!this.thereWasACollision && thereIsACollision) {
-      this.checkForDirectionAdjustment(delta);
-    }
-
-    this.thereWasACollision = thereIsACollision;
-
-    if (!thereIsACollision) {
+    if (!this.thereWasACollision) {
       const didAnyoneWin: boolean = this.didAnyoneWin();
       if (didAnyoneWin) {
         this.addPoints();
@@ -166,26 +163,32 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.score.addPoint(player);
   }
 
-  private thereIsACollision(): boolean {
-    return (
-      this.collision.thereIsACollision ||
-      !(this.y >= 0 && this.y + this.ballHeight <= this.groundHeight)
-    );
-  }
-
   private checkForDirectionAdjustment(delta: number): void {
-    if (this.collision.thereIsACollision) {
+    if (
+      (!this.thereWasACollision || this.latestCollision !== Collision.Paddle) &&
+      this.collision.thereIsAPaddleCollision
+    ) {
       this.direction.x *= -1;
       this.direction.y += 0.1 * Math.sign(this.direction.y);
-      this.increaseSpeed(delta * 1.5);
+      this.latestCollision = Collision.Paddle;
+      this.thereWasACollision = true;
+      this.increaseSpeed(delta * 1.25);
+      return;
     }
 
-    const bottomPosition: number = this.y + this.ballHeight;
-    if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
-      this.direction.y *= -1;
-      this.direction.x += 0.1 * Math.sign(this.direction.x);
-      this.increaseSpeed(delta);
+    if (!this.thereWasACollision || this.latestCollision !== Collision.Edge) {
+      const bottomPosition: number = this.y + this.ballHeight;
+      if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
+        this.direction.y *= -1;
+        this.direction.x += 0.1 * Math.sign(this.direction.x);
+        this.latestCollision = Collision.Edge;
+        this.thereWasACollision = true;
+        this.increaseSpeed(delta);
+        return;
+      }
     }
+
+    this.thereWasACollision = false;
   }
 
   private increaseSpeed(delta: number): void {
