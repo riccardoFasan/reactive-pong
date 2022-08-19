@@ -7,17 +7,20 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { EMPTY, iif } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus, Player } from '../../enums';
+import { Ball, LevelSettings } from '../../models';
 
 import { Coordinates } from '../../models/coordinates.model';
 import {
   CollisionService,
   GameControlsService,
+  LevelService,
   ScoreService,
 } from '../../services';
+import { NORMAL_BALL } from '../../store';
 
 @Component({
   selector: 'app-ball',
@@ -31,11 +34,9 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   @HostBinding('style.top.px')
   y: number = 0;
 
-  private readonly startingSpeed: number = 0.075;
-  private readonly speedIncrease: number = 0.00075; // 0.0005, 0.00075 and 0.001
-  private readonly maximumSpeed: number = 0.33; // .25, .33 and .41
+  private ball: Ball = NORMAL_BALL;
 
-  currentSpeed: number = this.startingSpeed;
+  currentSpeed: number = this.ball.baseSpeed;
 
   private ballWidth: number = 0;
   private ballHeight: number = 0;
@@ -52,16 +53,27 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private ref: ElementRef,
     private collision: CollisionService,
     private controls: GameControlsService,
-    private score: ScoreService
+    private score: ScoreService,
+    private level: LevelService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.onLevelChanged();
     this.onStatusChanged();
   }
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  private onLevelChanged(): void {
+    this.subSink.sink = this.level.levelChanged$
+      .pipe(map((level: LevelSettings) => level.ball))
+      .subscribe((ball: Ball) => {
+        this.ball = ball;
+        this.currentSpeed = this.ball.baseSpeed;
+      });
   }
 
   private onStatusChanged(): void {
@@ -93,8 +105,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.collision.registerBall(this.ref.nativeElement);
     this.setRandomDirection();
     this.currentSpeed = randomNumberBetween(
-      this.startingSpeed,
-      this.maximumSpeed
+      this.ball.baseSpeed,
+      this.ball.maximumSpeed
     );
   }
 
@@ -177,8 +189,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private increaseSpeed(delta: number): void {
-    if (this.currentSpeed < this.maximumSpeed) {
-      this.currentSpeed += this.speedIncrease * delta;
+    if (this.currentSpeed < this.ball.maximumSpeed) {
+      this.currentSpeed += this.ball.acceleration * delta;
     }
   }
 }

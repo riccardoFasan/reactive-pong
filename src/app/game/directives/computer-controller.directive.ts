@@ -1,5 +1,13 @@
-import { AfterViewInit, Directive, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Inaccuracy } from '../enums';
 import { PaddleController } from '../interfaces';
+import { LevelSettings } from '../models';
+import {
+  CollisionService,
+  GameControlsService,
+  LevelService,
+} from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
 @Directive({
@@ -10,14 +18,33 @@ export class ComputerControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
   private readonly speed: number = 0.02;
-  private readonly inaccuracy: number = 0.66; // .75, .66, .575,
+  private inaccuracy: Inaccuracy = Inaccuracy.Low;
 
   private previousBallPositionY: number = this.ballY;
 
+  constructor(
+    ref: ElementRef,
+    collision: CollisionService,
+    controls: GameControlsService,
+    private level: LevelService
+  ) {
+    super(ref, collision, controls);
+  }
+
   override async ngAfterViewInit(): Promise<void> {
     super.ngAfterViewInit();
+    this.onLevelChanged();
     this.movePaddle();
   }
+
+  private onLevelChanged(): void {
+    this.subSink.sink = this.level.levelChanged$
+      .pipe(map((level: LevelSettings) => level.computerInaccuracy))
+      .subscribe((computerInaccuracy: Inaccuracy) => {
+        this.inaccuracy = computerInaccuracy;
+      });
+  }
+
   private get ballY(): number {
     const ball: HTMLElement | null = document.querySelector('app-ball');
     if (ball === null) return 0;
