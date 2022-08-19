@@ -116,8 +116,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.ballWidth = this.ref.nativeElement.offsetWidth;
     this.ballHeight = this.ref.nativeElement.offsetHeight;
     const ground: HTMLElement = this.ref.nativeElement.parentElement;
-    this.groundHeight = ground.offsetHeight;
-    this.groundWidth = ground.offsetWidth;
+    this.groundHeight = ground.clientHeight;
+    this.groundWidth = ground.clientWidth;
   }
 
   private centerBall(): void {

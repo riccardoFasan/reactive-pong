@@ -74,8 +74,8 @@ export class BaseControllerDirective
     this.paddleHeight = this.ref.nativeElement.offsetHeight;
     this.paddleWidth = this.ref.nativeElement.offsetWidth;
     const ground: HTMLElement = this.ref.nativeElement.parentElement;
-    this.groundHeight = ground.offsetHeight;
-    this.groundWidth = ground.offsetWidth;
+    this.groundHeight = ground.clientHeight;
+    this.groundWidth = ground.clientWidth;
   }
 
   protected canMove(positionY: number): boolean {

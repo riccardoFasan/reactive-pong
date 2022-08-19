@@ -2,10 +2,11 @@
   height: 100vh;
   padding: 0.75rem;
   position: relative;
+  --playground-border-width: 1px;
 
   app-game-bar {
     position: absolute;
-    top: 0.75rem;
+    top: 2rem;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -13,18 +14,24 @@
   .playglound {
     position: relative;
     height: 100%;
+    border-top: var(--playground-border-width) solid;
+    border-bottom: var(--playground-border-width) solid;
+    border-left: calc(var(--playground-border-width) * 3) dashed;
+    border-right: calc(var(--playground-border-width) * 3) dashed;
+    border-color: rgba(var(--ion-text-color-rgb), 0.25);
+    border-radius: 1rem;
 
     &::after {
       content: "";
       height: 100%;
       position: absolute;
-      width: 0.15vw;
-      max-width: 3px;
+      width: var(--playground-border-width);
       top: 0;
-      left: 50%;
+      left: calc(50% - var(--playground-border-width));
       transform: translateX(-50%);
-      background-color: var(--ion-text-color);
-      opacity: 0.25;
+      background-color: transparent;
+      border-right: calc(var(--playground-border-width) * 1.5) dashed;
+      border-color: rgba(var(--ion-text-color-rgb), 0.25);
     }
   }
 }
