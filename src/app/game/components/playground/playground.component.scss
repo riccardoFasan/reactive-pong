@@ -1,6 +1,6 @@
 :host {
   height: 100vh;
-  padding: 0.75rem 2.75rem;
+  padding: 0.75rem 3rem;
   position: relative;
   --playground-border-width: 1px;
 
@@ -23,7 +23,6 @@
     border-right: calc(var(--playground-border-width) * 3) dashed
       rgba(var(--ion-text-color-rgb), 0.25);
     border-radius: 1rem;
-    cursor: none;
 
     &::after {
       content: "";
