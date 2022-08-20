@@ -1,7 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
-import { NavigationBar } from '@ionic-native/navigation-bar';
-import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +19,6 @@ export class AppComponent implements AfterViewInit {
     try {
       // some devices like PCs have no orientation
       await this.orientation.lock(this.orientation.ORIENTATIONS.LANDSCAPE);
-      await StatusBar.hide();
-      await NavigationBar.hideNavigationBar();
     } catch {}
   }
 }
