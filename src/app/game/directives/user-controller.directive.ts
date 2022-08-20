@@ -15,15 +15,15 @@ export class UserControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
   @HostListener('touchmove', ['$event'])
-  private onTouchMove(e: TouchEvent): void {
-    const touch: Touch = e.touches[0];
-    if (touch) this.movePaddle(touch.clientY);
-  }
-
   @HostListener('window:mousemove', ['$event'])
-  private onMouseMove(e: MouseEvent): void {
+  private onMove(e: Event): void {
+    if (e instanceof TouchEvent) {
+      const touch: Touch = e.touches[0];
+      if (touch) this.movePaddle(touch.clientY);
+      return;
+    }
     const halfHeight: number = this.paddleHeight / 2;
-    this.movePaddle(e.clientY - halfHeight);
+    this.movePaddle((e as MouseEvent).clientY - halfHeight);
   }
 
   private get oneTenthPaddleHeight(): number {

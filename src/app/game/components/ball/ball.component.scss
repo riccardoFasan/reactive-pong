@@ -1,12 +1,12 @@
 :host {
   position: absolute;
+  width: 2.33%;
+  aspect-ratio: 1/1;
 
   div {
     background-color: var(--ion-text-color);
-    width: 2.25vh;
-    height: 2.25vh;
-    min-width: 15px;
-    min-height: 15px;
     border-radius: 50%;
+    height: 100%;
+    width: 100%;
   }
 }

@@ -35,8 +35,8 @@ export class BaseControllerDirective
   protected subSink: SubSink = new SubSink();
 
   constructor(
-    private ref: ElementRef,
     private collision: CollisionService,
+    private ref: ElementRef,
     protected controls: GameControlsService
   ) {}
 

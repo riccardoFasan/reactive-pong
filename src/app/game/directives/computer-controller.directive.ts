@@ -23,12 +23,12 @@ export class ComputerControllerDirective
   private previousBallPositionY: number = this.ballY;
 
   constructor(
-    ref: ElementRef,
     collision: CollisionService,
+    ref: ElementRef,
     controls: GameControlsService,
     private level: LevelService
   ) {
-    super(ref, collision, controls);
+    super(collision, ref, controls);
   }
 
   override async ngAfterViewInit(): Promise<void> {
