@@ -14,7 +14,7 @@ export class ScoreService {
   private player2ScoreStore$: BehaviorSubject<number> =
     new BehaviorSubject<number>(0);
 
-  points$: Observable<Score> = combineLatest([
+  scoreChanged$: Observable<Score> = combineLatest([
     this.player1ScoreStore$,
     this.player2ScoreStore$,
   ]).pipe(

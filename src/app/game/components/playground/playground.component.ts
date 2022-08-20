@@ -20,8 +20,8 @@ import { ScoreService } from '../../services';
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private ground!: ElementRef<HTMLElement>;
 
-  player: Player = Player.Player2;
-  opponent: Player = Player.Player1;
+  player: Player = Player.Player1;
+  opponent: Player = Player.Player2;
 
   playerHalfField: HalfField =
     this.player === Player.Player1 ? HalfField.Left : HalfField.Right;
@@ -38,22 +38,24 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.subSink.sink = this.score.points$.subscribe((score: Score) => {
-      if (score.player1 > 0 || score.player2 > 0) {
-        const currentPlayer1Score: number =
-          this.player === Player.Player1 ? score.player1 : score.player2;
-        const halfField: HalfField =
-          currentPlayer1Score === this.previousPlayer1Score
-            ? HalfField.Left
-            : HalfField.Right;
-        this.previousPlayer1Score = currentPlayer1Score;
-        this.animateBorder(halfField);
-      }
-    });
+    this.onScoreChanged();
   }
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  private onScoreChanged(): void {
+    this.subSink.sink = this.score.scoreChanged$.subscribe((score: Score) => {
+      if (score.player1 > 0 || score.player2 > 0) {
+        const halfField: HalfField =
+          score.player1 === this.previousPlayer1Score
+            ? HalfField.Left
+            : HalfField.Right;
+        this.previousPlayer1Score = score.player1;
+        this.animateBorder(halfField);
+      }
+    });
   }
 
   private animateBorder(halfField: HalfField): void {

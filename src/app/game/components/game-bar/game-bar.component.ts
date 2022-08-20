@@ -22,7 +22,7 @@ export class GameBarComponent implements OnDestroy {
   @Input() opponent!: Player;
 
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
-  points$: Observable<Score> = this.score.points$;
+  points$: Observable<Score> = this.score.scoreChanged$;
 
   private subSink: SubSink = new SubSink();
 
