@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
+  hasOrientationBeenAdjusted: boolean = false;
+
   constructor(private orientation: ScreenOrientation) {}
 
-  ngOnInit(): void {
-    this.setOrientationLandscape();
+  async ngAfterViewInit(): Promise<void> {
+    await this.setOrientationLandscape();
+    this.hasOrientationBeenAdjusted = true;
   }
 
-  private setOrientationLandscape(): void {
-    this.orientation.lock(this.orientation.ORIENTATIONS.LANDSCAPE);
+  private async setOrientationLandscape(): Promise<void> {
+    try {
+      // some devices like PCs have no orientation
+      await this.orientation.lock(this.orientation.ORIENTATIONS.LANDSCAPE);
+    } catch {}
   }
 }

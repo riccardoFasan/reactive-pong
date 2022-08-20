@@ -5,6 +5,8 @@
     background-color: var(--ion-text-color);
     width: 2.25vh;
     height: 2.25vh;
+    min-width: 15px;
+    min-height: 15px;
     border-radius: 50%;
   }
 }
