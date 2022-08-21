@@ -34,6 +34,8 @@ export class BaseControllerDirective
 
   protected subSink: SubSink = new SubSink();
 
+  private readonly pixelsFromEdges: number = 16;
+
   constructor(
     private collision: CollisionService,
     private ref: ElementRef,
@@ -64,7 +66,9 @@ export class BaseControllerDirective
   private centerPaddle(): void {
     this.setSizes();
     if (this.halfField === HalfField.Right) {
-      this.x = this.groundWidth - this.paddleWidth;
+      this.x = this.groundWidth - this.paddleWidth - this.pixelsFromEdges;
+    } else {
+      this.x = this.pixelsFromEdges;
     }
     this.y = this.groundHeight / 2 - this.paddleHeight / 2;
   }
