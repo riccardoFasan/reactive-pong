@@ -6,12 +6,11 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, HalfField } from '../../enums';
-import { CollisionService } from '../../services';
+import { AnimationsService, CollisionService } from '../../services';
 
 @Component({
   selector: 'app-paddle',
@@ -26,7 +25,7 @@ export class PaddleComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private collision: CollisionService,
-    private animations: AnimationController
+    private animations: AnimationsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -49,25 +48,6 @@ export class PaddleComponent implements AfterViewInit, OnDestroy {
       .pipe(
         filter((collision: Collision) => collision === this.paddleCollision)
       )
-      .subscribe(() => this.fade());
-  }
-
-  private fade(): void {
-    this.animations
-      .create()
-      .addElement(this.paddle.nativeElement)
-      .duration(250)
-      .keyframes([
-        {
-          offset: 0,
-          backgroundColor: 'var(--ion-color-dark)',
-        },
-        {
-          offset: 1,
-          backgroundColor: 'var(--ion-color-primary)',
-        },
-      ])
-      .fill('none')
-      .play();
+      .subscribe(() => this.animations.fadePaddle(this.paddle.nativeElement));
   }
 }

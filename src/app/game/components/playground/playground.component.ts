@@ -5,12 +5,15 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, HalfField, Player } from '../../enums';
+import { HalfField, Player } from '../../enums';
 import { Score } from '../../models';
-import { CollisionService, ScoreService } from '../../services';
+import {
+  AnimationsService,
+  CollisionService,
+  ScoreService,
+} from '../../services';
 
 @Component({
   selector: 'app-playground',
@@ -33,7 +36,7 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private score: ScoreService,
-    private animations: AnimationController,
+    private animations: AnimationsService,
     private collision: CollisionService
   ) {}
 
@@ -55,32 +58,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
             ? HalfField.Left
             : HalfField.Right;
         this.previousPlayer1Score = score.player1;
-        this.animateBorder(halfField);
+        this.animations.animateBorder(this.ground.nativeElement, halfField);
       }
     });
-  }
-
-  private animateBorder(halfField: HalfField): void {
-    const property: string =
-      halfField === HalfField.Left ? 'borderLeft' : 'borderRight';
-    this.animations
-      .create()
-      .addElement(this.ground.nativeElement)
-      .duration(300)
-      .iterations(3)
-      .keyframes([
-        {
-          offset: 0,
-          [property]:
-            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-color-dark-rgb), 0.15)',
-        },
-        {
-          offset: 1,
-          [property]:
-            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-color-danger-rgb), 0.66)',
-        },
-      ])
-      .fill('none')
-      .play();
   }
 }
