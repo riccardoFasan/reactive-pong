@@ -6,7 +6,7 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
-import { timer } from 'rxjs';
+import { EMPTY, iif, timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
@@ -86,16 +86,20 @@ export class BallComponent implements AfterViewInit, OnDestroy {
             this.init();
           }
         }),
-        filter((status: GameStatus) => status === GameStatus.Running),
-        switchMap(() =>
-          timer(this.millisecondsBeforeKickStart).pipe(
-            switchMap(() =>
-              this.controls.deltaChanged$.pipe(
-                tap((delta: number) => {
-                  this.move(delta);
-                })
+        switchMap((status: GameStatus) =>
+          // ! do not use filter operator
+          iif(
+            () => status === GameStatus.Running,
+            timer(this.millisecondsBeforeKickStart).pipe(
+              switchMap(() =>
+                this.controls.deltaChanged$.pipe(
+                  tap((delta: number) => {
+                    this.move(delta);
+                  })
+                )
               )
-            )
+            ),
+            EMPTY
           )
         )
       )
