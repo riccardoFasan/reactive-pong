@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Collision } from '../enums';
 import { GameControlsService } from './game-controls.service';
-import { ScoreService } from './score.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,13 +22,11 @@ export class CollisionService {
       if (this.thereIsAPlayer1GateCollision) return Collision.Player1Gate;
       if (this.thereIsAPlayer2GateCollision) return Collision.Player2Gate;
       return Collision.None;
-    })
+    }),
+    share()
   );
 
-  constructor(
-    private controls: GameControlsService,
-    private score: ScoreService
-  ) {}
+  constructor(private controls: GameControlsService) {}
 
   registerLeftPaddle(paddle: HTMLElement): void {
     this.leftPaddle = paddle;

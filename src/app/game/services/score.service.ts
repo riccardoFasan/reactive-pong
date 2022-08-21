@@ -26,7 +26,7 @@ export class ScoreService {
   private winnerStore$: Subject<Player> = new Subject<Player>();
   winnerChanged$: Observable<Player> = this.winnerStore$.asObservable();
 
-  private readonly maximumScore: number = 2;
+  private readonly maximumScore: number = 10;
 
   addPoint(player: Player): void {
     if (player === Player.Player1) {
