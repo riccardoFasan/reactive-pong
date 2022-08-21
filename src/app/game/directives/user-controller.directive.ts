@@ -17,7 +17,10 @@ export class UserControllerDirective
   @HostListener('window:touchmove', ['$event'])
   private onMove(e: TouchEvent): void {
     const touch: Touch = e.touches[0];
-    if (touch) this.movePaddle(touch.clientY);
+    if (touch) {
+      const halfHeight: number = this.paddleHeight / 2;
+      this.movePaddle(touch.clientY + halfHeight);
+    }
   }
 
   private movePaddle(positionY: number): void {
