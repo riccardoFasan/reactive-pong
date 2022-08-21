@@ -34,7 +34,7 @@ export class BaseControllerDirective
 
   protected subSink: SubSink = new SubSink();
 
-  private readonly pixelsFromEdges: number = 16;
+  private readonly pixelsFromEdges: number = 20;
 
   constructor(
     private collision: CollisionService,

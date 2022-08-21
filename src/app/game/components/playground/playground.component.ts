@@ -70,7 +70,7 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
         {
           offset: 0,
           [property]:
-            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-text-color-rgb), 0.25)',
+            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-color-dark-rgb), 0.15)',
         },
         {
           offset: 1,
