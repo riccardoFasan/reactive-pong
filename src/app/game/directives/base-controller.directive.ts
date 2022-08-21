@@ -7,9 +7,11 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
+import { AnimationController } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, HalfField } from '../enums';
+import { Collision, GameStatus, HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
 import { CollisionService, GameControlsService } from '../services';
 
@@ -53,16 +55,6 @@ export class BaseControllerDirective
     this.subSink.unsubscribe();
   }
 
-  private onStatusChanged(): void {
-    this.subSink.sink = this.controls.statusChanged$.subscribe(
-      (status: GameStatus) => {
-        if (status === GameStatus.Stopped) {
-          this.centerPaddle();
-        }
-      }
-    );
-  }
-
   private registerPaddle(): void {
     if (this.halfField === HalfField.Left) {
       this.collision.registerLeftPaddle(this.ref.nativeElement);
@@ -79,6 +71,16 @@ export class BaseControllerDirective
       this.x = this.pixelsFromEdges;
     }
     this.y = this.groundHeight / 2 - this.paddleHeight / 2;
+  }
+
+  private onStatusChanged(): void {
+    this.subSink.sink = this.controls.statusChanged$.subscribe(
+      (status: GameStatus) => {
+        if (status === GameStatus.Stopped) {
+          this.centerPaddle();
+        }
+      }
+    );
   }
 
   @HostListener('window:resize')

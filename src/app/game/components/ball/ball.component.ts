@@ -6,7 +6,7 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
-import { EMPTY, iif, timer } from 'rxjs';
+import { timer } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
@@ -86,19 +86,16 @@ export class BallComponent implements AfterViewInit, OnDestroy {
             this.init();
           }
         }),
-        switchMap((status: GameStatus) =>
-          iif(
-            () => status === GameStatus.Running,
-            timer(this.millisecondsBeforeKickStart).pipe(
-              switchMap(() =>
-                this.controls.deltaChanged$.pipe(
-                  tap((delta: number) => {
-                    this.move(delta);
-                  })
-                )
+        filter((status: GameStatus) => status === GameStatus.Running),
+        switchMap(() =>
+          timer(this.millisecondsBeforeKickStart).pipe(
+            switchMap(() =>
+              this.controls.deltaChanged$.pipe(
+                tap((delta: number) => {
+                  this.move(delta);
+                })
               )
-            ),
-            EMPTY
+            )
           )
         )
       )
@@ -166,7 +163,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(delta: number): void {
     this.increaseSpeed(delta);
-
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
   }
