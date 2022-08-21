@@ -17,7 +17,7 @@ export class ComputerControllerDirective
   extends BaseControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
-  private readonly speed: number = 0.02;
+  private readonly speed: number = 0.125;
   private inaccuracy: Inaccuracy = Inaccuracy.Low;
 
   private previousBallPositionY: number = this.ballY;
@@ -57,19 +57,17 @@ export class ComputerControllerDirective
   }
 
   private movePaddle(): void {
-    this.subSink.sink = this.controls.deltaChanged$.subscribe(
-      (delta: number) => {
-        const correctionFactor: number = this.paddleHeight * this.inaccuracy;
-        const correctedPaddleHeight: number = this.isBallMovingDown
-          ? correctionFactor
-          : this.paddleHeight - correctionFactor;
-        const movement: number = this.ballY - this.y - correctedPaddleHeight;
-        const positionY: number = this.y + this.speed * delta * movement;
-        if (this.canMove(positionY)) {
-          this.y = positionY;
-        }
-        this.previousBallPositionY = this.ballY;
+    this.subSink.sink = this.controls.timer$.subscribe(() => {
+      const correctionFactor: number = this.paddleHeight * this.inaccuracy;
+      const correctedPaddleHeight: number = this.isBallMovingDown
+        ? correctionFactor
+        : this.paddleHeight - correctionFactor;
+      const movement: number = this.ballY - this.y - correctedPaddleHeight;
+      const positionY: number = this.y + this.speed * movement;
+      if (this.canMove(positionY)) {
+        this.y = positionY;
       }
-    );
+      this.previousBallPositionY = this.ballY;
+    });
   }
 }

@@ -14,8 +14,8 @@ export class CollisionService {
   private ball!: HTMLElement;
   private ground!: HTMLElement;
 
-  collisionChanged$: Observable<Collision> = this.controls.deltaChanged$.pipe(
-    map((_: number) => {
+  collisionChanged$: Observable<Collision> = this.controls.timer$.pipe(
+    map(() => {
       if (this.thereIsALeftPaddleCollision) return Collision.LeftPaddle;
       if (this.thereIsARightPaddleCollision) return Collision.RightPaddle;
       if (this.therIsAnEdgeCollision) return Collision.Edge;

@@ -29,15 +29,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   private async adjustStyle(): Promise<void> {
-    await this.autoHideStatusBar();
-    await this.setOrientation();
+    try {
+      await this.autoHideStatusBar();
+      await this.setOrientation();
+    } catch {}
   }
 
   private async setOrientation(): Promise<void> {
-    try {
-      // some devices like PCs have no orientation
-      await this.orientation.lock(this.orientation.ORIENTATIONS.LANDSCAPE);
-    } catch {}
+    await this.orientation.lock(this.orientation.ORIENTATIONS.LANDSCAPE);
   }
 
   private async autoHideStatusBar(): Promise<void> {

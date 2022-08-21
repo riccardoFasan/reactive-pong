@@ -91,13 +91,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
           iif(
             () => status === GameStatus.Running,
             timer(this.millisecondsBeforeKickStart).pipe(
-              switchMap(() =>
-                this.controls.deltaChanged$.pipe(
-                  tap((delta: number) => {
-                    this.move(delta);
-                  })
-                )
-              )
+              switchMap(() => this.controls.timer$.pipe(tap(() => this.move())))
             ),
             EMPTY
           )
@@ -165,10 +159,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private move(delta: number): void {
-    this.increaseSpeed(delta);
-    this.x += this.direction.x * this.currentSpeed * delta;
-    this.y += this.direction.y * this.currentSpeed * delta;
+  private move(): void {
+    this.increaseSpeed();
+    this.x += this.direction.x * this.currentSpeed;
+    this.y += this.direction.y * this.currentSpeed;
   }
 
   private adjustAfterPaddleCollision(): void {
@@ -190,9 +184,9 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.controls.resume();
   }
 
-  private increaseSpeed(delta: number): void {
+  private increaseSpeed(): void {
     if (this.currentSpeed < this.ball.maximumSpeed) {
-      this.currentSpeed += this.ball.acceleration * delta;
+      this.currentSpeed += this.ball.acceleration;
     }
   }
 }
