@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { AlertController, Platform } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
@@ -16,7 +16,7 @@ import {
   templateUrl: './game-bar.component.html',
   styleUrls: ['./game-bar.component.scss'],
 })
-export class GameBarComponent implements OnDestroy {
+export class GameBarComponent implements AfterViewInit, OnDestroy {
   @Input() player!: Player;
   @Input() opponent!: Player;
 
@@ -29,8 +29,14 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private level: LevelService
+    private level: LevelService,
+    private platform: Platform
   ) {}
+
+  async ngAfterViewInit(): Promise<void> {
+    await isIonicReady();
+    this.onBackground();
+  }
 
   ngOnDestroy(): void {
     this.stop();
@@ -44,6 +50,12 @@ export class GameBarComponent implements OnDestroy {
   pause(): void {
     this.controls.pause();
     this.openPauseAlert();
+  }
+
+  private onBackground(): void {
+    this.subSink.sink = this.platform.pause.subscribe(() =>
+      this.controls.pause()
+    );
   }
 
   private stop(): void {
