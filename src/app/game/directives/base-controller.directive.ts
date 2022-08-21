@@ -7,11 +7,10 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, GameStatus, HalfField } from '../enums';
+import { GameStatus, HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
 import { CollisionService, GameControlsService } from '../services';
 
@@ -74,13 +73,11 @@ export class BaseControllerDirective
   }
 
   private onStatusChanged(): void {
-    this.subSink.sink = this.controls.statusChanged$.subscribe(
-      (status: GameStatus) => {
-        if (status === GameStatus.Stopped) {
-          this.centerPaddle();
-        }
-      }
-    );
+    this.subSink.sink = this.controls.statusChanged$
+      .pipe(filter((status: GameStatus) => status === GameStatus.Stopped))
+      .subscribe((_: GameStatus) => {
+        this.centerPaddle();
+      });
   }
 
   @HostListener('window:resize')
