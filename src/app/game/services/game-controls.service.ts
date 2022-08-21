@@ -17,21 +17,31 @@ export class GameControlsService {
   private frameId: number = 0;
 
   start(): void {
-    this.statusStore$.next(GameStatus.Running);
+    this.status = GameStatus.Running;
     this.onFrameChanged();
   }
 
   stop(): void {
-    this.statusStore$.next(GameStatus.Stopped);
+    this.status = GameStatus.Stopped;
     window.cancelAnimationFrame(this.frameId);
   }
 
   pause(): void {
-    this.statusStore$.next(GameStatus.Paused);
+    if (this.status === GameStatus.Stopped) return;
+    this.status = GameStatus.Paused;
   }
 
   resume(): void {
-    this.statusStore$.next(GameStatus.Running);
+    if (this.status === GameStatus.Stopped) return;
+    this.status = GameStatus.Running;
+  }
+
+  private get status(): GameStatus {
+    return this.statusStore$.getValue();
+  }
+
+  private set status(status: GameStatus) {
+    this.statusStore$.next(status);
   }
 
   private onFrameChanged(): void {
