@@ -8,9 +8,9 @@ import {
 import { AnimationController } from '@ionic/angular';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { HalfField, Player } from '../../enums';
+import { Collision, HalfField, Player } from '../../enums';
 import { Score } from '../../models';
-import { ScoreService } from '../../services';
+import { CollisionService, ScoreService } from '../../services';
 
 @Component({
   selector: 'app-playground',
@@ -33,11 +33,13 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private score: ScoreService,
-    private animations: AnimationController
+    private animations: AnimationController,
+    private collision: CollisionService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.collision.registerGround(this.ground.nativeElement);
     this.onScoreChanged();
   }
 

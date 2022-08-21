@@ -44,7 +44,7 @@ export class BaseControllerDirective
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.collision.registerPaddle(this.ref.nativeElement);
+    this.registerPaddle();
     this.centerPaddle();
     this.onStatusChanged();
   }
@@ -61,6 +61,14 @@ export class BaseControllerDirective
         }
       }
     );
+  }
+
+  private registerPaddle(): void {
+    if (this.halfField === HalfField.Left) {
+      this.collision.registerLeftPaddle(this.ref.nativeElement);
+      return;
+    }
+    this.collision.registerRightPaddle(this.ref.nativeElement);
   }
 
   private centerPaddle(): void {

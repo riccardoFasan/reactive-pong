@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { EMPTY, iif, timer } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus, Player } from '../../enums';
@@ -38,15 +38,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   currentSpeed: number = this.ball.baseSpeed;
 
+  private direction: Coordinates = { x: 0, y: 0 };
+
   private ballWidth: number = 0;
   private ballHeight: number = 0;
   private groundHeight: number = 0;
   private groundWidth: number = 0;
-
-  private direction: Coordinates = { x: 0, y: 0 };
-
-  private thereWasACollision: boolean = false;
-  private latestCollision: Collision = Collision.Edge;
 
   private subSink: SubSink = new SubSink();
 
@@ -65,6 +62,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.collision.registerBall(this.ref.nativeElement);
     this.onLevelChanged();
     this.onStatusChanged();
+    this.onCollisionChanged();
   }
 
   ngOnDestroy(): void {
@@ -107,6 +105,28 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       .subscribe();
   }
 
+  private onCollisionChanged(): void {
+    this.subSink.sink = this.collision.collisionChanged$
+      .pipe(filter((collision: Collision) => collision !== Collision.None))
+      .subscribe((collision: Collision) => {
+        if (
+          collision === Collision.LeftPaddle ||
+          collision === Collision.RightPaddle
+        ) {
+          this.adjustAfterPaddleCollision();
+        }
+        if (collision === Collision.Edge) {
+          this.adjustAfterEdgeCollision();
+        }
+        if (
+          collision === Collision.Player1Gate ||
+          collision === Collision.Player2Gate
+        ) {
+          this.adjustAfterGoal(collision);
+        }
+      });
+  }
+
   private init(): void {
     this.setSizes();
     this.centerBall();
@@ -145,59 +165,29 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private move(delta: number): void {
-    this.checkForDirectionAdjustment();
-
-    if (!this.thereWasACollision) {
-      const didAnyoneWin: boolean = this.didAnyoneWin();
-      if (didAnyoneWin) {
-        this.controls.pause();
-        this.addPoints();
-        this.init();
-        this.controls.resume();
-        return;
-      }
-    }
-
     this.increaseSpeed(delta);
 
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
   }
 
-  private didAnyoneWin(): boolean {
-    return this.groundWidth < this.x || this.x < 0;
+  private adjustAfterPaddleCollision(): void {
+    this.direction.x *= -1;
+    this.direction.y += 0.1 * Math.sign(this.direction.y);
   }
 
-  private addPoints(): void {
+  private adjustAfterEdgeCollision(): void {
+    this.direction.y *= -1;
+    this.direction.x += 0.1 * Math.sign(this.direction.x);
+  }
+
+  private adjustAfterGoal(collision: Collision): void {
+    this.controls.pause();
     const player: Player =
-      this.groundWidth <= this.x ? Player.Player1 : Player.Player2;
+      collision === Collision.Player1Gate ? Player.Player2 : Player.Player1;
     this.score.addPoint(player);
-  }
-
-  private checkForDirectionAdjustment(): void {
-    if (
-      (!this.thereWasACollision || this.latestCollision !== Collision.Paddle) &&
-      this.collision.thereIsAPaddleCollision
-    ) {
-      this.direction.x *= -1;
-      this.direction.y += 0.1 * Math.sign(this.direction.y);
-      this.latestCollision = Collision.Paddle;
-      this.thereWasACollision = true;
-      return;
-    }
-
-    if (!this.thereWasACollision || this.latestCollision !== Collision.Edge) {
-      const bottomPosition: number = this.y + this.ballHeight;
-      if (!(this.y >= 0 && bottomPosition <= this.groundHeight)) {
-        this.direction.y *= -1;
-        this.direction.x += 0.1 * Math.sign(this.direction.x);
-        this.latestCollision = Collision.Edge;
-        this.thereWasACollision = true;
-        return;
-      }
-    }
-
-    this.thereWasACollision = false;
+    this.init();
+    this.controls.resume();
   }
 
   private increaseSpeed(delta: number): void {
