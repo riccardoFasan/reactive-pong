@@ -32,10 +32,9 @@ export class BaseControllerDirective
   protected paddleWidth: number = 0;
   protected groundHeight: number = 0;
   protected groundWidth: number = 0;
+  private pixelsFromEdges: number = 0;
 
   protected subSink: SubSink = new SubSink();
-
-  private readonly pixelsFromEdges: number = 32;
 
   constructor(
     private collision: CollisionService,
@@ -87,6 +86,9 @@ export class BaseControllerDirective
     const ground: HTMLElement = this.ref.nativeElement.parentElement;
     this.groundHeight = ground.clientHeight;
     this.groundWidth = ground.clientWidth;
+    const groundContainer: HTMLElement = ground.parentElement!;
+    const style: CSSStyleDeclaration = window.getComputedStyle(groundContainer);
+    this.pixelsFromEdges = parseInt(style.paddingLeft);
   }
 
   protected canMove(positionY: number): boolean {

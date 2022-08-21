@@ -23,8 +23,8 @@ import {
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private ground!: ElementRef<HTMLElement>;
 
-  player: Player = Player.Player1;
-  opponent: Player = Player.Player2;
+  player: Player = Player.Player2;
+  opponent: Player = Player.Player1;
 
   playerHalfField: HalfField =
     this.player === Player.Player1 ? HalfField.Left : HalfField.Right;

@@ -1,12 +1,12 @@
 :host {
   height: 100vh;
-  padding: 1.75rem 3.5rem;
+  padding: 2rem 3.75rem;
   position: relative;
   --playground-border-width: 1px;
 
   app-game-bar {
     position: absolute;
-    top: 2rem;
+    top: 0.75rem;
     left: 50%;
     transform: translateX(-50%);
   }

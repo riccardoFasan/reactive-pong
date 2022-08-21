@@ -17,8 +17,8 @@ export class ComputerControllerDirective
   extends BaseControllerDirective
   implements AfterViewInit, OnDestroy, PaddleController
 {
-  private readonly speed: number = 0.125;
-  private inaccuracy: Inaccuracy = Inaccuracy.Low;
+  private readonly speed: number = 0.1;
+  private inaccuracy: Inaccuracy = Inaccuracy.Medium;
 
   private previousBallPositionY: number = this.ballY;
 
