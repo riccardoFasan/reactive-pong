@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EventName, Player } from '../enums';
+import { Player } from '../enums';
 import { Score } from '../models/score.model';
-import { EventBusService } from './event-bus.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +23,10 @@ export class ScoreService {
     }))
   );
 
-  private readonly maximumScore: number = 10;
+  private winnerStore$: Subject<Player> = new Subject<Player>();
+  winnerChanged$: Observable<Player> = this.winnerStore$.asObservable();
 
-  constructor(private bus: EventBusService) {}
+  private readonly maximumScore: number = 2;
 
   addPoint(player: Player): void {
     if (player === Player.Player1) {
@@ -36,7 +36,7 @@ export class ScoreService {
       const currentScore: number = this.player2ScoreStore$.getValue();
       this.player2ScoreStore$.next(currentScore + 1);
     }
-    this.notifyIfThereIsAWinner();
+    this.searchForWinnerAndNotify();
   }
 
   resetScore(): void {
@@ -44,15 +44,9 @@ export class ScoreService {
     this.player2ScoreStore$.next(0);
   }
 
-  private notifyIfThereIsAWinner(): void {
-    let winner: Player | undefined = this.getWinner();
-    if (winner) {
-      this.resetScore();
-      this.bus.emit({
-        name: EventName.GameOver,
-        value: winner,
-      });
-    }
+  private searchForWinnerAndNotify(): void {
+    const winner: Player | undefined = this.getWinner();
+    if (winner) this.winnerStore$.next(winner);
   }
 
   private getWinner(): Player | undefined {

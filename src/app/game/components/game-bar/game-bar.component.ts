@@ -3,10 +3,9 @@ import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { EventName, GameStatus, Level, Player } from '../../enums';
+import { GameStatus, Level, Player } from '../../enums';
 import { Score } from '../../models';
 import {
-  EventBusService,
   GameControlsService,
   LevelService,
   ScoreService,
@@ -30,7 +29,6 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private bus: EventBusService,
     private level: LevelService
   ) {}
 
@@ -96,11 +94,14 @@ export class GameBarComponent implements OnDestroy {
   }
 
   private onGameOver(): void {
-    this.subSink.sink = this.bus.on(EventName.GameOver, (winner: Player) => {
-      const message: string = winner === this.player ? 'You won' : 'Game lost';
-      this.stop();
-      this.openGameOverAlert(message);
-    });
+    this.subSink.sink = this.score.winnerChanged$.subscribe(
+      (winner: Player) => {
+        this.stop();
+        const message: string =
+          winner === this.player ? 'You won' : 'Game lost';
+        this.openGameOverAlert(message);
+      }
+    );
   }
 
   private async openGameOverAlert(message: string): Promise<void> {

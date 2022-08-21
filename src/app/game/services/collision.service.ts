@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Collision } from '../enums';
 import { GameControlsService } from './game-controls.service';
+import { ScoreService } from './score.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,10 @@ export class CollisionService {
     })
   );
 
-  constructor(private controls: GameControlsService) {}
+  constructor(
+    private controls: GameControlsService,
+    private score: ScoreService
+  ) {}
 
   registerLeftPaddle(paddle: HTMLElement): void {
     this.leftPaddle = paddle;
