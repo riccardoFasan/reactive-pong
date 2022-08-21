@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Level } from '../enums';
 import { LevelSettings } from '../models';
-import { EASY_LEVEL, HARD_LEVEL, NORMAL_LEVEL } from '../store';
+import { NORMAL_LEVEL, LEVELS } from '../store';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +17,10 @@ export class LevelService {
     .asObservable()
     .pipe(
       map((level: Level) => {
-        if (level === Level.Easy) return EASY_LEVEL;
-        if (level === Level.Hard) return HARD_LEVEL;
+        const settings: LevelSettings | undefined = LEVELS.find(
+          (settings: LevelSettings) => level === settings.value
+        );
+        if (settings) return settings;
         return NORMAL_LEVEL;
       })
     );

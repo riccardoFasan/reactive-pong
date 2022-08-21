@@ -1,15 +1,16 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, AlertInput } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus, Level, Player } from '../../enums';
-import { Score } from '../../models';
+import { LevelSettings, Score } from '../../models';
 import {
   GameControlsService,
   LevelService,
   ScoreService,
 } from '../../services';
+import { LEVELS } from '../../store';
 
 @Component({
   selector: 'app-game-bar',
@@ -57,28 +58,15 @@ export class GameBarComponent implements OnDestroy {
   }
 
   private async askLevelAndPlay(): Promise<void> {
+    const inputs: AlertInput[] = LEVELS.map((level: LevelSettings) => ({
+      label: level.name,
+      type: 'radio',
+      value: level.value,
+      checked: false,
+    }));
     const alert: HTMLIonAlertElement = await this.alertController.create({
       header: 'Choose difficulty level',
-      inputs: [
-        {
-          label: 'Easy',
-          type: 'radio',
-          value: Level.Easy,
-          checked: false,
-        },
-        {
-          label: 'Normal',
-          type: 'radio',
-          value: Level.Normal,
-          checked: true,
-        },
-        {
-          label: 'Hard',
-          type: 'radio',
-          value: Level.Hard,
-          checked: false,
-        },
-      ],
+      inputs: inputs,
       buttons: [
         {
           text: 'Play',
