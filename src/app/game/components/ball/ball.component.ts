@@ -6,7 +6,7 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
-import { EMPTY, iif } from 'rxjs';
+import { EMPTY, iif, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
@@ -50,6 +50,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private subSink: SubSink = new SubSink();
 
+  private readonly millisecondsBeforeKickStart: number = 750;
+
   constructor(
     private ref: ElementRef,
     private collision: CollisionService,
@@ -60,6 +62,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.collision.registerBall(this.ref.nativeElement);
     this.onLevelChanged();
     this.onStatusChanged();
   }
@@ -88,10 +91,14 @@ export class BallComponent implements AfterViewInit, OnDestroy {
         switchMap((status: GameStatus) =>
           iif(
             () => status === GameStatus.Running,
-            this.controls.deltaChanged$.pipe(
-              tap((delta: number) => {
-                this.move(delta);
-              })
+            timer(this.millisecondsBeforeKickStart).pipe(
+              switchMap(() =>
+                this.controls.deltaChanged$.pipe(
+                  tap((delta: number) => {
+                    this.move(delta);
+                  })
+                )
+              )
             ),
             EMPTY
           )
@@ -103,7 +110,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private init(): void {
     this.setSizes();
     this.centerBall();
-    this.collision.registerBall(this.ref.nativeElement);
     this.setRandomDirection();
     this.currentSpeed = randomNumberBetween(
       this.ball.baseSpeed,
@@ -144,19 +150,22 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     if (!this.thereWasACollision) {
       const didAnyoneWin: boolean = this.didAnyoneWin();
       if (didAnyoneWin) {
+        this.controls.pause();
         this.addPoints();
         this.init();
+        this.controls.resume();
         return;
       }
     }
 
     this.increaseSpeed(delta);
+
     this.x += this.direction.x * this.currentSpeed * delta;
     this.y += this.direction.y * this.currentSpeed * delta;
   }
 
   private didAnyoneWin(): boolean {
-    return this.groundWidth <= this.x || this.x < 0;
+    return this.groundWidth < this.x || this.x < 0;
   }
 
   private addPoints(): void {
