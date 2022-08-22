@@ -44,7 +44,7 @@ export class PaddleComponent implements AfterViewInit, OnDestroy {
   }
 
   private onCollisionChanged(): void {
-    this.subSink.sink = this.collision.collisionChanged$
+    this.subSink.sink = this.collision.onPaddleCollision$
       .pipe(
         filter((collision: Collision) => collision === this.paddleCollision)
       )

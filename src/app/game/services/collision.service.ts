@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { filter, map, share, throttleTime } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Collision } from '../enums';
 import { GameControlsService } from './game-controls.service';
@@ -14,7 +14,7 @@ export class CollisionService {
   private ball!: HTMLElement;
   private ground!: HTMLElement;
 
-  collisionChanged$: Observable<Collision> = this.controls.timer$.pipe(
+  private collisionStore$: Observable<Collision> = this.controls.timer$.pipe(
     map(() => {
       if (this.thereIsALeftPaddleCollision) return Collision.LeftPaddle;
       if (this.thereIsARightPaddleCollision) return Collision.RightPaddle;
@@ -23,6 +23,31 @@ export class CollisionService {
       if (this.thereIsAPlayer2GateCollision) return Collision.Player2Gate;
       return Collision.None;
     }),
+    share()
+  );
+
+  onPaddleCollision$: Observable<Collision> = this.collisionStore$.pipe(
+    filter(
+      (collision: Collision) =>
+        collision === Collision.LeftPaddle ||
+        collision === Collision.RightPaddle
+    ),
+    throttleTime(100),
+    share()
+  );
+
+  onEdgeCollision$: Observable<Collision> = this.collisionStore$.pipe(
+    filter((collision: Collision) => collision === Collision.Edge),
+    throttleTime(100),
+    share()
+  );
+
+  onGatesCollision$: Observable<Collision> = this.collisionStore$.pipe(
+    filter(
+      (collision: Collision) =>
+        collision === Collision.Player1Gate ||
+        collision === Collision.Player2Gate
+    ),
     share()
   );
 

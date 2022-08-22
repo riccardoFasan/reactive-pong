@@ -50,34 +50,21 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private readonly millisecondsBeforeKickStart: number = 750;
 
   private paddleCollision$: Observable<Collision> =
-    this.collision.collisionChanged$.pipe(
-      filter(
-        (collision: Collision) =>
-          collision === Collision.LeftPaddle ||
-          collision === Collision.RightPaddle
-      ),
-      throttleTime(100),
+    this.collision.onPaddleCollision$.pipe(
       tap(() => {
         this.adjustAfterPaddleCollision();
       })
     );
 
   private edgeCollision$: Observable<Collision> =
-    this.collision.collisionChanged$.pipe(
-      filter((collision: Collision) => collision === Collision.Edge),
-      throttleTime(100),
+    this.collision.onEdgeCollision$.pipe(
       tap(() => {
         this.adjustAfterEdgeCollision();
       })
     );
 
-  private goalCollision$: Observable<Collision> =
-    this.collision.collisionChanged$.pipe(
-      filter(
-        (collision: Collision) =>
-          collision === Collision.Player1Gate ||
-          collision === Collision.Player2Gate
-      ),
+  private gatesCollision$: Observable<Collision> =
+    this.collision.onGatesCollision$.pipe(
       tap((collision: Collision) => {
         this.adjustAfterGoal(collision);
       })
@@ -86,7 +73,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private onCollision$: Observable<Collision[]> = combineLatest([
     this.edgeCollision$,
     this.paddleCollision$,
-    this.goalCollision$,
+    this.gatesCollision$,
   ]);
 
   constructor(

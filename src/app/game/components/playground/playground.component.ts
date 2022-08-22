@@ -7,13 +7,8 @@ import {
 } from '@angular/core';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { HalfField, Player } from '../../enums';
-import { Score } from '../../models';
-import {
-  AnimationsService,
-  CollisionService,
-  ScoreService,
-} from '../../services';
+import { Collision, HalfField, Player } from '../../enums';
+import { AnimationsService, CollisionService } from '../../services';
 
 @Component({
   selector: 'app-playground',
@@ -22,6 +17,8 @@ import {
 })
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private ground!: ElementRef<HTMLElement>;
+
+  // * Player 1 is always on left and Player 2 on right
 
   player: Player = Player.Player2;
   opponent: Player = Player.Player1;
@@ -32,10 +29,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     this.player !== Player.Player1 ? HalfField.Left : HalfField.Right;
 
   private subSink: SubSink = new SubSink();
-  private previousPlayer1Score: number = 0;
 
   constructor(
-    private score: ScoreService,
     private animations: AnimationsService,
     private collision: CollisionService
   ) {}
@@ -51,15 +46,14 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   }
 
   private onScoreChanged(): void {
-    this.subSink.sink = this.score.scoreChanged$.subscribe((score: Score) => {
-      if (score.player1 > 0 || score.player2 > 0) {
+    this.subSink.sink = this.collision.onGatesCollision$.subscribe(
+      (collision: Collision) => {
         const halfField: HalfField =
-          score.player1 === this.previousPlayer1Score
+          collision === Collision.Player1Gate
             ? HalfField.Left
             : HalfField.Right;
-        this.previousPlayer1Score = score.player1;
         this.animations.animateBorder(this.ground.nativeElement, halfField);
       }
-    });
+    );
   }
 }
