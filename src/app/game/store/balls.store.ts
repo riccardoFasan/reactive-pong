@@ -2,21 +2,28 @@ import { Ball } from '../models';
 
 export const SLOW_BALL: Ball = {
   name: 'Slow',
-  baseSpeed: 0.75,
+  baseSpeed: 3.5,
   acceleration: 0.25,
-  maximumSpeed: 1.33,
+  maximumSpeed: 4,
 };
 
 export const NORMAL_BALL: Ball = {
   name: 'Normal',
-  baseSpeed: 1.125,
+  baseSpeed: 4,
   acceleration: 0.33,
-  maximumSpeed: 1.5,
+  maximumSpeed: 5,
 };
 
 export const FAST_BALL: Ball = {
   name: 'Fast',
-  baseSpeed: 1.25,
+  baseSpeed: 4.5,
   acceleration: 0.66,
-  maximumSpeed: 1.75,
+  maximumSpeed: 6,
+};
+
+export const CRAZY_BALL: Ball = {
+  name: 'Crazy',
+  baseSpeed: 4.75,
+  acceleration: 0.675,
+  maximumSpeed: 6.33,
 };

@@ -1,6 +1,6 @@
 import { Inaccuracy, Level } from '../enums';
 import { LevelSettings } from '../models';
-import { FAST_BALL, NORMAL_BALL, SLOW_BALL } from './balls.store';
+import { CRAZY_BALL, FAST_BALL, NORMAL_BALL, SLOW_BALL } from './balls.store';
 
 export const EASY_LEVEL: LevelSettings = {
   name: 'Easy',
@@ -26,7 +26,7 @@ export const HARD_LEVEL: LevelSettings = {
 export const INSANE_LEVEL: LevelSettings = {
   name: 'Insane',
   value: Level.Insane,
-  ball: FAST_BALL,
+  ball: CRAZY_BALL,
   computerInaccuracy: Inaccuracy.None,
 };
 

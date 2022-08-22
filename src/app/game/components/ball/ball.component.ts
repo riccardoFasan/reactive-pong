@@ -6,8 +6,8 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
-import { EMPTY, iif, timer } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
+import { filter, map, switchMap, tap, throttleTime } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus, Player } from '../../enums';
@@ -48,6 +48,46 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private subSink: SubSink = new SubSink();
 
   private readonly millisecondsBeforeKickStart: number = 750;
+
+  private paddleCollision$: Observable<Collision> =
+    this.collision.collisionChanged$.pipe(
+      filter(
+        (collision: Collision) =>
+          collision === Collision.LeftPaddle ||
+          collision === Collision.RightPaddle
+      ),
+      throttleTime(100),
+      tap(() => {
+        this.adjustAfterPaddleCollision();
+      })
+    );
+
+  private edgeCollision$: Observable<Collision> =
+    this.collision.collisionChanged$.pipe(
+      filter((collision: Collision) => collision === Collision.Edge),
+      throttleTime(100),
+      tap(() => {
+        this.adjustAfterEdgeCollision();
+      })
+    );
+
+  private goalCollision$: Observable<Collision> =
+    this.collision.collisionChanged$.pipe(
+      filter(
+        (collision: Collision) =>
+          collision === Collision.Player1Gate ||
+          collision === Collision.Player2Gate
+      ),
+      tap((collision: Collision) => {
+        this.adjustAfterGoal(collision);
+      })
+    );
+
+  private onCollision$: Observable<Collision[]> = combineLatest([
+    this.edgeCollision$,
+    this.paddleCollision$,
+    this.goalCollision$,
+  ]);
 
   constructor(
     private ref: ElementRef,
@@ -101,25 +141,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private onCollisionChanged(): void {
-    this.subSink.sink = this.collision.collisionChanged$
-      .pipe(filter((collision: Collision) => collision !== Collision.None))
-      .subscribe((collision: Collision) => {
-        if (
-          collision === Collision.LeftPaddle ||
-          collision === Collision.RightPaddle
-        ) {
-          this.adjustAfterPaddleCollision();
-        }
-        if (collision === Collision.Edge) {
-          this.adjustAfterEdgeCollision();
-        }
-        if (
-          collision === Collision.Player1Gate ||
-          collision === Collision.Player2Gate
-        ) {
-          this.adjustAfterGoal(collision);
-        }
-      });
+    this.subSink.sink = this.onCollision$.subscribe();
   }
 
   private init(): void {
@@ -167,12 +189,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private adjustAfterPaddleCollision(): void {
     this.direction.x *= -1;
-    this.direction.y += 0.1 * Math.sign(this.direction.y);
+    this.direction.y += 0.033 * Math.sign(this.direction.y);
   }
 
   private adjustAfterEdgeCollision(): void {
     this.direction.y *= -1;
-    this.direction.x += 0.1 * Math.sign(this.direction.x);
+    this.direction.x += 0.033 * Math.sign(this.direction.x);
   }
 
   private adjustAfterGoal(collision: Collision): void {
