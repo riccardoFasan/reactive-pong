@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
-import { filter, map, switchMap, tap, throttleTime } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus, Player } from '../../enums';
@@ -176,12 +176,18 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private adjustAfterPaddleCollision(): void {
     this.direction.x *= -1;
-    this.direction.y += 0.033 * Math.sign(this.direction.y);
+    const angleCorrection: number = this.getRandomCorrection();
+    this.direction.y += angleCorrection * Math.sign(this.direction.y);
   }
 
   private adjustAfterEdgeCollision(): void {
     this.direction.y *= -1;
-    this.direction.x += 0.033 * Math.sign(this.direction.x);
+    const angleCorrection: number = this.getRandomCorrection();
+    this.direction.x += angleCorrection * Math.sign(this.direction.x);
+  }
+
+  private getRandomCorrection(): number {
+    return randomNumberBetween(0, 0.04);
   }
 
   private adjustAfterGoal(collision: Collision): void {
