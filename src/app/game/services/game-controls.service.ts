@@ -13,6 +13,10 @@ export class GameControlsService {
     new BehaviorSubject<GameStatus>(GameStatus.Stopped);
   statusChanged$: Observable<GameStatus> = this.statusStore$.asObservable();
 
+  get currentStatus(): GameStatus {
+    return this.statusStore$.getValue();
+  }
+
   start(): void {
     this.status = GameStatus.Running;
   }

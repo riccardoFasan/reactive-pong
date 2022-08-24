@@ -4,6 +4,7 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
+import { GameStatus } from '../enums';
 import { PaddleController } from '../interfaces';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -16,10 +17,12 @@ export class UserControllerDirective
 {
   @HostListener('window:touchmove', ['$event'])
   private onMove(e: TouchEvent): void {
-    const touch: Touch = e.touches[0];
-    if (touch) {
-      const halfHeight: number = this.paddleHeight / 2;
-      this.movePaddle(touch.clientY - halfHeight);
+    if (this.controls.currentStatus === GameStatus.Running) {
+      const touch: Touch = e.touches[0];
+      if (touch) {
+        const halfHeight: number = this.paddleHeight / 2;
+        this.movePaddle(touch.clientY - halfHeight);
+      }
     }
   }
 

@@ -11,9 +11,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus, Player } from '../../enums';
-import { Ball, LevelSettings } from '../../models';
-
-import { Coordinates } from '../../models/coordinates.model';
+import { Ball, LevelSettings, Coordinates } from '../../models';
 import {
   CollisionService,
   GameControlsService,
