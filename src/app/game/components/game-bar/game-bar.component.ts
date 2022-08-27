@@ -8,6 +8,7 @@ import { LevelSettings, Score } from '../../models';
 import {
   GameControlsService,
   LevelService,
+  PlayersService,
   ScoreService,
 } from '../../services';
 import { LEVELS } from '../../store';
@@ -18,9 +19,6 @@ import { LEVELS } from '../../store';
   styleUrls: ['./game-bar.component.scss'],
 })
 export class GameBarComponent implements OnDestroy {
-  @Input() player!: Player;
-  @Input() opponent!: Player;
-
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
   points$: Observable<Score> = this.score.scoreChanged$;
 
@@ -30,7 +28,8 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private level: LevelService
+    private level: LevelService,
+    private players: PlayersService
   ) {}
 
   ngOnDestroy(): void {
@@ -39,7 +38,7 @@ export class GameBarComponent implements OnDestroy {
 
   async start(): Promise<void> {
     await isIonicReady();
-    await this.askLevelAndPlay();
+    await this.askWhatPaddleToUse();
   }
 
   pause(): void {
@@ -57,19 +56,51 @@ export class GameBarComponent implements OnDestroy {
     this.controls.resume();
   }
 
-  private async askLevelAndPlay(): Promise<void> {
-    const inputs: AlertInput[] = LEVELS.map((level: LevelSettings) => ({
-      label: level.name,
-      type: 'radio',
-      value: level.value,
-      checked: false,
-    }));
+  private async askWhatPaddleToUse(): Promise<void> {
     const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Choose difficulty level',
+      header: 'Half field',
+      inputs: [
+        {
+          label: 'Right',
+          type: 'radio',
+          value: Player.Player2,
+          checked: true,
+        },
+        {
+          label: 'Left',
+          type: 'radio',
+          value: Player.Player1,
+          checked: false,
+        },
+      ],
+      buttons: [
+        {
+          text: 'Next',
+          handler: (player: Player) => {
+            this.players.user = player;
+            this.askLevelAndPlay();
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async askLevelAndPlay(): Promise<void> {
+    const inputs: AlertInput[] = LEVELS.map(
+      (level: LevelSettings, i: number) => ({
+        label: level.name,
+        type: 'radio',
+        value: level.value,
+        checked: i === 0,
+      })
+    );
+    const alert: HTMLIonAlertElement = await this.alertController.create({
+      header: 'Difficulty level',
       inputs: inputs,
       buttons: [
         {
-          text: 'Play',
+          text: 'Start game',
           handler: (level: Level) => {
             this.level.set(level);
             this.controls.start();
@@ -86,7 +117,7 @@ export class GameBarComponent implements OnDestroy {
       (winner: Player) => {
         this.stop();
         const message: string =
-          winner === this.player ? 'You won' : 'Game lost';
+          winner === this.players.user ? 'You won' : 'Game lost';
         this.openGameOverAlert(message);
       }
     );

@@ -1,9 +1,14 @@
-<app-game-bar [player]="player" [opponent]="opponent"></app-game-bar>
+<app-game-bar></app-game-bar>
 <div class="playglound" #ground>
   <app-paddle
+    *ngIf="!isGameStopped"
     appComputerController
-    [halfField]="opponentHalfField"
+    [halfField]="players.opponentHalfField"
   ></app-paddle>
   <app-ball></app-ball>
-  <app-paddle appUserController [halfField]="playerHalfField"></app-paddle>
+  <app-paddle
+    *ngIf="!isGameStopped"
+    appUserController
+    [halfField]="players.playerHalfField"
+  ></app-paddle>
 </div>

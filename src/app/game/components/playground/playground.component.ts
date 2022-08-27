@@ -5,10 +5,16 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, HalfField, Player } from '../../enums';
-import { AnimationsService, CollisionService } from '../../services';
+import { Collision, GameStatus, HalfField } from '../../enums';
+import {
+  AnimationsService,
+  CollisionService,
+  GameControlsService,
+  PlayersService,
+} from '../../services';
 
 @Component({
   selector: 'app-playground',
@@ -18,22 +24,18 @@ import { AnimationsService, CollisionService } from '../../services';
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private ground!: ElementRef<HTMLElement>;
 
-  // * Player 1 is always on left and Player 2 on right
-
-  player: Player = Player.Player2;
-  opponent: Player = Player.Player1;
-
-  playerHalfField: HalfField =
-    this.player === Player.Player1 ? HalfField.Left : HalfField.Right;
-  opponentHalfField: HalfField =
-    this.player !== Player.Player1 ? HalfField.Left : HalfField.Right;
-
   private subSink: SubSink = new SubSink();
 
   constructor(
+    public players: PlayersService,
     private animations: AnimationsService,
-    private collision: CollisionService
+    private collision: CollisionService,
+    private controls: GameControlsService
   ) {}
+
+  get isGameStopped(): boolean {
+    return this.controls.currentStatus === GameStatus.Stopped;
+  }
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
@@ -46,14 +48,14 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   }
 
   private onScoreChanged(): void {
-    this.subSink.sink = this.collision.onGatesCollision$.subscribe(
-      (collision: Collision) => {
-        const halfField: HalfField =
-          collision === Collision.Player1Gate
-            ? HalfField.Left
-            : HalfField.Right;
+    this.subSink.sink = this.collision.onGatesCollision$
+      .pipe(
+        map((collision: Collision) =>
+          collision === Collision.Player1Gate ? HalfField.Left : HalfField.Right
+        )
+      )
+      .subscribe((halfField: HalfField) => {
         this.animations.animateBorder(this.ground.nativeElement, halfField);
-      }
-    );
+      });
   }
 }
