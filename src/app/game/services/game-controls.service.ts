@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, interval, Observable, timer } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { share } from 'rxjs/operators';
 import { GameStatus } from '../enums';
 
 @Injectable({

@@ -5,14 +5,15 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, GameStatus, HalfField } from '../../enums';
+import { Collision, HalfField } from '../../enums';
+import { Fields } from '../../models';
 import {
   AnimationsService,
   CollisionService,
-  GameControlsService,
   PlayersService,
 } from '../../services';
 
@@ -24,18 +25,15 @@ import {
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private ground!: ElementRef<HTMLElement>;
 
+  fields$: Observable<Fields> = this.players.fieldsChanged$;
+
   private subSink: SubSink = new SubSink();
 
   constructor(
-    public players: PlayersService,
+    private players: PlayersService,
     private animations: AnimationsService,
-    private collision: CollisionService,
-    private controls: GameControlsService
+    private collision: CollisionService
   ) {}
-
-  get isGameStopped(): boolean {
-    return this.controls.currentStatus === GameStatus.Stopped;
-  }
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();

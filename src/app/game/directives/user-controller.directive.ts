@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Directive,
   HostListener,
+  OnChanges,
   OnDestroy,
 } from '@angular/core';
 import { GameStatus } from '../enums';
@@ -13,7 +14,7 @@ import { BaseControllerDirective } from './base-controller.directive';
 })
 export class UserControllerDirective
   extends BaseControllerDirective
-  implements AfterViewInit, OnDestroy, PaddleController
+  implements AfterViewInit, OnChanges, OnDestroy, PaddleController
 {
   @HostListener('window:touchmove', ['$event'])
   private onMove(e: TouchEvent): void {

@@ -1,4 +1,10 @@
-import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  OnChanges,
+  OnDestroy,
+} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Inaccuracy } from '../enums';
 import { PaddleController } from '../interfaces';
@@ -15,7 +21,7 @@ import { BaseControllerDirective } from './base-controller.directive';
 })
 export class ComputerControllerDirective
   extends BaseControllerDirective
-  implements AfterViewInit, OnDestroy, PaddleController
+  implements AfterViewInit, OnChanges, OnDestroy, PaddleController
 {
   private readonly speed: number = 0.15;
   private inaccuracy: Inaccuracy = Inaccuracy.Medium;

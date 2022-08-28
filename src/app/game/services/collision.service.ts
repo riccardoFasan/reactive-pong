@@ -9,11 +9,6 @@ import { GameControlsService } from './game-controls.service';
   providedIn: 'root',
 })
 export class CollisionService {
-  private leftPaddle!: HTMLElement;
-  private rightPaddle!: HTMLElement;
-  private ball!: HTMLElement;
-  private ground!: HTMLElement;
-
   private collisionStore$: Observable<Collision> = this.controls.timer$.pipe(
     map(() => {
       if (this.thereIsALeftPaddleCollision) return Collision.LeftPaddle;
@@ -50,6 +45,11 @@ export class CollisionService {
     ),
     share()
   );
+
+  private leftPaddle!: HTMLElement;
+  private rightPaddle!: HTMLElement;
+  private ball!: HTMLElement;
+  private ground!: HTMLElement;
 
   constructor(private controls: GameControlsService) {}
 

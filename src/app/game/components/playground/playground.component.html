@@ -1,14 +1,6 @@
 <app-game-bar></app-game-bar>
-<div class="playglound" #ground>
-  <app-paddle
-    *ngIf="!isGameStopped"
-    appComputerController
-    [halfField]="players.opponentHalfField"
-  ></app-paddle>
+<div class="playglound" *ngIf="fields$ | async as fields" #ground>
+  <app-paddle appComputerController [halfField]="fields.opponent"></app-paddle>
   <app-ball></app-ball>
-  <app-paddle
-    *ngIf="!isGameStopped"
-    appUserController
-    [halfField]="players.playerHalfField"
-  ></app-paddle>
+  <app-paddle appUserController [halfField]="fields.user"></app-paddle>
 </div>

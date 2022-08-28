@@ -5,7 +5,9 @@ import {
   HostBinding,
   HostListener,
   Input,
+  OnChanges,
   OnDestroy,
+  SimpleChanges,
 } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
@@ -18,7 +20,7 @@ import { CollisionService, GameControlsService } from '../services';
   selector: '[appBaseController]',
 })
 export class BaseControllerDirective
-  implements AfterViewInit, OnDestroy, PaddleController
+  implements AfterViewInit, OnChanges, OnDestroy, PaddleController
 {
   @Input() halfField!: HalfField;
 
@@ -49,6 +51,13 @@ export class BaseControllerDirective
     this.onStatusChanged();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['halfField']) {
+      this.registerPaddle();
+      this.centerPaddle();
+    }
+  }
+
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
   }
@@ -74,9 +83,7 @@ export class BaseControllerDirective
   private onStatusChanged(): void {
     this.subSink.sink = this.controls.statusChanged$
       .pipe(filter((status: GameStatus) => status === GameStatus.Stopped))
-      .subscribe((_: GameStatus) => {
-        this.centerPaddle();
-      });
+      .subscribe((_: GameStatus) => this.centerPaddle());
   }
 
   @HostListener('window:resize')
