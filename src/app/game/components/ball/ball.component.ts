@@ -10,13 +10,13 @@ import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomNumberBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, GameStatus, Player } from '../../enums';
-import { Ball, LevelSettings, Coordinates } from '../../models';
+import { Collision, GameStatus } from '../../enums';
+import { Ball, LevelSettings } from '../../models';
 import {
+  BallDirectionService,
   CollisionService,
   GameControlsService,
   LevelService,
-  ScoreService,
 } from '../../services';
 import { NORMAL_BALL } from '../../store';
 
@@ -33,10 +33,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   y: number = 0;
 
   private ball: Ball = NORMAL_BALL;
-
   currentSpeed: number = this.ball.baseSpeed;
-
-  private direction: Coordinates = { x: 0, y: 0 };
 
   private ballWidth: number = 0;
   private ballHeight: number = 0;
@@ -47,39 +44,15 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private readonly millisecondsBeforeKickStart: number = 750;
 
-  private paddleCollision$: Observable<Collision> =
-    this.collision.onPaddleCollision$.pipe(
-      tap(() => {
-        this.adjustAfterPaddleCollision();
-      })
-    );
-
-  private edgeCollision$: Observable<Collision> =
-    this.collision.onEdgeCollision$.pipe(
-      tap(() => {
-        this.adjustAfterEdgeCollision();
-      })
-    );
-
-  private gatesCollision$: Observable<Collision> =
-    this.collision.onGatesCollision$.pipe(
-      tap((collision: Collision) => {
-        this.adjustAfterGoal(collision);
-      })
-    );
-
-  private onCollision$: Observable<Collision[]> = combineLatest([
-    this.edgeCollision$,
-    this.paddleCollision$,
-    this.gatesCollision$,
-  ]);
+  private onGatesCollision$: Observable<Collision> =
+    this.collision.onGatesCollision$.pipe(tap(() => this.resetAfterGoal()));
 
   constructor(
     private ref: ElementRef,
     private collision: CollisionService,
     private controls: GameControlsService,
-    private score: ScoreService,
-    private level: LevelService
+    private level: LevelService,
+    private direction: BallDirectionService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -126,13 +99,16 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private onCollisionChanged(): void {
-    this.subSink.sink = this.onCollision$.subscribe();
+    this.subSink.sink = combineLatest([
+      this.onGatesCollision$,
+      this.direction.onRebound$,
+    ]).subscribe();
   }
 
   private init(): void {
     this.setSizes();
     this.centerBall();
-    this.setRandomDirection();
+    this.direction.init();
     this.currentSpeed = randomNumberBetween(
       this.ball.baseSpeed,
       this.ball.maximumSpeed
@@ -153,48 +129,14 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.y = this.groundHeight / 2 - this.ballHeight / 2;
   }
 
-  private setRandomDirection(): void {
-    this.direction = { x: 0, y: 0 };
-    while (
-      Math.abs(this.direction.x) <= 0.2 ||
-      Math.abs(this.direction.x) >= 0.9
-    ) {
-      const headingX: number = randomNumberBetween(0, 2 * Math.PI);
-      const randomY: number = randomNumberBetween(-1, 1) / 10;
-      const randomX: number = Math.cos(headingX);
-      this.direction = { x: randomX!, y: randomY };
-    }
+  private resetAfterGoal(): void {
+    this.init();
   }
 
   private move(): void {
     this.increaseSpeed();
-    this.x += this.direction.x * this.currentSpeed;
-    this.y += this.direction.y * this.currentSpeed;
-  }
-
-  private adjustAfterPaddleCollision(): void {
-    this.direction.x *= -1;
-    const angleCorrection: number = this.getRandomCorrection();
-    this.direction.y += angleCorrection * Math.sign(this.direction.y);
-  }
-
-  private adjustAfterEdgeCollision(): void {
-    this.direction.y *= -1;
-    const angleCorrection: number = this.getRandomCorrection();
-    this.direction.x += angleCorrection * Math.sign(this.direction.x);
-  }
-
-  private getRandomCorrection(): number {
-    return randomNumberBetween(0, 0.04);
-  }
-
-  private adjustAfterGoal(collision: Collision): void {
-    this.controls.pause();
-    const player: Player =
-      collision === Collision.Player1Gate ? Player.Player2 : Player.Player1;
-    this.score.addPoint(player);
-    this.init();
-    this.controls.resume();
+    this.x += this.direction.coordinates.x * this.currentSpeed;
+    this.y += this.direction.coordinates.y * this.currentSpeed;
   }
 
   private increaseSpeed(): void {

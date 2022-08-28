@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, HalfField } from '../../enums';
@@ -14,6 +14,7 @@ import { Fields } from '../../models';
 import {
   AnimationsService,
   CollisionService,
+  GoalService,
   PlayersService,
 } from '../../services';
 
@@ -32,7 +33,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   constructor(
     private players: PlayersService,
     private animations: AnimationsService,
-    private collision: CollisionService
+    private collision: CollisionService,
+    private goal: GoalService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -48,6 +50,9 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   private onScoreChanged(): void {
     this.subSink.sink = this.collision.onGatesCollision$
       .pipe(
+        tap((collision: Collision) =>
+          this.goal.updateScoreAndDelayGame(collision)
+        ),
         map((collision: Collision) =>
           collision === Collision.Player1Gate ? HalfField.Left : HalfField.Right
         )
