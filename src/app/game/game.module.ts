@@ -14,6 +14,7 @@ import {
   UserControllerDirective,
   ComputerControllerDirective,
   BaseControllerDirective,
+  RandomArtifactsGeneratorDirective,
 } from './directives';
 
 @NgModule({
@@ -25,6 +26,7 @@ import {
     UserControllerDirective,
     ComputerControllerDirective,
     BaseControllerDirective,
+    RandomArtifactsGeneratorDirective,
   ],
   imports: [CommonModule, IonicModule, GameRoutingModule],
 })
