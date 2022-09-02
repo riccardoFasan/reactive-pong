@@ -1,5 +1,6 @@
 import { AfterViewInit, Directive, OnDestroy } from '@angular/core';
-import { generator, isIonicReady } from 'src/utilities';
+import { generator, randomEnum, isIonicReady } from 'src/utilities';
+import { SubSink } from 'subsink';
 import { Action } from '../enums';
 import { Artifact, Coordinates } from '../models';
 
@@ -9,7 +10,7 @@ import { Artifact, Coordinates } from '../models';
 export class RandomArtifactsGeneratorDirective
   implements AfterViewInit, OnDestroy
 {
-  // subSink
+  private subSink: SubSink = new SubSink();
 
   constructor() {}
 
@@ -18,7 +19,9 @@ export class RandomArtifactsGeneratorDirective
     this.generateRandomArtifacts();
   }
 
-  // on destroy
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe();
+  }
 
   private generateRandomArtifacts(): void {
     // on status === runnig
@@ -31,7 +34,9 @@ export class RandomArtifactsGeneratorDirective
     return { id, action };
   }
 
-  private getRandomAction(): Action {}
+  private getRandomAction(): Action {
+    return randomEnum(Action);
+  }
 
-  private getRandomCoordinates(): Coordinates {}
+  // private getRandomCoordinates(): Coordinates {}
 }
