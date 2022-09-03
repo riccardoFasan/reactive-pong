@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { randomNumberBetween } from 'src/utilities';
+import { randomFloatBetween } from 'src/utilities';
 import { Collision } from '../enums';
 import { Coordinates } from '../models';
 import { CollisionService } from './collision.service';
@@ -39,8 +39,8 @@ export class BallDirectionService {
       Math.abs(this.coordinates.x) <= 0.2 ||
       Math.abs(this.coordinates.x) >= 0.9
     ) {
-      const headingX: number = randomNumberBetween(0, 2 * Math.PI);
-      const randomY: number = randomNumberBetween(-1, 1) / 10;
+      const headingX: number = randomFloatBetween(0, 2 * Math.PI);
+      const randomY: number = randomFloatBetween(-1, 1) / 10;
       const randomX: number = Math.cos(headingX);
       this.coordinates = { x: randomX!, y: randomY };
     }
@@ -59,6 +59,6 @@ export class BallDirectionService {
   }
 
   private getRandomCorrection(): number {
-    return randomNumberBetween(0, 0.04);
+    return randomFloatBetween(0, 0.04);
   }
 }

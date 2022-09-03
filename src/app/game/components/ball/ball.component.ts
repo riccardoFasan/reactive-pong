@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { isIonicReady, randomNumberBetween } from 'src/utilities';
+import { isIonicReady, randomFloatBetween } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus } from '../../enums';
 import { Ball, LevelSettings } from '../../models';
@@ -109,7 +109,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     this.setSizes();
     this.centerBall();
     this.direction.init();
-    this.currentSpeed = randomNumberBetween(
+    this.currentSpeed = randomFloatBetween(
       this.ball.baseSpeed,
       this.ball.maximumSpeed
     );
