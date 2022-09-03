@@ -16,11 +16,11 @@ import {
 import { SubSink } from 'subsink';
 import { ArtifactComponent } from '../components';
 import { Action, Collision, GameStatus } from '../enums';
-import { Artifact, Coordinates } from '../models';
+import { Artifact, Coordinates, HitArtifact } from '../models';
 import {
+  ArtifactsService,
   CollisionService,
   GameControlsService,
-  ScoreService,
   SizesService,
 } from '../services';
 
@@ -45,7 +45,8 @@ export class RandomArtifactsGeneratorDirective
     private controls: GameControlsService,
     private collision: CollisionService,
     private sizes: SizesService,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private artifacts: ArtifactsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -65,8 +66,8 @@ export class RandomArtifactsGeneratorDirective
   }
 
   private onTimer(): void {
-    // TODO: make it more randomly
-    this.subSink.sink = interval(10000).subscribe(() => {
+    // TODO: make it more randomic
+    this.subSink.sink = interval(13000).subscribe(() => {
       this.generateRandomArtifact();
     });
   }
@@ -111,5 +112,19 @@ export class RandomArtifactsGeneratorDirective
     componentRef.instance.id = artifact.id;
     componentRef.instance.action = artifact.action;
     componentRef.instance.coordinates = artifact.coordinates;
+    this.onActivation(componentRef);
+  }
+
+  private onActivation(componentRef: ComponentRef<ArtifactComponent>): void {
+    this.subSink.sink = this.artifacts.onActivation$
+      .pipe(
+        filter(
+          (hitArtifact: HitArtifact) =>
+            hitArtifact.artifact.id === componentRef.instance.id
+        )
+      )
+      .subscribe(() => {
+        componentRef.destroy();
+      });
   }
 }

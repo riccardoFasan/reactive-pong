@@ -12,6 +12,7 @@ import { SubSink } from 'subsink';
 import { Collision, GameStatus } from '../../enums';
 import { Ball, LevelSettings } from '../../models';
 import {
+  ArtifactsService,
   BallDirectionService,
   CollisionService,
   GameControlsService,
@@ -27,10 +28,14 @@ import { NORMAL_BALL } from '../../store';
 })
 export class BallComponent implements AfterViewInit, OnDestroy {
   @HostBinding('style.left.px')
-  x: number = 0;
+  get x(): number {
+    return this.direction.position.x;
+  }
 
   @HostBinding('style.top.px')
-  y: number = 0;
+  get y(): number {
+    return this.direction.position.y;
+  }
 
   private ball: Ball = NORMAL_BALL;
   currentSpeed: number = this.ball.baseSpeed;
@@ -48,12 +53,14 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private controls: GameControlsService,
     private level: LevelService,
     private direction: BallDirectionService,
-    private sizes: SizesService
+    private sizes: SizesService,
+    private artifacts: ArtifactsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
     this.collision.registerBall(this.ref.nativeElement);
+    this.artifacts.registerBall(this.ref.nativeElement);
     this.onLevelChanged();
     this.onStatusChanged();
     this.onCollisionChanged();
@@ -111,8 +118,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private centerBall(): void {
-    this.x = this.sizes.groundWidth / 2 - this.sizes.ballWidth / 2;
-    this.y = this.sizes.groundHeight / 2 - this.sizes.ballHeight / 2;
+    this.direction.position.x =
+      this.sizes.groundWidth / 2 - this.sizes.ballWidth / 2;
+    this.direction.position.y =
+      this.sizes.groundHeight / 2 - this.sizes.ballHeight / 2;
   }
 
   private resetAfterGoal(): void {
@@ -121,8 +130,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(): void {
     this.increaseSpeed();
-    this.x += this.direction.coordinates.x * this.currentSpeed;
-    this.y += this.direction.coordinates.y * this.currentSpeed;
+    this.direction.position.x +=
+      this.direction.trajectory.x * this.currentSpeed;
+    this.direction.position.y +=
+      this.direction.trajectory.y * this.currentSpeed;
   }
 
   private increaseSpeed(): void {
