@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { randomFloatBetween } from 'src/utilities';
-import { Collision } from '../enums';
+import { Collision, Player } from '../enums';
 import { Coordinates } from '../models';
 import { CollisionService } from './collision.service';
 
@@ -25,7 +25,8 @@ export class BallDirectionService {
     this.paddleCollision$,
   ]);
 
-  coordinates: Coordinates = { x: 0, y: 0 };
+  trajectory: Coordinates = { x: 0, y: 0 };
+  position: Coordinates = { x: 0, y: 0 };
 
   constructor(private collision: CollisionService) {}
 
@@ -33,29 +34,37 @@ export class BallDirectionService {
     this.setRandomDirection();
   }
 
+  get whoHitBall(): Player {
+    return this.isBallGoingRight ? Player.Player1 : Player.Player2;
+  }
+
+  private get isBallGoingRight(): boolean {
+    return this.position.x > this.trajectory.x;
+  }
+
   private setRandomDirection(): void {
-    this.coordinates = { x: 0, y: 0 };
+    this.trajectory = { x: 0, y: 0 };
     while (
-      Math.abs(this.coordinates.x) <= 0.2 ||
-      Math.abs(this.coordinates.x) >= 0.9
+      Math.abs(this.trajectory.x) <= 0.2 ||
+      Math.abs(this.trajectory.x) >= 0.9
     ) {
       const headingX: number = randomFloatBetween(0, 2 * Math.PI);
       const randomY: number = randomFloatBetween(-1, 1) / 10;
       const randomX: number = Math.cos(headingX);
-      this.coordinates = { x: randomX!, y: randomY };
+      this.trajectory = { x: randomX!, y: randomY };
     }
   }
 
   private adjustAfterPaddleCollision(): void {
-    this.coordinates.x *= -1;
+    this.trajectory.x *= -1;
     const angleCorrection: number = this.getRandomCorrection();
-    this.coordinates.y += angleCorrection * Math.sign(this.coordinates.y);
+    this.trajectory.y += angleCorrection * Math.sign(this.trajectory.y);
   }
 
   private adjustAfterEdgeCollision(): void {
-    this.coordinates.y *= -1;
+    this.trajectory.y *= -1;
     const angleCorrection: number = this.getRandomCorrection();
-    this.coordinates.x += angleCorrection * Math.sign(this.coordinates.x);
+    this.trajectory.x += angleCorrection * Math.sign(this.trajectory.x);
   }
 
   private getRandomCorrection(): number {

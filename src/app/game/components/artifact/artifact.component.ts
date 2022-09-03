@@ -30,7 +30,7 @@ export class ArtifactComponent
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.setPosition();
+    this.setHostPosition();
   }
 
   ngOnDestroy(): void {
@@ -41,7 +41,7 @@ export class ArtifactComponent
     return { id: this.id, action: this.action, coordinates: this.coordinates };
   }
 
-  private setPosition(): void {
+  private setHostPosition(): void {
     const element: HTMLElement = this.ref.nativeElement;
     element.style.top = `${this.coordinates.y}px`;
     element.style.left = `${this.coordinates.x}px`;
