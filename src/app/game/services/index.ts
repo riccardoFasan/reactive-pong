@@ -1,4 +1,5 @@
 export * from './goal.service';
+export * from './sizes.service';
 export * from './level.service';
 export * from './score.service';
 export * from './players.service';

@@ -21,7 +21,7 @@ export class UserControllerDirective
     if (this.controls.currentStatus === GameStatus.Running) {
       const touch: Touch = e.touches[0];
       if (touch) {
-        const halfHeight: number = this.paddleHeight / 2;
+        const halfHeight: number = this.sizes.paddleHeight / 2;
         this.movePaddle(touch.clientY - halfHeight);
       }
     }

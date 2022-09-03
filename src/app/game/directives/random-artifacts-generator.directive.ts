@@ -1,11 +1,12 @@
 import {
   AfterViewInit,
+  ComponentRef,
   Directive,
-  ElementRef,
-  HostListener,
   OnDestroy,
+  ViewContainerRef,
 } from '@angular/core';
-import { interval } from 'rxjs';
+import { combineLatest, interval, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import {
   generator,
   randomEnum,
@@ -13,9 +14,15 @@ import {
   randomIntegerBetween,
 } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action, GameStatus } from '../enums';
+import { ArtifactComponent } from '../components';
+import { Action, Collision, GameStatus } from '../enums';
 import { Artifact, Coordinates } from '../models';
-import { GameControlsService } from '../services';
+import {
+  CollisionService,
+  GameControlsService,
+  ScoreService,
+  SizesService,
+} from '../services';
 
 @Directive({
   selector: '[appRandomArtifactsGenerator]',
@@ -25,15 +32,25 @@ export class RandomArtifactsGeneratorDirective
 {
   private subSink: SubSink = new SubSink();
 
-  private groundHeight: number = 0;
-  private groundWidth: number = 0;
-  private pixelsFromEdges: number = 0;
+  private onStop$: Observable<GameStatus> = this.controls.statusChanged$.pipe(
+    filter((status: GameStatus) => status === GameStatus.Stopped)
+  );
 
-  constructor(private ref: ElementRef, private controls: GameControlsService) {}
+  private onRematch$: Observable<[GameStatus, Collision]> = combineLatest([
+    this.onStop$,
+    this.collision.onGatesCollision$,
+  ]);
+
+  constructor(
+    private controls: GameControlsService,
+    private collision: CollisionService,
+    private sizes: SizesService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.setSizes();
+    this.onStatusChanged();
     this.onTimer();
   }
 
@@ -41,17 +58,14 @@ export class RandomArtifactsGeneratorDirective
     this.subSink.unsubscribe();
   }
 
-  @HostListener('window:resize')
-  private setSizes(): void {
-    const ground: HTMLElement = this.ref.nativeElement;
-    this.groundHeight = ground.clientHeight;
-    this.groundWidth = ground.clientWidth;
-    const groundContainer: HTMLElement = ground.parentElement!;
-    const style: CSSStyleDeclaration = window.getComputedStyle(groundContainer);
-    this.pixelsFromEdges = parseInt(style.paddingLeft);
+  private onStatusChanged(): void {
+    this.subSink.sink = this.onRematch$.subscribe(() =>
+      this.viewContainerRef.clear()
+    );
   }
 
   private onTimer(): void {
+    // TODO: make it more randomly
     this.subSink.sink = interval(10000).subscribe(() => {
       this.generateRandomArtifact();
     });
@@ -61,7 +75,6 @@ export class RandomArtifactsGeneratorDirective
     if (this.controls.currentStatus === GameStatus.Running) {
       const artifact: Artifact = this.getRandomArtifact();
       this.placeArtifact(artifact);
-      // TODO: register in collision service
     }
   }
 
@@ -77,25 +90,26 @@ export class RandomArtifactsGeneratorDirective
   }
 
   private getRandomCoordinates(): Coordinates {
+    // TODO: find a better range
     return {
       x: randomIntegerBetween(
-        this.pixelsFromEdges,
-        this.groundWidth - this.pixelsFromEdges
+        this.sizes.pixelsFromEdges,
+        this.sizes.groundWidth - this.sizes.pixelsFromEdges
       ),
       y: randomIntegerBetween(
-        this.pixelsFromEdges,
-        this.groundHeight - this.pixelsFromEdges
+        this.sizes.pixelsFromEdges,
+        this.sizes.groundHeight - this.sizes.pixelsFromEdges
       ),
     };
   }
 
   private placeArtifact(artifact: Artifact): void {
-    // ? Is it to create a component instead of a div?
-    const div: HTMLDivElement = document.createElement('div');
-    div.setAttribute('data-artifact-id', artifact.id.toString());
-    div.setAttribute('class', `artifact ${artifact.action.toLowerCase()}`);
-    div.style.top = `${artifact.coordinates.y}px`;
-    div.style.left = `${artifact.coordinates.x}px`;
-    this.ref.nativeElement.appendChild(div);
+    const componentRef: ComponentRef<ArtifactComponent> =
+      this.viewContainerRef.createComponent<ArtifactComponent>(
+        ArtifactComponent
+      );
+    componentRef.instance.id = artifact.id;
+    componentRef.instance.action = artifact.action;
+    componentRef.instance.coordinates = artifact.coordinates;
   }
 }

@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -16,6 +17,7 @@ import {
   CollisionService,
   GoalService,
   PlayersService,
+  SizesService,
 } from '../../services';
 
 @Component({
@@ -34,7 +36,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     private players: PlayersService,
     private animations: AnimationsService,
     private collision: CollisionService,
-    private goal: GoalService
+    private goal: GoalService,
+    private sizes: SizesService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -60,5 +63,10 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
       .subscribe((halfField: HalfField) => {
         this.animations.animateBorder(this.ground.nativeElement, halfField);
       });
+  }
+
+  @HostListener('window:resize')
+  private onResize(): void {
+    this.sizes.updateSizes();
   }
 }

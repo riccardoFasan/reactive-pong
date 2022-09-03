@@ -1,0 +1,9 @@
+.artifact {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 33%;
+  background-color: rgba(var(--ion-color-dark-rgb), 0.5);
+  border: 1px solid var(--ion-color-dark);
+  position: absolute;
+  transform: translate(-50%, 50%);
+}

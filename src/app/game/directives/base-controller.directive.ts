@@ -3,7 +3,6 @@ import {
   Directive,
   ElementRef,
   HostBinding,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -14,7 +13,11 @@ import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus, HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
-import { CollisionService, GameControlsService } from '../services';
+import {
+  CollisionService,
+  GameControlsService,
+  SizesService,
+} from '../services';
 
 @Directive({
   selector: '[appBaseController]',
@@ -30,25 +33,21 @@ export class BaseControllerDirective
   @HostBinding('style.top.px')
   y: number = 0;
 
-  protected paddleHeight: number = 0;
-  protected paddleWidth: number = 0;
-  protected groundHeight: number = 0;
-  protected groundWidth: number = 0;
-  private pixelsFromEdges: number = 0;
-
   protected subSink: SubSink = new SubSink();
 
   constructor(
     private collision: CollisionService,
     private ref: ElementRef,
-    protected controls: GameControlsService
+    protected controls: GameControlsService,
+    protected sizes: SizesService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.sizes.updateSizes();
     this.registerPaddle();
-    this.centerPaddle();
     this.onStatusChanged();
+    this.centerPaddle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,13 +70,23 @@ export class BaseControllerDirective
   }
 
   private centerPaddle(): void {
-    this.setSizes();
-    if (this.halfField === HalfField.Right) {
-      this.x = this.groundWidth - this.paddleWidth - this.pixelsFromEdges;
-    } else {
-      this.x = this.pixelsFromEdges;
+    this.centerVertically();
+    this.centerHorizontally();
+  }
+
+  private centerVertically(): void {
+    this.y = this.sizes.groundHeight / 2 - this.sizes.paddleHeight / 2;
+  }
+
+  private centerHorizontally(): void {
+    if (this.halfField === HalfField.Left) {
+      this.x = this.sizes.pixelsFromEdges;
+      return;
     }
-    this.y = this.groundHeight / 2 - this.paddleHeight / 2;
+    this.x =
+      this.sizes.groundWidth -
+      this.sizes.paddleWidth -
+      this.sizes.pixelsFromEdges;
   }
 
   private onStatusChanged(): void {
@@ -86,20 +95,8 @@ export class BaseControllerDirective
       .subscribe((_: GameStatus) => this.centerPaddle());
   }
 
-  @HostListener('window:resize')
-  private setSizes(): void {
-    this.paddleHeight = this.ref.nativeElement.offsetHeight;
-    this.paddleWidth = this.ref.nativeElement.offsetWidth;
-    const ground: HTMLElement = this.ref.nativeElement.parentElement;
-    this.groundHeight = ground.clientHeight;
-    this.groundWidth = ground.clientWidth;
-    const groundContainer: HTMLElement = ground.parentElement!;
-    const style: CSSStyleDeclaration = window.getComputedStyle(groundContainer);
-    this.pixelsFromEdges = parseInt(style.paddingLeft);
-  }
-
   protected canMove(positionY: number): boolean {
-    const bottomPosition: number = positionY + this.paddleHeight;
-    return positionY >= 0 && bottomPosition <= this.groundHeight;
+    const bottomPosition: number = positionY + this.sizes.paddleHeight;
+    return positionY >= 0 && bottomPosition <= this.sizes.groundHeight;
   }
 }

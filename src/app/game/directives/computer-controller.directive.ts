@@ -13,6 +13,7 @@ import {
   CollisionService,
   GameControlsService,
   LevelService,
+  SizesService,
 } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -32,9 +33,10 @@ export class ComputerControllerDirective
     collision: CollisionService,
     ref: ElementRef,
     controls: GameControlsService,
+    sizes: SizesService,
     private level: LevelService
   ) {
-    super(collision, ref, controls);
+    super(collision, ref, controls, sizes);
   }
 
   override async ngAfterViewInit(): Promise<void> {
@@ -64,10 +66,11 @@ export class ComputerControllerDirective
 
   private movePaddle(): void {
     this.subSink.sink = this.controls.timer$.subscribe(() => {
-      const correctionFactor: number = this.paddleHeight * this.inaccuracy;
+      const correctionFactor: number =
+        this.sizes.paddleHeight * this.inaccuracy;
       const correctedPaddleHeight: number = this.isBallMovingDown
         ? correctionFactor
-        : this.paddleHeight - correctionFactor;
+        : this.sizes.paddleHeight - correctionFactor;
       const movement: number = this.ballY - this.y - correctedPaddleHeight;
       const positionY: number = this.y + this.speed * movement;
       if (this.canMove(positionY)) {

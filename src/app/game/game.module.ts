@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 import { GameRoutingModule } from './game-routing.module';
 
 import {
@@ -8,6 +8,7 @@ import {
   PaddleComponent,
   BallComponent,
   GameBarComponent,
+  ArtifactComponent,
 } from './components';
 
 import {
@@ -23,6 +24,7 @@ import {
     PlayGroundComponent,
     BallComponent,
     GameBarComponent,
+    ArtifactComponent,
     UserControllerDirective,
     ComputerControllerDirective,
     BaseControllerDirective,
