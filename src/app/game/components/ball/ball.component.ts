@@ -28,10 +28,14 @@ import { NORMAL_BALL } from '../../store';
 })
 export class BallComponent implements AfterViewInit, OnDestroy {
   @HostBinding('style.left.px')
-  x: number = 0;
+  get x(): number {
+    return this.direction.position.x;
+  }
 
   @HostBinding('style.top.px')
-  y: number = 0;
+  get y(): number {
+    return this.direction.position.y;
+  }
 
   private ball: Ball = NORMAL_BALL;
   currentSpeed: number = this.ball.baseSpeed;
@@ -124,8 +128,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private centerBall(): void {
-    this.x = this.ground.width / 2 - this.width / 2;
-    this.y = this.ground.height / 2 - this.height / 2;
+    this.direction.position.x = this.ground.width / 2 - this.width / 2;
+    this.direction.position.y = this.ground.height / 2 - this.height / 2;
   }
 
   private resetAfterGoal(): void {
@@ -134,8 +138,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(): void {
     this.increaseSpeed();
-    this.x += this.direction.trajectory.x * this.currentSpeed;
-    this.y += this.direction.trajectory.y * this.currentSpeed;
+    this.direction.position.x +=
+      this.direction.trajectory.x * this.currentSpeed;
+    this.direction.position.y +=
+      this.direction.trajectory.y * this.currentSpeed;
   }
 
   private increaseSpeed(): void {

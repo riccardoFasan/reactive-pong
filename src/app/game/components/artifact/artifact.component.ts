@@ -14,7 +14,7 @@ export class ArtifactComponent implements AfterViewInit, OnDestroy, Artifact {
   action!: Action;
   coordinates!: Coordinates;
 
-  private readonly sleepingTime: number = 100;
+  private readonly sleepingTime: number = 50;
 
   constructor(private ref: ElementRef, private artifacts: ArtifactsService) {}
 

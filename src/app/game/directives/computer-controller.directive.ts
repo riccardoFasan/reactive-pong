@@ -14,6 +14,7 @@ import {
   GameControlsService,
   LevelService,
   GroundSizesService,
+  BallDirectionService,
 } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -27,14 +28,13 @@ export class ComputerControllerDirective
   private readonly speed: number = 0.15;
   private inaccuracy: Inaccuracy = Inaccuracy.Medium;
 
-  private previousBallPositionY: number = this.ballY;
-
   constructor(
     collision: CollisionService,
     ref: ElementRef,
     controls: GameControlsService,
     ground: GroundSizesService,
-    private level: LevelService
+    private level: LevelService,
+    private direction: BallDirectionService
   ) {
     super(collision, ref, controls, ground);
   }
@@ -53,29 +53,18 @@ export class ComputerControllerDirective
       });
   }
 
-  private get ballY(): number {
-    const ball: HTMLElement | null = document.querySelector('app-ball');
-    if (ball === null) return 0;
-    return parseInt(ball.style.top);
-  }
-
-  private get isBallMovingDown(): boolean {
-    if (this.previousBallPositionY === undefined) return false;
-    return this.previousBallPositionY < this.ballY;
-  }
-
   private movePaddle(): void {
     this.subSink.sink = this.controls.timer$.subscribe(() => {
       const correctionFactor: number = this.height * this.inaccuracy;
-      const correctedPaddleHeight: number = this.isBallMovingDown
+      const correctedPaddleHeight: number = this.direction.isBallGoingDown
         ? correctionFactor
         : this.height - correctionFactor;
-      const movement: number = this.ballY - this.y - correctedPaddleHeight;
+      const movement: number =
+        this.direction.position.y - this.y - correctedPaddleHeight;
       const positionY: number = this.y + this.speed * movement;
       if (this.canMove(positionY)) {
         this.y = positionY;
       }
-      this.previousBallPositionY = this.ballY;
     });
   }
 }
