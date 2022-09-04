@@ -93,15 +93,16 @@ export class RandomArtifactsGeneratorDirective
   }
 
   private getRandomCoordinates(): Coordinates {
-    // TODO: find a better range
+    const verticalMargin: number = this.ground.pixelsFromEdges * 2;
+    const horizontalMargin: number = this.ground.pixelsFromEdges * 3;
     return {
       x: randomIntegerBetween(
-        this.ground.pixelsFromEdges,
-        this.ground.width - this.ground.pixelsFromEdges
+        horizontalMargin,
+        this.ground.width - horizontalMargin
       ),
       y: randomIntegerBetween(
-        this.ground.pixelsFromEdges,
-        this.ground.height - this.ground.pixelsFromEdges
+        verticalMargin,
+        this.ground.height - verticalMargin
       ),
     };
   }
