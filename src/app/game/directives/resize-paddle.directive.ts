@@ -6,7 +6,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { filter, map, throttleTime } from 'rxjs/operators';
-import { isIonicReady, sleep } from 'src/utilities';
+import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Action, HalfField, Player } from '../enums';
 import { HitArtifact, Artifact } from '../models';

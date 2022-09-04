@@ -1,4 +1,3 @@
-export * from './sleep';
 export * from './random-enum';
 export * from './id-generator';
 export * from './are-colliding';
