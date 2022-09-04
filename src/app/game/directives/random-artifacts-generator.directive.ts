@@ -21,7 +21,7 @@ import {
   ArtifactsService,
   CollisionService,
   GameControlsService,
-  SizesService,
+  GroundSizesService,
 } from '../services';
 
 @Directive({
@@ -44,7 +44,7 @@ export class RandomArtifactsGeneratorDirective
   constructor(
     private controls: GameControlsService,
     private collision: CollisionService,
-    private sizes: SizesService,
+    private ground: GroundSizesService,
     private viewContainerRef: ViewContainerRef,
     private artifacts: ArtifactsService
   ) {}
@@ -94,12 +94,12 @@ export class RandomArtifactsGeneratorDirective
     // TODO: find a better range
     return {
       x: randomIntegerBetween(
-        this.sizes.pixelsFromEdges,
-        this.sizes.groundWidth - this.sizes.pixelsFromEdges
+        this.ground.pixelsFromEdges,
+        this.ground.width - this.ground.pixelsFromEdges
       ),
       y: randomIntegerBetween(
-        this.sizes.pixelsFromEdges,
-        this.sizes.groundHeight - this.sizes.pixelsFromEdges
+        this.ground.pixelsFromEdges,
+        this.ground.height - this.ground.pixelsFromEdges
       ),
     };
   }

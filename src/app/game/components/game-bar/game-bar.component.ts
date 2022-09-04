@@ -3,7 +3,7 @@ import { AlertController, AlertInput } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, Level, Player } from '../../enums';
+import { GameStatus, HalfField, Level, Player } from '../../enums';
 import { LevelSettings, Score } from '../../models';
 import {
   GameControlsService,
@@ -63,13 +63,13 @@ export class GameBarComponent implements OnDestroy {
         {
           label: 'Right',
           type: 'radio',
-          value: Player.Player2,
+          value: this.players.getPlayerByField(HalfField.Right),
           checked: true,
         },
         {
           label: 'Left',
           type: 'radio',
-          value: Player.Player1,
+          value: this.players.getPlayerByField(HalfField.Left),
           checked: false,
         },
       ],

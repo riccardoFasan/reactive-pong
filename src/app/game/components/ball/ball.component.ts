@@ -17,7 +17,7 @@ import {
   CollisionService,
   GameControlsService,
   LevelService,
-  SizesService,
+  GroundSizesService,
 } from '../../services';
 import { NORMAL_BALL } from '../../store';
 
@@ -28,14 +28,10 @@ import { NORMAL_BALL } from '../../store';
 })
 export class BallComponent implements AfterViewInit, OnDestroy {
   @HostBinding('style.left.px')
-  get x(): number {
-    return this.direction.position.x;
-  }
+  x: number = 0;
 
   @HostBinding('style.top.px')
-  get y(): number {
-    return this.direction.position.y;
-  }
+  y: number = 0;
 
   private ball: Ball = NORMAL_BALL;
   currentSpeed: number = this.ball.baseSpeed;
@@ -53,7 +49,7 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private controls: GameControlsService,
     private level: LevelService,
     private direction: BallDirectionService,
-    private sizes: SizesService,
+    private ground: GroundSizesService,
     private artifacts: ArtifactsService
   ) {}
 
@@ -68,6 +64,16 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  private get height(): number {
+    if (!this.ref.nativeElement) return 0;
+    return this.ref.nativeElement.offsetHeight;
+  }
+
+  private get width(): number {
+    if (!this.ref.nativeElement) return 0;
+    return this.ref.nativeElement.offsetWidth;
   }
 
   private onLevelChanged(): void {
@@ -118,10 +124,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private centerBall(): void {
-    this.direction.position.x =
-      this.sizes.groundWidth / 2 - this.sizes.ballWidth / 2;
-    this.direction.position.y =
-      this.sizes.groundHeight / 2 - this.sizes.ballHeight / 2;
+    this.x = this.ground.width / 2 - this.width / 2;
+    this.y = this.ground.height / 2 - this.height / 2;
   }
 
   private resetAfterGoal(): void {
@@ -130,10 +134,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(): void {
     this.increaseSpeed();
-    this.direction.position.x +=
-      this.direction.trajectory.x * this.currentSpeed;
-    this.direction.position.y +=
-      this.direction.trajectory.y * this.currentSpeed;
+    this.x += this.direction.trajectory.x * this.currentSpeed;
+    this.y += this.direction.trajectory.y * this.currentSpeed;
   }
 
   private increaseSpeed(): void {

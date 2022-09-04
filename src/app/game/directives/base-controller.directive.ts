@@ -16,7 +16,7 @@ import { PaddleController } from '../interfaces';
 import {
   CollisionService,
   GameControlsService,
-  SizesService,
+  GroundSizesService,
 } from '../services';
 
 @Directive({
@@ -39,12 +39,12 @@ export class BaseControllerDirective
     private collision: CollisionService,
     private ref: ElementRef,
     protected controls: GameControlsService,
-    protected sizes: SizesService
+    protected ground: GroundSizesService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.sizes.updateSizes();
+    this.ground.updateSizes();
     this.registerPaddle();
     this.onStatusChanged();
     this.centerPaddle();
@@ -61,6 +61,16 @@ export class BaseControllerDirective
     this.subSink.unsubscribe();
   }
 
+  protected get height(): number {
+    if (!this.ref.nativeElement) return 0;
+    return this.ref.nativeElement.offsetHeight;
+  }
+
+  protected get width(): number {
+    if (!this.ref.nativeElement) return 0;
+    return this.ref.nativeElement.offsetWidth;
+  }
+
   private registerPaddle(): void {
     if (this.halfField === HalfField.Left) {
       this.collision.registerLeftPaddle(this.ref.nativeElement);
@@ -75,18 +85,15 @@ export class BaseControllerDirective
   }
 
   private centerVertically(): void {
-    this.y = this.sizes.groundHeight / 2 - this.sizes.paddleHeight / 2;
+    this.y = this.ground.height / 2 - this.height / 2;
   }
 
   private centerHorizontally(): void {
     if (this.halfField === HalfField.Left) {
-      this.x = this.sizes.pixelsFromEdges;
+      this.x = this.ground.pixelsFromEdges;
       return;
     }
-    this.x =
-      this.sizes.groundWidth -
-      this.sizes.paddleWidth -
-      this.sizes.pixelsFromEdges;
+    this.x = this.ground.width - this.width - this.ground.pixelsFromEdges;
   }
 
   private onStatusChanged(): void {
@@ -96,7 +103,7 @@ export class BaseControllerDirective
   }
 
   protected canMove(positionY: number): boolean {
-    const bottomPosition: number = positionY + this.sizes.paddleHeight;
-    return positionY >= 0 && bottomPosition <= this.sizes.groundHeight;
+    const bottomPosition: number = positionY + this.height;
+    return positionY >= 0 && bottomPosition <= this.ground.height;
   }
 }

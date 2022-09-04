@@ -1,7 +1,15 @@
 <app-game-bar></app-game-bar>
 <div class="playground" *ngIf="fields$ | async as fields" #ground>
   <ng-template appRandomArtifactsGenerator></ng-template>
-  <app-paddle appComputerController [halfField]="fields.opponent"></app-paddle>
+  <app-paddle
+    appComputerController
+    appResizePaddle
+    [halfField]="fields.opponent"
+  ></app-paddle>
   <app-ball></app-ball>
-  <app-paddle appUserController [halfField]="fields.user"></app-paddle>
+  <app-paddle
+    appUserController
+    appResizePaddle
+    [halfField]="fields.user"
+  ></app-paddle>
 </div>

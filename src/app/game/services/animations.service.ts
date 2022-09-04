@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
+import { Animation, AnimationController } from '@ionic/angular';
 import { HalfField } from '../enums';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class AnimationsService {
     this.animations
       .create()
       .addElement(ground)
+      .easing('ease')
       .duration(300)
       .iterations(3)
       .keyframes([
@@ -36,7 +37,8 @@ export class AnimationsService {
     this.animations
       .create()
       .addElement(paddle)
-      .duration(250)
+      .duration(200)
+      .easing('ease')
       .keyframes([
         {
           offset: 0,
@@ -49,5 +51,31 @@ export class AnimationsService {
       ])
       .fill('none')
       .play();
+  }
+
+  resizePaddle(
+    paddle: HTMLElement,
+    delay: number,
+    targetHeight: number,
+    defaultHeight: number
+  ): void {
+    const resize: Animation = this.animations
+      .create()
+      .addElement(paddle)
+      .duration(200)
+      .easing('ease')
+      .to('height', `${targetHeight}px`)
+      .fill('forwards');
+
+    const reset: Animation = this.animations
+      .create()
+      .addElement(paddle)
+      .duration(200)
+      .easing('ease')
+      .delay(delay)
+      .to('height', `${defaultHeight}px`)
+      .fill('forwards');
+
+    this.animations.create().addAnimation(resize).addAnimation(reset).play();
   }
 }

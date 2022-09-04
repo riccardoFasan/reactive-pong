@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { filter, map, share } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Artifact, HitArtifact } from '../models';
-import { GameControlsService, BallDirectionService } from '.';
+import { GameControlsService, BallDirectionService, PlayersService } from '.';
+import { HalfField, Player } from '../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class ArtifactsService {
 
   constructor(
     private controls: GameControlsService,
-    private direction: BallDirectionService
+    private direction: BallDirectionService,
+    private players: PlayersService
   ) {}
 
   registerArtifact(artifact: Artifact, ref: ElementRef): void {
@@ -51,7 +53,14 @@ export class ArtifactsService {
     if (!artifact) return undefined;
     return {
       artifact,
-      player: this.direction.whoHitBall,
+      player: this.getActivePlayer(),
     };
+  }
+
+  private getActivePlayer(): Player {
+    const whereBallComesFrom: HalfField = this.direction.isBallGoingRight
+      ? HalfField.Left
+      : HalfField.Right;
+    return this.players.getPlayerByField(whereBallComesFrom);
   }
 }

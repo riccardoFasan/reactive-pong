@@ -34,4 +34,9 @@ export class PlayersService {
   get opponent(): Player {
     return this.user === Player.Player1 ? Player.Player2 : Player.Player1;
   }
+
+  getPlayerByField(halfField: HalfField): Player {
+    if (halfField === HalfField.Right) return Player.Player2;
+    return Player.Player1;
+  }
 }

@@ -26,7 +26,6 @@ export class BallDirectionService {
   ]);
 
   trajectory: Coordinates = { x: 0, y: 0 };
-  position: Coordinates = { x: 0, y: 0 };
 
   constructor(private collision: CollisionService) {}
 
@@ -34,12 +33,12 @@ export class BallDirectionService {
     this.setRandomDirection();
   }
 
-  get whoHitBall(): Player {
-    return this.isBallGoingRight ? Player.Player1 : Player.Player2;
+  get isBallGoingRight(): boolean {
+    return Math.sign(this.trajectory.x) === 1;
   }
 
-  private get isBallGoingRight(): boolean {
-    return this.position.x > this.trajectory.x;
+  get isBallGoingDown(): boolean {
+    return Math.sign(this.trajectory.y) === 1;
   }
 
   private setRandomDirection(): void {

@@ -16,6 +16,7 @@ import {
   ComputerControllerDirective,
   BaseControllerDirective,
   RandomArtifactsGeneratorDirective,
+  ResizePaddleDirective,
 } from './directives';
 
 @NgModule({
@@ -29,6 +30,7 @@ import {
     ComputerControllerDirective,
     BaseControllerDirective,
     RandomArtifactsGeneratorDirective,
+    ResizePaddleDirective,
   ],
   imports: [CommonModule, IonicModule, GameRoutingModule],
 })
