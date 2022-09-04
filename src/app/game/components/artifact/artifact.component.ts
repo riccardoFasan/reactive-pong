@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
-import { isIonicReady } from 'src/utilities';
+import { isIonicReady, sleep } from 'src/utilities';
 import { Action } from '../../enums';
 import { Artifact, Coordinates } from '../../models';
 import { ArtifactsService } from '../../services';
@@ -14,11 +14,14 @@ export class ArtifactComponent implements AfterViewInit, OnDestroy, Artifact {
   action!: Action;
   coordinates!: Coordinates;
 
+  private readonly sleepingTime: number = 100;
+
   constructor(private ref: ElementRef, private artifacts: ArtifactsService) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
     this.setHostPosition();
+    await sleep(this.sleepingTime);
     this.artifacts.registerArtifact(this.artifact, this.ref);
   }
 
