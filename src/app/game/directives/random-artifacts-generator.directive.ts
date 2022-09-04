@@ -5,8 +5,8 @@ import {
   OnDestroy,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, interval, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { combineLatest, interval, Observable, race, timer } from 'rxjs';
+import { filter, first } from 'rxjs/operators';
 import {
   generator,
   randomEnum,
@@ -40,6 +40,8 @@ export class RandomArtifactsGeneratorDirective
     this.onStop$,
     this.collision.onGatesCollision$,
   ]);
+
+  private readonly profitTime: number = 7000; // TODO: make it variable by difficulty
 
   constructor(
     private controls: GameControlsService,
@@ -112,19 +114,26 @@ export class RandomArtifactsGeneratorDirective
     componentRef.instance.id = artifact.id;
     componentRef.instance.action = artifact.action;
     componentRef.instance.coordinates = artifact.coordinates;
-    this.onActivation(componentRef);
+    this.awaitForDestroy(componentRef);
   }
 
-  private onActivation(componentRef: ComponentRef<ArtifactComponent>): void {
-    this.subSink.sink = this.artifacts.onActivation$
-      .pipe(
-        filter(
-          (hitArtifact: HitArtifact) =>
-            hitArtifact.artifact.id === componentRef.instance.id
-        )
+  private awaitForDestroy(componentRef: ComponentRef<ArtifactComponent>): void {
+    this.subSink.sink = race([
+      this.onActivation(componentRef),
+      timer(this.profitTime).pipe(first()),
+    ]).subscribe(() => {
+      componentRef.destroy();
+    });
+  }
+
+  private onActivation(
+    componentRef: ComponentRef<ArtifactComponent>
+  ): Observable<HitArtifact> {
+    return this.artifacts.onActivation$.pipe(
+      filter(
+        (hitArtifact: HitArtifact) =>
+          hitArtifact.artifact.id === componentRef.instance.id
       )
-      .subscribe(() => {
-        componentRef.destroy();
-      });
+    );
   }
 }
