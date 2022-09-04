@@ -6,23 +6,32 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { combineLatest, interval, Observable, race, timer } from 'rxjs';
-import { filter, first } from 'rxjs/operators';
+import { filter, first, map, switchMap, tap } from 'rxjs/operators';
 import {
   generator,
   randomEnum,
   isIonicReady,
   randomIntegerBetween,
+  randomBoolean,
 } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { ArtifactComponent } from '../components';
 import { Action, Collision, GameStatus } from '../enums';
-import { Artifact, Coordinates, HitArtifact } from '../models';
+import {
+  Artifact,
+  ArtifactsTiming,
+  Coordinates,
+  HitArtifact,
+  LevelSettings,
+} from '../models';
 import {
   ArtifactsService,
   CollisionService,
   GameControlsService,
   GroundSizesService,
+  LevelService,
 } from '../services';
+import { NORMAL_ARTIFACT } from '../store';
 
 @Directive({
   selector: '[appRandomArtifactsGenerator]',
@@ -41,19 +50,36 @@ export class RandomArtifactsGeneratorDirective
     this.collision.onGatesCollision$,
   ]);
 
-  private readonly profitTime: number = 7000; // TODO: make it variable by difficulty
+  private timing: ArtifactsTiming = NORMAL_ARTIFACT;
+
+  private timer$: Observable<number> = this.level.levelChanged$.pipe(
+    switchMap(() =>
+      interval(this.timing.timer.min).pipe(
+        switchMap(() => {
+          const delta: number = this.timing.timer.max - this.timing.timer.max;
+          return interval(delta).pipe(
+            first(),
+            filter(() => randomBoolean()),
+            tap(() => this.generateRandomArtifact())
+          );
+        })
+      )
+    )
+  );
 
   constructor(
     private controls: GameControlsService,
     private collision: CollisionService,
     private ground: GroundSizesService,
     private viewContainerRef: ViewContainerRef,
-    private artifacts: ArtifactsService
+    private artifacts: ArtifactsService,
+    private level: LevelService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
     this.onRematch();
+    this.onLevelChanged();
     this.onTimer();
   }
 
@@ -67,11 +93,16 @@ export class RandomArtifactsGeneratorDirective
     );
   }
 
+  private onLevelChanged(): void {
+    this.subSink.sink = this.level.levelChanged$
+      .pipe(map((level: LevelSettings) => level.artifactsTiming))
+      .subscribe((timing: ArtifactsTiming) => {
+        this.timing = timing;
+      });
+  }
+
   private onTimer(): void {
-    // TODO: make it more randomic
-    this.subSink.sink = interval(13000).subscribe(() => {
-      this.generateRandomArtifact();
-    });
+    this.subSink.sink = this.timer$.subscribe();
   }
 
   private generateRandomArtifact(): void {
@@ -93,15 +124,15 @@ export class RandomArtifactsGeneratorDirective
   }
 
   private getRandomCoordinates(): Coordinates {
-    const verticalMargin: number = this.ground.pixelsFromEdges * 2;
-    const horizontalMargin: number = this.ground.pixelsFromEdges * 3;
+    const verticalMargin: number = this.ground.pixelsFromEdges;
+    const horizontalMargin: number = this.ground.pixelsFromEdges * 2.5;
     return {
       x: randomIntegerBetween(
         horizontalMargin,
         this.ground.width - horizontalMargin
       ),
       y: randomIntegerBetween(
-        verticalMargin,
+        verticalMargin / 2, // ! I don't know why it blows up without / 2
         this.ground.height - verticalMargin
       ),
     };
@@ -121,7 +152,7 @@ export class RandomArtifactsGeneratorDirective
   private awaitForDestroy(componentRef: ComponentRef<ArtifactComponent>): void {
     this.subSink.sink = race([
       this.onActivation(componentRef),
-      timer(this.profitTime).pipe(first()),
+      timer(this.timing.profitTime).pipe(first()),
     ]).subscribe(() => {
       componentRef.destroy();
     });

@@ -9,14 +9,21 @@ import { filter, map, throttleTime } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Action, HalfField, Player } from '../enums';
-import { HitArtifact, Artifact } from '../models';
+import {
+  HitArtifact,
+  Artifact,
+  ResizingSettings,
+  LevelSettings,
+} from '../models';
 import {
   AnimationsService,
   ArtifactsService,
   CollisionService,
   GroundSizesService,
+  LevelService,
   PlayersService,
 } from '../services';
+import { NORMAL_RESIZING } from '../store';
 
 @Directive({
   selector: '[appResizePaddle]',
@@ -28,8 +35,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
 
   private subSink: SubSink = new SubSink();
 
-  private readonly duration: number = 10000; // TODO: make it variable by difficulty
-  private readonly differencePercentage: number = 7; // TODO: make it variable by difficulty
+  private settings: ResizingSettings = NORMAL_RESIZING;
 
   constructor(
     private players: PlayersService,
@@ -37,7 +43,8 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     private animations: AnimationsService,
     private ref: ElementRef,
     private ground: GroundSizesService,
-    private collision: CollisionService
+    private collision: CollisionService,
+    private level: LevelService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -45,6 +52,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     this.setDefaultHeight();
     this.onActivation();
     this.onGoal();
+    this.onLevelChanged();
   }
 
   ngOnDestroy(): void {
@@ -56,7 +64,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   }
 
   private get scalingDifference(): number {
-    return (this.ground.height / 100) * this.differencePercentage;
+    return (this.ground.height / 100) * this.settings.percentage;
   }
 
   private setDefaultHeight(): void {
@@ -69,7 +77,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     this.subSink.sink = this.artifacts.onActivation$
       .pipe(
         filter((hitArtifact: HitArtifact) => this.canActivate(hitArtifact)),
-        throttleTime(this.duration),
+        throttleTime(this.settings.duration),
         map((hitArtifact: HitArtifact) => hitArtifact.artifact)
       )
       .subscribe((artifact: Artifact) => this.resize(artifact.action));
@@ -82,6 +90,14 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
         this.defaultHeight
       )
     );
+  }
+
+  private onLevelChanged(): void {
+    this.subSink.sink = this.level.levelChanged$
+      .pipe(map((level: LevelSettings) => level.resizingSettings))
+      .subscribe((settings: ResizingSettings) => {
+        this.settings = settings;
+      });
   }
 
   private canActivate(hitArtifact: HitArtifact): boolean {
@@ -101,7 +117,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
         : this.defaultHeight - this.scalingDifference;
     this.animations.resizePaddle(
       this.ref.nativeElement,
-      this.duration,
+      this.settings.duration,
       targetHeight,
       this.defaultHeight
     );
