@@ -53,7 +53,7 @@ export class RandomArtifactsGeneratorDirective
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.onStatusChanged();
+    this.onRematch();
     this.onTimer();
   }
 
@@ -61,7 +61,7 @@ export class RandomArtifactsGeneratorDirective
     this.subSink.unsubscribe();
   }
 
-  private onStatusChanged(): void {
+  private onRematch(): void {
     this.subSink.sink = this.onRematch$.subscribe(() =>
       this.viewContainerRef.clear()
     );

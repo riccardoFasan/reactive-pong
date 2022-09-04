@@ -78,4 +78,15 @@ export class AnimationsService {
 
     this.animations.create().addAnimation(resize).addAnimation(reset).play();
   }
+
+  setPaddleHeight(paddle: HTMLElement, height: number): void {
+    this.animations
+      .create()
+      .addElement(paddle)
+      .duration(200)
+      .easing('ease')
+      .to('height', `${height}px`)
+      .fill('forwards')
+      .play();
+  }
 }

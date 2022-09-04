@@ -13,6 +13,7 @@ import { HitArtifact, Artifact } from '../models';
 import {
   AnimationsService,
   ArtifactsService,
+  CollisionService,
   GroundSizesService,
   PlayersService,
 } from '../services';
@@ -22,6 +23,8 @@ import {
 })
 export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   @Input() halfField!: HalfField;
+
+  private defaultHeight: number = 0;
 
   private subSink: SubSink = new SubSink();
 
@@ -33,12 +36,15 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     private artifacts: ArtifactsService,
     private animations: AnimationsService,
     private ref: ElementRef,
-    private ground: GroundSizesService
+    private ground: GroundSizesService,
+    private collision: CollisionService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
+    this.setDefaultHeight();
     this.onActivation();
+    this.onGoal();
   }
 
   ngOnDestroy(): void {
@@ -49,12 +55,14 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     return this.players.getPlayerByField(this.halfField);
   }
 
-  private get defaultHeight(): number {
-    return parseFloat(window.getComputedStyle(this.ref.nativeElement).height);
-  }
-
   private get scalingDifference(): number {
     return (this.ground.height / 100) * this.differencePercentage;
+  }
+
+  private setDefaultHeight(): void {
+    this.defaultHeight = parseFloat(
+      window.getComputedStyle(this.ref.nativeElement).height
+    );
   }
 
   private onActivation(): void {
@@ -67,6 +75,15 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
       .subscribe((artifact: Artifact) => this.resize(artifact.action));
   }
 
+  private onGoal(): void {
+    this.subSink.sink = this.collision.onGatesCollision$.subscribe(() =>
+      this.animations.setPaddleHeight(
+        this.ref.nativeElement,
+        this.defaultHeight
+      )
+    );
+  }
+
   private canActivate(hitArtifact: HitArtifact): boolean {
     // * enlarge player, reduce opponent
     return (
@@ -77,7 +94,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     );
   }
 
-  private async resize(action: Action): Promise<void> {
+  private resize(action: Action): void {
     const targetHeight: number =
       action === Action.Enlarge
         ? this.defaultHeight + this.scalingDifference
