@@ -1,9 +1,14 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map, share } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Artifact, HitArtifact } from '../models';
-import { GameControlsService, BallDirectionService, PlayersService } from '.';
+import {
+  GameControlsService,
+  BallDirectionService,
+  PlayersService,
+  ElementsService,
+} from '.';
 import { HalfField, Player } from '../enums';
 
 @Injectable({
@@ -17,33 +22,17 @@ export class ArtifactsService {
     share()
   );
 
-  private ball!: HTMLElement;
-  private activators: { artifact: Artifact; ref: ElementRef }[] = [];
-
   constructor(
     private controls: GameControlsService,
     private direction: BallDirectionService,
-    private players: PlayersService
+    private players: PlayersService,
+    private elements: ElementsService
   ) {}
 
-  registerArtifact(artifact: Artifact, ref: ElementRef): void {
-    this.activators = [...this.activators, { artifact, ref }];
-  }
-
-  unregisterArtifact(id: number): void {
-    this.activators = this.activators.filter(
-      (activator) => activator.artifact.id !== id
-    );
-  }
-
-  registerBall(ball: HTMLElement): void {
-    this.ball = ball;
-  }
-
   private getHitArtifact(): HitArtifact | undefined {
-    const artifact: Artifact | undefined = this.activators.reduce(
+    const artifact: Artifact | undefined = this.elements.activators.reduce(
       (_: Artifact | undefined, activator) => {
-        if (areColliding(activator.ref.nativeElement, this.ball)) {
+        if (areColliding(activator.ref.nativeElement, this.elements.ball)) {
           return activator.artifact;
         }
         return undefined;

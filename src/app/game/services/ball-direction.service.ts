@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { randomFloatBetween } from 'src/utilities';
-import { Collision, Player } from '../enums';
+import { Collision } from '../enums';
 import { Coordinates } from '../models';
 import { CollisionService } from './collision.service';
 
@@ -12,17 +12,17 @@ import { CollisionService } from './collision.service';
 export class BallDirectionService {
   private paddleCollision$: Observable<Collision> =
     this.collision.onPaddleCollision$.pipe(
-      tap(() => this.adjustAfterVerticalCollision())
+      tap((collision: Collision) => this.adjustAfterPaddleCollision(collision))
     );
 
   private edgeCollision$: Observable<Collision> =
     this.collision.onEdgeCollision$.pipe(
-      tap(() => this.adjustAfterHorizontalCollision())
+      tap(() => this.adjustAfterEdgeCollision())
     );
 
   private shieldsCollision$: Observable<Collision> =
     this.collision.onShieldsCollision$.pipe(
-      tap(() => this.adjustAfterVerticalCollision())
+      tap(() => this.adjustAfterShieldCollision())
     );
 
   onRebound$: Observable<Collision[]> = combineLatest([
@@ -61,13 +61,19 @@ export class BallDirectionService {
     }
   }
 
-  private adjustAfterVerticalCollision(): void {
+  private adjustAfterPaddleCollision(collision: Collision): void {
     this.trajectory.x *= -1;
     const angleCorrection: number = this.getRandomCorrection();
     this.trajectory.y += angleCorrection * Math.sign(this.trajectory.y);
   }
 
-  private adjustAfterHorizontalCollision(): void {
+  private adjustAfterShieldCollision(): void {
+    this.trajectory.x *= -1;
+    const angleCorrection: number = this.getRandomCorrection();
+    this.trajectory.y += angleCorrection * Math.sign(this.trajectory.y);
+  }
+
+  private adjustAfterEdgeCollision(): void {
     this.trajectory.y *= -1;
     const angleCorrection: number = this.getRandomCorrection();
     this.trajectory.x += angleCorrection * Math.sign(this.trajectory.x);

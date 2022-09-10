@@ -10,11 +10,10 @@ import { Inaccuracy } from '../enums';
 import { PaddleController } from '../interfaces';
 import { LevelSettings } from '../models';
 import {
-  CollisionService,
   GameControlsService,
   LevelService,
-  GroundSizesService,
   BallDirectionService,
+  ElementsService,
 } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -29,14 +28,13 @@ export class ComputerControllerDirective
   private inaccuracy: Inaccuracy = Inaccuracy.Medium;
 
   constructor(
-    collision: CollisionService,
+    elements: ElementsService,
     ref: ElementRef,
     controls: GameControlsService,
-    ground: GroundSizesService,
     private level: LevelService,
     private direction: BallDirectionService
   ) {
-    super(collision, ref, controls, ground);
+    super(elements, ref, controls);
   }
 
   override async ngAfterViewInit(): Promise<void> {

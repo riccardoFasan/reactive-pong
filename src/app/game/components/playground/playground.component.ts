@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostListener,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -17,7 +16,7 @@ import {
   CollisionService,
   GoalService,
   PlayersService,
-  GroundSizesService,
+  ElementsService,
 } from '../../services';
 
 @Component({
@@ -28,7 +27,13 @@ import {
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private groundRef!: ElementRef<HTMLElement>;
 
-  fields$: Observable<Fields> = this.players.fieldsChanged$;
+  userField$: Observable<HalfField> = this.players.fieldsChanged$.pipe(
+    map((fields: Fields) => fields.user)
+  );
+
+  opponentField$: Observable<HalfField> = this.players.fieldsChanged$.pipe(
+    map((fields: Fields) => fields.opponent)
+  );
 
   private subSink: SubSink = new SubSink();
 
@@ -37,12 +42,12 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     private animations: AnimationsService,
     private collision: CollisionService,
     private goal: GoalService,
-    private ground: GroundSizesService
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
+    this.elements.registerGround(this.groundRef.nativeElement);
     await isIonicReady();
-    this.collision.registerGround(this.groundRef.nativeElement);
     this.onScoreChanged();
   }
 
@@ -63,10 +68,5 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
       .subscribe((halfField: HalfField) => {
         this.animations.animateBorder(this.groundRef.nativeElement, halfField);
       });
-  }
-
-  @HostListener('window:resize')
-  private onResize(): void {
-    this.ground.updateSizes();
   }
 }

@@ -13,11 +13,7 @@ import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus, HalfField } from '../enums';
 import { PaddleController } from '../interfaces';
-import {
-  CollisionService,
-  GameControlsService,
-  GroundSizesService,
-} from '../services';
+import { ElementsService, GameControlsService } from '../services';
 
 @Directive({
   selector: '[appBaseController]',
@@ -36,15 +32,13 @@ export class BaseControllerDirective
   protected subSink: SubSink = new SubSink();
 
   constructor(
-    private collision: CollisionService,
+    private elements: ElementsService,
     private ref: ElementRef,
-    protected controls: GameControlsService,
-    protected ground: GroundSizesService
+    protected controls: GameControlsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.ground.updateSizes();
     this.registerPaddle();
     this.onStatusChanged();
     this.centerPaddle();
@@ -72,11 +66,7 @@ export class BaseControllerDirective
   }
 
   private registerPaddle(): void {
-    if (this.halfField === HalfField.Left) {
-      this.collision.registerLeftPaddle(this.ref.nativeElement);
-      return;
-    }
-    this.collision.registerRightPaddle(this.ref.nativeElement);
+    this.elements.registerPaddle(this.ref.nativeElement, this.halfField);
   }
 
   private centerPaddle(): void {
@@ -85,15 +75,16 @@ export class BaseControllerDirective
   }
 
   private centerVertically(): void {
-    this.y = this.ground.height / 2 - this.height / 2;
+    this.y = this.elements.groundHeight / 2 - this.height / 2;
   }
 
   private centerHorizontally(): void {
     if (this.halfField === HalfField.Left) {
-      this.x = this.ground.pixelsFromEdges;
+      this.x = this.elements.edgesDistance;
       return;
     }
-    this.x = this.ground.width - this.width - this.ground.pixelsFromEdges;
+    this.x =
+      this.elements.groundWidth - this.width - this.elements.edgesDistance;
   }
 
   private onStatusChanged(): void {
@@ -104,6 +95,6 @@ export class BaseControllerDirective
 
   protected canMove(positionY: number): boolean {
     const bottomPosition: number = positionY + this.height;
-    return positionY >= 0 && bottomPosition <= this.ground.height;
+    return positionY >= 0 && bottomPosition <= this.elements.groundHeight;
   }
 }

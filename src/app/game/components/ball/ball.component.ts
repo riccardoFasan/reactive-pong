@@ -12,12 +12,11 @@ import { SubSink } from 'subsink';
 import { Collision, GameStatus } from '../../enums';
 import { Ball, LevelSettings } from '../../models';
 import {
-  ArtifactsService,
   BallDirectionService,
   CollisionService,
   GameControlsService,
   LevelService,
-  GroundSizesService,
+  ElementsService,
 } from '../../services';
 import { NORMAL_BALL } from '../../store';
 
@@ -53,14 +52,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private controls: GameControlsService,
     private level: LevelService,
     private direction: BallDirectionService,
-    private ground: GroundSizesService,
-    private artifacts: ArtifactsService
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.collision.registerBall(this.ref.nativeElement);
-    this.artifacts.registerBall(this.ref.nativeElement);
+    this.elements.registerBall(this.ref.nativeElement);
     this.onLevelChanged();
     this.onStatusChanged();
     this.onCollisionChanged();
@@ -68,16 +65,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
-  }
-
-  private get height(): number {
-    if (!this.ref.nativeElement) return 0;
-    return this.ref.nativeElement.offsetHeight;
-  }
-
-  private get width(): number {
-    if (!this.ref.nativeElement) return 0;
-    return this.ref.nativeElement.offsetWidth;
   }
 
   private onLevelChanged(): void {
@@ -128,8 +115,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private centerBall(): void {
-    this.direction.position.x = this.ground.width / 2 - this.width / 2;
-    this.direction.position.y = this.ground.height / 2 - this.height / 2;
+    this.direction.position.x =
+      this.elements.groundWidth / 2 - this.elements.ballWidth / 2;
+    this.direction.position.y =
+      this.elements.groundHeight / 2 - this.elements.ballHeight / 2;
   }
 
   private resetAfterGoal(): void {

@@ -19,7 +19,7 @@ import {
   AnimationsService,
   ArtifactsService,
   CollisionService,
-  GroundSizesService,
+  ElementsService,
   LevelService,
   PlayersService,
 } from '../services';
@@ -42,9 +42,9 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     private artifacts: ArtifactsService,
     private animations: AnimationsService,
     private ref: ElementRef,
-    private ground: GroundSizesService,
     private collision: CollisionService,
-    private level: LevelService
+    private level: LevelService,
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -64,7 +64,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   }
 
   private get scalingDifference(): number {
-    return (this.ground.height / 100) * this.settings.percentage;
+    return (this.elements.groundHeight / 100) * this.settings.percentage;
   }
 
   private get currentHeight(): number {

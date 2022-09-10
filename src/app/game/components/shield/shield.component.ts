@@ -19,7 +19,7 @@ import {
   AnimationsService,
   ArtifactsService,
   CollisionService,
-  GroundSizesService,
+  ElementsService,
   LevelService,
   PlayersService,
 } from '../../services';
@@ -57,7 +57,7 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
     private players: PlayersService,
     private level: LevelService,
     private animations: AnimationsService,
-    private ground: GroundSizesService
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -84,15 +84,15 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @HostListener('window:resize')
   private setLeftPosition(): void {
-    const halfEdgesDistance: number = this.ground.pixelsFromEdges / 2;
+    const halfEdgesDistance: number = this.elements.edgesDistance / 2;
     if (this.halfField === HalfField.Left) {
       this.x = halfEdgesDistance;
       return;
     }
-    this.x = this.ground.width - this.width - halfEdgesDistance;
+    this.x = this.elements.groundWidth - this.width - halfEdgesDistance;
   }
 
-  protected get width(): number {
+  private get width(): number {
     if (!this.ref.nativeElement) return 0;
     return this.ref.nativeElement.offsetWidth;
   }
@@ -158,10 +158,10 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private registerShield(): void {
-    this.collision.registerShield(this.ref.nativeElement, this.halfField);
+    this.elements.registerShield(this.ref.nativeElement, this.halfField);
   }
 
   private unRegisterShield(): void {
-    this.collision.unRegisterShield(this.halfField);
+    this.elements.unRegisterShield(this.halfField);
   }
 }

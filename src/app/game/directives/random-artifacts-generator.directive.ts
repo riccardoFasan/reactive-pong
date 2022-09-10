@@ -27,8 +27,8 @@ import {
 import {
   ArtifactsService,
   CollisionService,
+  ElementsService,
   GameControlsService,
-  GroundSizesService,
   LevelService,
 } from '../services';
 import { NORMAL_ARTIFACT } from '../store';
@@ -70,10 +70,10 @@ export class RandomArtifactsGeneratorDirective
   constructor(
     private controls: GameControlsService,
     private collision: CollisionService,
-    private ground: GroundSizesService,
     private viewContainerRef: ViewContainerRef,
     private artifacts: ArtifactsService,
-    private level: LevelService
+    private level: LevelService,
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -124,16 +124,16 @@ export class RandomArtifactsGeneratorDirective
   }
 
   private getRandomCoordinates(): Coordinates {
-    const verticalMargin: number = this.ground.pixelsFromEdges;
-    const horizontalMargin: number = this.ground.pixelsFromEdges * 2.5;
+    const verticalMargin: number = this.elements.edgesDistance;
+    const horizontalMargin: number = this.elements.edgesDistance * 2.5;
     return {
       x: randomIntegerBetween(
         horizontalMargin,
-        this.ground.width - horizontalMargin
+        this.elements.groundWidth - horizontalMargin
       ),
       y: randomIntegerBetween(
         verticalMargin / 2, // ! I don't know why it blows up without / 2
-        this.ground.height - verticalMargin
+        this.elements.groundHeight - verticalMargin
       ),
     };
   }

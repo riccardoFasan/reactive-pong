@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { isIonicReady, sleep } from 'src/utilities';
 import { Action } from '../../enums';
 import { Artifact, Coordinates } from '../../models';
-import { ArtifactsService } from '../../services';
+import { ElementsService } from '../../services';
 
 @Component({
   selector: 'app-artifact',
@@ -16,17 +16,17 @@ export class ArtifactComponent implements AfterViewInit, OnDestroy, Artifact {
 
   private readonly sleepingTime: number = 50;
 
-  constructor(private ref: ElementRef, private artifacts: ArtifactsService) {}
+  constructor(private ref: ElementRef, private elements: ElementsService) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
     this.setHostPosition();
     await sleep(this.sleepingTime);
-    this.artifacts.registerArtifact(this.artifact, this.ref);
+    this.elements.registerArtifact(this.artifact, this.ref);
   }
 
   ngOnDestroy(): void {
-    this.artifacts.unregisterArtifact(this.id);
+    this.elements.unregisterArtifact(this.id);
   }
 
   get symbol(): string {
