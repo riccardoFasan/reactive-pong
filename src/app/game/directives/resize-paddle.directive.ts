@@ -5,7 +5,7 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { filter, map, throttleTime } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Action, HalfField, Player } from '../enums';
@@ -67,6 +67,10 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     return (this.ground.height / 100) * this.settings.percentage;
   }
 
+  private get currentHeight(): number {
+    return this.ref.nativeElement.offsetHeight;
+  }
+
   private setDefaultHeight(): void {
     this.defaultHeight = parseFloat(
       window.getComputedStyle(this.ref.nativeElement).height
@@ -82,7 +86,6 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
               hitArtifact.artifact.action === Action.Reduce) &&
             this.canActivate(hitArtifact)
         ),
-        throttleTime(this.settings.duration),
         map((hitArtifact: HitArtifact) => hitArtifact.artifact)
       )
       .subscribe((artifact: Artifact) => this.resize(artifact.action));
@@ -118,13 +121,13 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   private resize(action: Action): void {
     const targetHeight: number =
       action === Action.Enlarge
-        ? this.defaultHeight + this.scalingDifference
-        : this.defaultHeight - this.scalingDifference;
+        ? this.currentHeight + this.scalingDifference
+        : this.currentHeight - this.scalingDifference;
     this.animations.resizePaddle(
       this.ref.nativeElement,
       this.settings.duration,
       targetHeight,
-      this.defaultHeight
+      this.currentHeight
     );
   }
 }
