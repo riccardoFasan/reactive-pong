@@ -9,6 +9,7 @@ import {
   BallComponent,
   GameBarComponent,
   ArtifactComponent,
+  ShieldComponent,
 } from './components';
 
 import {
@@ -26,6 +27,7 @@ import {
     BallComponent,
     GameBarComponent,
     ArtifactComponent,
+    ShieldComponent,
     UserControllerDirective,
     ComputerControllerDirective,
     BaseControllerDirective,

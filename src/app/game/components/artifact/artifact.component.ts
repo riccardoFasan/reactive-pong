@@ -29,6 +29,13 @@ export class ArtifactComponent implements AfterViewInit, OnDestroy, Artifact {
     this.artifacts.unregisterArtifact(this.id);
   }
 
+  get symbol(): string {
+    if (this.action === Action.Enlarge) return '+';
+    if (this.action === Action.Reduce) return '-';
+    if (this.action === Action.Shields) return ')';
+    return '';
+  }
+
   private get artifact(): Artifact {
     return { id: this.id, action: this.action, coordinates: this.coordinates };
   }

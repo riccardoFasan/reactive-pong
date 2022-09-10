@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter, map, share, throttleTime } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
-import { Collision } from '../enums';
+import { Collision, HalfField } from '../enums';
 import { GameControlsService } from './game-controls.service';
 
 @Injectable({
@@ -16,6 +16,8 @@ export class CollisionService {
       if (this.therIsAnEdgeCollision) return Collision.Edge;
       if (this.thereIsAPlayer1GateCollision) return Collision.Player1Gate;
       if (this.thereIsAPlayer2GateCollision) return Collision.Player2Gate;
+      if (this.thereIsALeftShieldCollision) return Collision.LeftShield;
+      if (this.thereIsARightShieldCollision) return Collision.RightShield;
       return Collision.None;
     }),
     share()
@@ -46,10 +48,21 @@ export class CollisionService {
     share()
   );
 
+  onShieldsCollision$: Observable<Collision> = this.collisionStore$.pipe(
+    filter(
+      (collision: Collision) =>
+        collision === Collision.LeftShield ||
+        collision === Collision.RightShield
+    ),
+    share()
+  );
+
   private leftPaddle!: HTMLElement;
   private rightPaddle!: HTMLElement;
   private ball!: HTMLElement;
   private ground!: HTMLElement;
+  private leftShield: HTMLElement | undefined;
+  private rightShield: HTMLElement | undefined;
 
   constructor(private controls: GameControlsService) {}
 
@@ -67,6 +80,22 @@ export class CollisionService {
 
   registerGround(ground: HTMLElement): void {
     this.ground = ground;
+  }
+
+  registerShield(shield: HTMLElement, halfField: HalfField): void {
+    if (halfField === HalfField.Right) {
+      this.rightShield = shield;
+      return;
+    }
+    this.leftShield = shield;
+  }
+
+  unRegisterShield(halfField: HalfField): void {
+    if (halfField === HalfField.Right) {
+      this.rightShield = undefined;
+      return;
+    }
+    this.leftShield = undefined;
   }
 
   private get thereIsALeftPaddleCollision(): boolean {
@@ -91,6 +120,16 @@ export class CollisionService {
 
   private get thereIsAPlayer2GateCollision(): boolean {
     return this.groundWidth < this.ballX;
+  }
+
+  private get thereIsALeftShieldCollision(): boolean {
+    if (!(this.leftShield && this.ball)) return false;
+    return areColliding(this.leftShield, this.ball);
+  }
+
+  private get thereIsARightShieldCollision(): boolean {
+    if (!(this.rightShield && this.ball)) return false;
+    return areColliding(this.rightShield, this.ball);
   }
 
   private get ballHeight(): number {

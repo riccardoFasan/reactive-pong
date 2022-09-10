@@ -89,4 +89,47 @@ export class AnimationsService {
       .fill('forwards')
       .play();
   }
+
+  fadeShield(shield: HTMLElement): void {
+    this.animations
+      .create()
+      .addElement(shield)
+      .easing('ease')
+      .duration(300)
+      .iterations(3)
+      .keyframes([
+        {
+          offset: 0,
+          backgroundColor: 'var(--ion-color-dark)',
+        },
+        {
+          offset: 1,
+          backgroundColor: 'var(--ion-color-success)',
+        },
+      ])
+      .fill('none')
+      .play();
+  }
+
+  turnUpShield(shield: HTMLElement): void {
+    this.animations
+      .create()
+      .addElement(shield)
+      .duration(200)
+      .easing('ease')
+      .to('opacity', 0.75)
+      .fill('forwards')
+      .play();
+  }
+
+  turnDownShield(shield: HTMLElement): void {
+    this.animations
+      .create()
+      .addElement(shield)
+      .duration(200)
+      .easing('ease')
+      .to('opacity', 0)
+      .fill('forwards')
+      .play();
+  }
 }

@@ -5,4 +5,6 @@ export enum Collision {
   Player1Gate = 'PLAYER_1_GATE',
   Player2Gate = 'PLAYER_2_GATE',
   None = 'NONE',
+  LeftShield = 'LEFT_SHIELD',
+  RightShield = 'RIGHT_SHIELD',
 }

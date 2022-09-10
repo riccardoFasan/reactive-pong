@@ -146,10 +146,12 @@ export class RandomArtifactsGeneratorDirective
     componentRef.instance.id = artifact.id;
     componentRef.instance.action = artifact.action;
     componentRef.instance.coordinates = artifact.coordinates;
-    this.awaitForDestroy(componentRef);
+    this.onArtifactDestroy(componentRef);
   }
 
-  private awaitForDestroy(componentRef: ComponentRef<ArtifactComponent>): void {
+  private onArtifactDestroy(
+    componentRef: ComponentRef<ArtifactComponent>
+  ): void {
     this.subSink.sink = race([
       this.onActivation(componentRef),
       timer(this.timing.profitTime).pipe(first()),

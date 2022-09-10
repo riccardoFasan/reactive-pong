@@ -1,0 +1,13 @@
+:host {
+  height: 100%;
+
+  div {
+    position: absolute;
+    width: clamp(0.2rem, 0.25vw, 0.4rem);
+    background-color: var(--ion-color-dark);
+    border-radius: 0.33rem;
+    height: 100%;
+    top: 0;
+    opacity: 0;
+  }
+}

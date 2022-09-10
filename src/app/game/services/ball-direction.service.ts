@@ -12,17 +12,23 @@ import { CollisionService } from './collision.service';
 export class BallDirectionService {
   private paddleCollision$: Observable<Collision> =
     this.collision.onPaddleCollision$.pipe(
-      tap(() => this.adjustAfterPaddleCollision())
+      tap(() => this.adjustAfterVerticalCollision())
     );
 
   private edgeCollision$: Observable<Collision> =
     this.collision.onEdgeCollision$.pipe(
-      tap(() => this.adjustAfterEdgeCollision())
+      tap(() => this.adjustAfterHorizontalCollision())
+    );
+
+  private shieldsCollision$: Observable<Collision> =
+    this.collision.onShieldsCollision$.pipe(
+      tap(() => this.adjustAfterVerticalCollision())
     );
 
   onRebound$: Observable<Collision[]> = combineLatest([
     this.edgeCollision$,
     this.paddleCollision$,
+    this.shieldsCollision$,
   ]);
 
   trajectory: Coordinates = { x: 0, y: 0 };
@@ -55,13 +61,13 @@ export class BallDirectionService {
     }
   }
 
-  private adjustAfterPaddleCollision(): void {
+  private adjustAfterVerticalCollision(): void {
     this.trajectory.x *= -1;
     const angleCorrection: number = this.getRandomCorrection();
     this.trajectory.y += angleCorrection * Math.sign(this.trajectory.y);
   }
 
-  private adjustAfterEdgeCollision(): void {
+  private adjustAfterHorizontalCollision(): void {
     this.trajectory.y *= -1;
     const angleCorrection: number = this.getRandomCorrection();
     this.trajectory.x += angleCorrection * Math.sign(this.trajectory.x);

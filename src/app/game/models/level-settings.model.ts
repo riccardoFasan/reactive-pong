@@ -10,4 +10,5 @@ export interface LevelSettings {
   computerInaccuracy: Inaccuracy;
   artifactsTiming: ArtifactsTiming;
   resizingSettings: ResizingSettings;
+  shieldsDuration: number;
 }

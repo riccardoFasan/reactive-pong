@@ -22,6 +22,7 @@ export const EASY_LEVEL: LevelSettings = {
   computerInaccuracy: Inaccuracy.High,
   resizingSettings: EASY_RESIZING,
   artifactsTiming: EASY_ARTIFACT,
+  shieldsDuration: 25000,
 };
 
 export const NORMAL_LEVEL: LevelSettings = {
@@ -31,6 +32,7 @@ export const NORMAL_LEVEL: LevelSettings = {
   computerInaccuracy: Inaccuracy.Medium,
   resizingSettings: NORMAL_RESIZING,
   artifactsTiming: NORMAL_ARTIFACT,
+  shieldsDuration: 20000,
 };
 
 export const HARD_LEVEL: LevelSettings = {
@@ -40,6 +42,7 @@ export const HARD_LEVEL: LevelSettings = {
   computerInaccuracy: Inaccuracy.Low,
   resizingSettings: HARD_RESIZING,
   artifactsTiming: HARD_ARTIFACT,
+  shieldsDuration: 15000,
 };
 
 export const INSANE_LEVEL: LevelSettings = {
@@ -49,6 +52,7 @@ export const INSANE_LEVEL: LevelSettings = {
   computerInaccuracy: Inaccuracy.None,
   resizingSettings: INSANE_RESIZING,
   artifactsTiming: INSANE_ARTIFACT,
+  shieldsDuration: 9000,
 };
 
 export const LEVELS: LevelSettings[] = [

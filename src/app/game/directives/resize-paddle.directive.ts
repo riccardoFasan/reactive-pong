@@ -76,7 +76,12 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   private onActivation(): void {
     this.subSink.sink = this.artifacts.onActivation$
       .pipe(
-        filter((hitArtifact: HitArtifact) => this.canActivate(hitArtifact)),
+        filter(
+          (hitArtifact: HitArtifact) =>
+            (hitArtifact.artifact.action === Action.Enlarge ||
+              hitArtifact.artifact.action === Action.Reduce) &&
+            this.canActivate(hitArtifact)
+        ),
         throttleTime(this.settings.duration),
         map((hitArtifact: HitArtifact) => hitArtifact.artifact)
       )

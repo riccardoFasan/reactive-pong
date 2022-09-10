@@ -2,32 +2,32 @@ import { ArtifactsTiming } from '../models';
 
 export const EASY_ARTIFACT: ArtifactsTiming = {
   timer: {
-    min: 7000,
-    max: 9000,
+    min: 10000,
+    max: 15000,
   },
-  profitTime: 12000,
+  profitTime: 15000,
 };
 
 export const NORMAL_ARTIFACT: ArtifactsTiming = {
   timer: {
-    min: 6000,
-    max: 11000,
+    min: 10000,
+    max: 14000,
   },
-  profitTime: 10000,
+  profitTime: 12000,
 };
 
 export const HARD_ARTIFACT: ArtifactsTiming = {
   timer: {
-    min: 5000,
-    max: 12000,
+    min: 9000,
+    max: 13000,
   },
-  profitTime: 9000,
+  profitTime: 11000,
 };
 
 export const INSANE_ARTIFACT: ArtifactsTiming = {
   timer: {
-    min: 4000,
-    max: 14000,
+    min: 8000,
+    max: 12000,
   },
-  profitTime: 8000,
+  profitTime: 10000,
 };
