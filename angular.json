@@ -8,7 +8,14 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -30,17 +37,29 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": ["src/styles/main.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "scripts": [],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
+            "buildOptimizer": true,
             "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "optimization": true,
+            "namedChunks": true,
+            "commonChunk": true
           },
           "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -48,7 +67,16 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "fonts": {
+                  "inline": true
+                },
+                "styles": {
+                  "inlineCritical": true,
+                  "minify": true
+                },
+                "scripts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -67,7 +95,8 @@
             "ci": {
               "progress": false
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -78,10 +107,14 @@
             "production": {
               "browserTarget": "app:build:production"
             },
+            "development": {
+              "browserTarget": "app:build:development"
+            },
             "ci": {
               "progress": false
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -96,7 +129,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "styles": [],
+            "styles": ["src/styles/main.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "scripts": [],
             "assets": [
               {

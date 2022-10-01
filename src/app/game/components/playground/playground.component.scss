@@ -1,7 +1,11 @@
+@use "abstracts/colors" as colors;
+// @use "../../../../styles/abstracts/colors";
+
 :host {
   height: 100vh;
   padding: 2rem 3.75rem;
   position: relative;
+  background: colors.$ground-background;
   --playground-border-width: 1px;
 
   app-game-bar {

@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   ping-pong-ui:
+    container_name: ping-pong
     build:
       context: .
       dockerfile: Dockerfile
