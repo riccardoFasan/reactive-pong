@@ -1,12 +1,55 @@
+@use "abstracts/colors" as colors;
+@use "abstracts/mixins" as mixins;
+
+$paddle-shadow-color: darken(colors.$primary-light, 20%);
+$paddle-primary-shadow: 0px 0px 40px $paddle-shadow-color,
+  0px 0px 20px $paddle-shadow-color;
+$paddle-background: lighten(colors.$primary-light, 15%);
+$paddle-width: clamp(0.5rem, 0.75vw, 1rem);
+
 :host {
-  height: 23.33%;
+  height: 25%;
   max-height: 150px;
   position: absolute;
 
-  div {
-    background-color: var(--ion-color-dark);
-    width: clamp(0.33rem, 0.66vw, 0.66rem);
-    border-radius: 0.66rem;
+  &:before {
+    position: relative;
     height: 100%;
+    width: $paddle-width;
+    border: 4px solid $paddle-background;
+    filter: blur(0.5rem);
+    border-radius: 1rem;
+  }
+
+  div {
+    position: relative;
+    width: $paddle-width;
+    height: 100%;
+    background: $paddle-background;
+
+    &,
+    &:after,
+    &:before {
+      box-shadow: $paddle-primary-shadow;
+    }
+
+    &:after,
+    &:before {
+      left: 0;
+    }
+
+    &:before {
+      @include mixins.triangle("up", calc($paddle-width/2), $paddle-background);
+      top: calc(calc($paddle-width/2) * -1);
+    }
+
+    &:after {
+      @include mixins.triangle(
+        "down",
+        calc($paddle-width/2),
+        $paddle-background
+      );
+      top: calc(100%);
+    }
   }
 }

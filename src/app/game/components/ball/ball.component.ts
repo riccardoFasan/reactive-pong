@@ -83,13 +83,19 @@ export class BallComponent implements AfterViewInit, OnDestroy {
           if (status === GameStatus.Stopped) {
             this.init();
           }
+          if (status !== GameStatus.Running) {
+            this.stopRotation();
+          }
         }),
         switchMap((status: GameStatus) =>
           // ! do not use filter operator
           iif(
             () => status === GameStatus.Running,
             timer(this.millisecondsBeforeKickStart).pipe(
-              switchMap(() => this.controls.timer$.pipe(tap(() => this.move())))
+              switchMap(() => {
+                this.startRotation();
+                return this.controls.timer$.pipe(tap(() => this.move()));
+              })
             ),
             EMPTY
           )
@@ -137,5 +143,13 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     if (this.currentSpeed < this.ball.maximumSpeed) {
       this.currentSpeed += this.ball.acceleration;
     }
+  }
+
+  private startRotation(): void {
+    this.ref.nativeElement.style.animationName = 'rotate';
+  }
+
+  private stopRotation(): void {
+    this.ref.nativeElement.style.animationName = 'unset';
   }
 }

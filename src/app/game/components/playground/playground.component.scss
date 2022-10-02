@@ -1,12 +1,26 @@
 @use "abstracts/colors" as colors;
-// @use "../../../../styles/abstracts/colors";
+
+$ground-background: linear-gradient(
+    90deg,
+    rgba(colors.$primary-dark, 0) 0%,
+    rgba(colors.$primary, 0.1) 30%,
+    rgba(colors.$primary, 0.1) 70%,
+    rgba(colors.$primary-dark, 0) 100%
+  ),
+  linear-gradient(
+    90deg,
+    colors.$primary-dark 0%,
+    colors.$accent-dark 50%,
+    colors.$primary-dark 100%
+  );
 
 :host {
   height: 100vh;
   padding: 2rem 3.75rem;
   position: relative;
-  background: colors.$ground-background;
-  --playground-border-width: 1px;
+  background: $ground-background;
+
+  $playground-border-width: 1px;
 
   app-game-bar {
     position: absolute;
@@ -18,27 +32,14 @@
   .playground {
     position: relative;
     height: 100%;
-    border-top: var(--playground-border-width) solid
-      rgba(var(--ion-color-dark-rgb), 0.15);
-    border-bottom: var(--playground-border-width) solid
-      rgba(var(--ion-color-dark-rgb), 0.15);
-    border-left: calc(var(--playground-border-width) * 3) dashed
-      rgba(var(--ion-color-dark-rgb), 0.15);
-    border-right: calc(var(--playground-border-width) * 3) dashed
-      rgba(var(--ion-color-dark-rgb), 0.15);
+    border-top: calc($playground-border-width * 2) solid
+      rgba(colors.$primary, 0.66);
+    border-bottom: calc($playground-border-width * 2) solid
+      rgba(colors.$primary, 0.66);
+    border-left: calc($playground-border-width * 3) dashed
+      rgba(colors.$primary, 0.66);
+    border-right: calc($playground-border-width * 3) dashed
+      rgba(colors.$primary, 0.66);
     border-radius: 1rem;
-
-    &::after {
-      content: "";
-      height: 100%;
-      position: absolute;
-      width: var(--playground-border-width);
-      top: 0;
-      left: calc(50% - var(--playground-border-width));
-      transform: translateX(-50%);
-      background-color: transparent;
-      border-right: calc(var(--playground-border-width) * 1.5) dashed;
-      border-color: rgba(var(--ion-color-dark-rgb), 0.1);
-    }
   }
 }
