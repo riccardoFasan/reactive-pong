@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Animation, AnimationController } from '@ionic/angular';
 import { HalfField } from '../enums';
+import { sleep } from 'src/utilities';
 
 @Injectable({
   providedIn: 'root',
@@ -17,40 +18,15 @@ export class AnimationsService {
       .easing('ease')
       .duration(300)
       .iterations(3)
-      .keyframes([
-        {
-          offset: 0,
-          [property]:
-            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-color-dark-rgb), 0.15)',
-        },
-        {
-          offset: 1,
-          [property]:
-            'calc(var(--playground-border-width) * 3) dashed rgba(var(--ion-color-danger-rgb), 0.66)',
-        },
-      ])
+      .to(property, 'calc(1px * 3) dashed #ef1010')
       .fill('none')
       .play();
   }
 
-  fadePaddle(paddle: HTMLElement): void {
-    this.animations
-      .create()
-      .addElement(paddle)
-      .duration(200)
-      .easing('ease')
-      .keyframes([
-        {
-          offset: 0,
-          backgroundColor: 'var(--ion-color-dark)',
-        },
-        {
-          offset: 1,
-          backgroundColor: 'var(--ion-color-primary)',
-        },
-      ])
-      .fill('none')
-      .play();
+  async fadePaddle(paddle: HTMLElement): Promise<void> {
+    paddle.classList.add('hit');
+    await sleep(200);
+    paddle.classList.remove('hit');
   }
 
   resizePaddle(
