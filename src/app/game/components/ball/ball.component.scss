@@ -1,38 +1,14 @@
 @use "abstracts/colors" as colors;
 
-$ball-shadow-color: darken(colors.$primary-light, 25%);
-$ball-background-color: darken(colors.$accent, 15%);
-$ball-background: radial-gradient(
-  65% 100% at 35% 10%,
-  colors.$white 20%,
-  $ball-background-color 100%
-);
-
 :host {
   position: absolute;
-  width: 3%;
+  width: 2.33%;
   max-width: 20px;
   aspect-ratio: 1/1;
-  animation-name: unset;
-  animation-duration: 0.4s;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
 
   div {
-    border-radius: 50%;
     height: 100%;
     width: 100%;
-    background: $ball-background;
-    box-shadow: 0px 0px 16px $ball-shadow-color;
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+    background-color: colors.$white;
   }
 }

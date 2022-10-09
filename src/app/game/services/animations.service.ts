@@ -24,9 +24,9 @@ export class AnimationsService {
   }
 
   async fadePaddle(paddle: HTMLElement): Promise<void> {
-    paddle.classList.add('hit');
-    await sleep(200);
-    paddle.classList.remove('hit');
+    // paddle.classList.add('hit');
+    // await sleep(200);
+    // paddle.classList.remove('hit');
   }
 
   resizePaddle(

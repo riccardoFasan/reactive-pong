@@ -1,27 +1,12 @@
 @use "abstracts/colors" as colors;
 
 $grid-size: 19vh;
-$grid-color: transparent 90deg, rgba(darken(colors.$primary-light, 10%), 0.33) 0;
-
-$ground-background: linear-gradient(
-    90deg,
-    rgba(colors.$primary-dark, 0) 0%,
-    rgba(colors.$primary, 0.1) 30%,
-    rgba(colors.$primary, 0.1) 70%,
-    rgba(colors.$primary-dark, 0) 100%
-  ),
-  linear-gradient(
-    90deg,
-    colors.$primary-dark 0%,
-    colors.$accent-dark 50%,
-    colors.$primary-dark 100%
-  );
 
 :host {
   height: 100vh;
   padding: 2rem 3.75rem;
   position: relative;
-  background: $ground-background;
+  background: colors.$black;
 
   $playground-border-width: 1px;
 
@@ -33,18 +18,16 @@ $ground-background: linear-gradient(
   }
 
   .playground {
-    background: conic-gradient(from 90deg at 1px 1px, $grid-color) 1vw 1vw /
-      calc($grid-size) calc($grid-size);
     position: relative;
     height: 100%;
     border-top: calc($playground-border-width * 2) solid
-      rgba(colors.$primary, 0.66);
+      rgba(colors.$white, 0.66);
     border-bottom: calc($playground-border-width * 2) solid
-      rgba(colors.$primary, 0.66);
+      rgba(colors.$white, 0.66);
     border-left: calc($playground-border-width * 3) dashed
-      rgba(colors.$primary, 0.66);
+      rgba(colors.$white, 0.66);
     border-right: calc($playground-border-width * 3) dashed
-      rgba(colors.$primary, 0.66);
+      rgba(colors.$white, 0.66);
     border-radius: 1rem;
   }
 }
