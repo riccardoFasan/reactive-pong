@@ -35,7 +35,7 @@ export class GameBarComponent implements OnDestroy {
 
   async start(): Promise<void> {
     await isIonicReady();
-    await this.askWhatPaddleToUse();
+    // await this.askWhatPaddleToUse();
   }
 
   pause(): void {
