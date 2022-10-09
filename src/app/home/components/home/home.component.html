@@ -1,0 +1,9 @@
+<main class="page">
+  <h1>Retropong</h1>
+  <nav>
+    <a *ngFor="let page of pages" [routerLink]="['/', page.url]">
+      <button>{{ page.name }}</button>
+    </a>
+    <button (click)="quit()">Quit</button>
+  </nav>
+</main>

@@ -1,0 +1,10 @@
+@use "abstracts/colors" as colors;
+@use "abstracts/fonts" as fonts;
+
+button {
+  border: 0;
+  background-color: transparent;
+  font-size: fonts.$button-size;
+  color: colors.$white;
+  display: inline-block;
+}

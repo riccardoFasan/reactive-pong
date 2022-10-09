@@ -1,0 +1,3 @@
+@function responsive-size($min, $max, $size) {
+  @return clamp($min, calc(1rem + $size), $max);
+}
