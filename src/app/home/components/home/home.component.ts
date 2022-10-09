@@ -12,6 +12,10 @@ export class HomeComponent {
       name: 'Play',
       url: ['/', 'game', 'level'],
     },
+    {
+      name: 'Settings',
+      url: ['/', 'settings'],
+    },
   ];
 
   quit(): void {

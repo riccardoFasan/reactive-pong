@@ -10,7 +10,8 @@
   padding: functions.responsive-size(2.75rem, 3.25rem, 4vw)
     functions.responsive-size(5.5rem, 6.5rem, 10vw);
 
-  h1 {
+  h1,
+  h2 {
     color: colors.$white;
     font-size: fonts.$title-size;
     margin: 0;
