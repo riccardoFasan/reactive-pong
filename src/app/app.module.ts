@@ -4,8 +4,8 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
-import { AppComponent } from './components/app/app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './components';
 
 @NgModule({
   declarations: [AppComponent],

@@ -10,6 +10,7 @@ import {
   GameBarComponent,
   ArtifactComponent,
   ShieldComponent,
+  LevelComponent,
 } from './components';
 
 import {
@@ -19,10 +20,12 @@ import {
   RandomArtifactsGeneratorDirective,
   ResizePaddleDirective,
 } from './directives';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     PaddleComponent,
+    LevelComponent,
     PlayGroundComponent,
     BallComponent,
     GameBarComponent,
@@ -34,6 +37,6 @@ import {
     RandomArtifactsGeneratorDirective,
     ResizePaddleDirective,
   ],
-  imports: [CommonModule, IonicModule, GameRoutingModule],
+  imports: [CommonModule, IonicModule, GameRoutingModule, SharedModule],
 })
 export class GameModule {}

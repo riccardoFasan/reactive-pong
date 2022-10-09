@@ -1,0 +1,9 @@
+<div class="page">
+  <h1>Difficulty</h1>
+  <div>
+    <button *ngFor="let level of levels" (click)="setLevel(level.value)">
+      {{ level.name }}
+    </button>
+  </div>
+  <app-back></app-back>
+</div>

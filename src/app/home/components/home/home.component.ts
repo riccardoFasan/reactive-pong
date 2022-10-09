@@ -7,10 +7,10 @@ import { App } from '@capacitor/app';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  readonly pages: { name: string; url: string }[] = [
+  readonly pages: { name: string; url: string[] }[] = [
     {
       name: 'Play',
-      url: 'game',
+      url: ['/', 'game', 'level'],
     },
   ];
 

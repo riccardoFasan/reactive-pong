@@ -1,17 +1,15 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { AlertController, AlertInput } from '@ionic/angular';
+import { Component, OnDestroy } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, HalfField, Level, Player } from '../../enums';
-import { LevelSettings, Score } from '../../models';
+import { GameStatus, HalfField, Player } from '../../enums';
+import { Score } from '../../models';
 import {
   GameControlsService,
-  LevelService,
   PlayersService,
   ScoreService,
 } from '../../services';
-import { LEVELS } from '../../store';
 
 @Component({
   selector: 'app-game-bar',
@@ -28,7 +26,6 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private level: LevelService,
     private players: PlayersService
   ) {}
 
@@ -78,31 +75,6 @@ export class GameBarComponent implements OnDestroy {
           text: 'Next',
           handler: (player: Player) => {
             this.players.user = player;
-            this.askLevelAndPlay();
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-
-  private async askLevelAndPlay(): Promise<void> {
-    const inputs: AlertInput[] = LEVELS.map(
-      (level: LevelSettings, i: number) => ({
-        label: level.name,
-        type: 'radio',
-        value: level.value,
-        checked: i === 0,
-      })
-    );
-    const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Difficulty level',
-      inputs: inputs,
-      buttons: [
-        {
-          text: 'Start game',
-          handler: (level: Level) => {
-            this.level.set(level);
             this.controls.start();
             this.onGameOver();
           },

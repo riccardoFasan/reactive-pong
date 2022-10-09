@@ -3,6 +3,7 @@
 @use "abstracts/fonts" as fonts;
 
 .page {
+  position: relative;
   background-color: colors.$black;
   height: 100vh;
   text-align: center;

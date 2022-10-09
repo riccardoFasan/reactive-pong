@@ -1,0 +1,15 @@
+@use "abstracts/mixins" as mixins;
+@use "abstracts/functions" as functions;
+
+.page {
+  @include mixins.flex-column;
+  div {
+    @include mixins.flex-column(start);
+    button {
+      display: inline-block;
+      &:not(:last-child) {
+        padding-bottom: functions.responsive-size(2.33rem, 2.66rem, 2.875vw);
+      }
+    }
+  }
+}
