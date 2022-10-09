@@ -1,6 +1,7 @@
-import { Inaccuracy, Level } from '../enums';
+import { Level } from '../enums';
 import { LevelSettings } from '../models';
 import { CRAZY_BALL, FAST_BALL, NORMAL_BALL, SLOW_BALL } from './balls.store';
+
 import {
   EASY_RESIZING,
   NORMAL_RESIZING,
@@ -15,11 +16,18 @@ import {
   INSANE_ARTIFACT,
 } from './artifacts.store';
 
+import {
+  EASY_COMPUTER,
+  HARD_COMPUTER,
+  INSANE_COMPUTER,
+  MEDIUM_COMPUTER,
+} from './computer.store';
+
 export const EASY_LEVEL: LevelSettings = {
   name: 'Easy',
   value: Level.Easy,
   ball: SLOW_BALL,
-  computerInaccuracy: Inaccuracy.High,
+  computer: EASY_COMPUTER,
   resizingSettings: EASY_RESIZING,
   artifactsTiming: EASY_ARTIFACT,
   shieldsDuration: 25000,
@@ -29,7 +37,7 @@ export const NORMAL_LEVEL: LevelSettings = {
   name: 'Normal',
   value: Level.Normal,
   ball: NORMAL_BALL,
-  computerInaccuracy: Inaccuracy.Medium,
+  computer: MEDIUM_COMPUTER,
   resizingSettings: NORMAL_RESIZING,
   artifactsTiming: NORMAL_ARTIFACT,
   shieldsDuration: 20000,
@@ -39,7 +47,7 @@ export const HARD_LEVEL: LevelSettings = {
   name: 'Hard',
   value: Level.Hard,
   ball: FAST_BALL,
-  computerInaccuracy: Inaccuracy.Low,
+  computer: HARD_COMPUTER,
   resizingSettings: HARD_RESIZING,
   artifactsTiming: HARD_ARTIFACT,
   shieldsDuration: 15000,
@@ -49,7 +57,7 @@ export const INSANE_LEVEL: LevelSettings = {
   name: 'Insane',
   value: Level.Insane,
   ball: CRAZY_BALL,
-  computerInaccuracy: Inaccuracy.None,
+  computer: INSANE_COMPUTER,
   resizingSettings: INSANE_RESIZING,
   artifactsTiming: INSANE_ARTIFACT,
   shieldsDuration: 9000,

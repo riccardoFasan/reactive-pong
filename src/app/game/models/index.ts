@@ -6,4 +6,5 @@ export * from './coordinates.model';
 export * from './hit-artifact.model';
 export * from './level-settings.model';
 export * from './artifacts-timing.model';
+export * from './computer-settings.model';
 export * from './resizing-settings.model';

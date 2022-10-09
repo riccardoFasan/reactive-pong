@@ -5,3 +5,4 @@ export * from './collision.enum';
 export * from './inaccuracy.enum';
 export * from './game-status.enum';
 export * from './half-fields.enum';
+export * from './paddle-speed.enum';

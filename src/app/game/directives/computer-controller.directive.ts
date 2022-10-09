@@ -6,9 +6,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Inaccuracy } from '../enums';
+import { ComputerSpeed, Inaccuracy } from '../enums';
 import { PaddleController } from '../interfaces';
-import { LevelSettings } from '../models';
+import { ComputerSettings, LevelSettings } from '../models';
 import {
   GameControlsService,
   LevelService,
@@ -24,7 +24,7 @@ export class ComputerControllerDirective
   extends BaseControllerDirective
   implements AfterViewInit, OnChanges, OnDestroy, PaddleController
 {
-  private readonly speed: number = 0.15;
+  private speed: number = ComputerSpeed.Medium;
   private inaccuracy: Inaccuracy = Inaccuracy.Medium;
 
   constructor(
@@ -45,9 +45,10 @@ export class ComputerControllerDirective
 
   private onLevelChanged(): void {
     this.subSink.sink = this.level.levelChanged$
-      .pipe(map((level: LevelSettings) => level.computerInaccuracy))
-      .subscribe((computerInaccuracy: Inaccuracy) => {
-        this.inaccuracy = computerInaccuracy;
+      .pipe(map((level: LevelSettings) => level.computer))
+      .subscribe((settings: ComputerSettings) => {
+        this.inaccuracy = settings.inaccuracy;
+        this.speed = settings.speed;
       });
   }
 
