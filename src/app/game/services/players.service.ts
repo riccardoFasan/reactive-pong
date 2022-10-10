@@ -8,16 +8,14 @@ import { Fields } from '../models';
   providedIn: 'root',
 })
 export class PlayersService {
-  // * Player 1 is always on left and Player 2 on right
-
   private userStore$: BehaviorSubject<Player> = new BehaviorSubject<Player>(
-    Player.Player2
+    Player.Right
   );
 
   fieldsChanged$: Observable<Fields> = this.userStore$.pipe(
     map((user: Player) => ({
-      user: user === Player.Player1 ? HalfField.Left : HalfField.Right,
-      opponent: user !== Player.Player1 ? HalfField.Left : HalfField.Right,
+      user: user === Player.Left ? HalfField.Left : HalfField.Right,
+      opponent: user !== Player.Left ? HalfField.Left : HalfField.Right,
     }))
   );
 
@@ -32,11 +30,11 @@ export class PlayersService {
   }
 
   get opponent(): Player {
-    return this.user === Player.Player1 ? Player.Player2 : Player.Player1;
+    return this.user === Player.Left ? Player.Right : Player.Left;
   }
 
   getPlayerByField(halfField: HalfField): Player {
-    if (halfField === HalfField.Right) return Player.Player2;
-    return Player.Player1;
+    if (halfField === HalfField.Right) return Player.Right;
+    return Player.Left;
   }
 }

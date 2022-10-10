@@ -29,7 +29,7 @@ export class ScoreService {
   private readonly maximumScore: number = 10;
 
   addPoint(player: Player): void {
-    if (player === Player.Player1) {
+    if (player === Player.Left) {
       const currentScore: number = this.player1ScoreStore$.getValue();
       this.player1ScoreStore$.next(currentScore + 1);
     } else {
@@ -51,10 +51,10 @@ export class ScoreService {
 
   private getWinner(): Player | undefined {
     if (this.isWinner(this.player1ScoreStore$.getValue())) {
-      return Player.Player1;
+      return Player.Left;
     }
     if (this.isWinner(this.player2ScoreStore$.getValue())) {
-      return Player.Player2;
+      return Player.Right;
     }
     return;
   }

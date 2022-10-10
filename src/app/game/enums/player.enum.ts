@@ -1,4 +1,4 @@
 export enum Player {
-  Player1 = 'PLAYER_1',
-  Player2 = 'PLAYER_2',
+  Left = 'PLAYER_LEFT',
+  Right = 'PLAYER_RIGHT',
 }
