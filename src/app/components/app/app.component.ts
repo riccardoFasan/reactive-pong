@@ -3,7 +3,8 @@ import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/n
 import { StatusBar, StatusBarInfo } from '@capacitor/status-bar';
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
 import { Platform } from '@ionic/angular';
-import { interval } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { ThemeManagerService } from 'src/app/shared/services';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -13,11 +14,14 @@ import { SubSink } from 'subsink';
 export class AppComponent implements AfterViewInit, OnDestroy {
   hasStyleBeenAdjusted: boolean = false;
 
+  theme$: Observable<string> = this.themeManager.themeClass$;
+
   private subSink: SubSink = new SubSink();
 
   constructor(
     private orientation: ScreenOrientation,
-    private platform: Platform
+    private platform: Platform,
+    private themeManager: ThemeManagerService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {

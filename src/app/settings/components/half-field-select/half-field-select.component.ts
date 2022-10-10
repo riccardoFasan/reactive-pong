@@ -19,7 +19,7 @@ export class HalfFieldSelectComponent {
 
   constructor(private players: PlayersService) {}
 
-  setDefaultPlayer(halfField: HalfField): void {
+  setPlayer(halfField: HalfField): void {
     const player: Player = this.players.getPlayerByField(halfField);
     this.players.user = player;
   }

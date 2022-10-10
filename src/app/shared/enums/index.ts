@@ -1,2 +1,3 @@
-export * from './player.enum';
+export * from './themes.enum';
+export * from './players.enum';
 export * from './half-fields.enum';

@@ -1,0 +1,6 @@
+<app-select
+  [label]="'Theme'"
+  [value]="theme$ | async"
+  [options]="themes"
+  (valueChange)="setTheme($event)"
+></app-select>

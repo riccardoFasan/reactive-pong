@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { Player } from '../enums';
+import { Player, Theme } from '../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,14 @@ export class PreferencesService {
 
   getPlayer(): Promise<Player | null> {
     return this.getPreference('player');
+  }
+
+  setTheme(theme: Theme): void {
+    this.setPreference('theme', theme);
+  }
+
+  getTheme(): Promise<Theme | null> {
+    return this.getPreference('theme');
   }
 
   private async setPreference(key: string, value: any): Promise<void> {
