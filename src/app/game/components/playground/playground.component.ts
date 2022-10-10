@@ -7,15 +7,16 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { HalfField } from 'src/app/shared/enums';
+import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Collision, HalfField } from '../../enums';
+import { Collision } from '../../enums';
 import { Fields } from '../../models';
 import {
   AnimationsService,
   CollisionService,
   GoalService,
-  PlayersService,
   ElementsService,
 } from '../../services';
 
@@ -27,13 +28,8 @@ import {
 export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   @ViewChild('ground') private groundRef!: ElementRef<HTMLElement>;
 
-  userField$: Observable<HalfField> = this.players.fieldsChanged$.pipe(
-    map((fields: Fields) => fields.user)
-  );
-
-  opponentField$: Observable<HalfField> = this.players.fieldsChanged$.pipe(
-    map((fields: Fields) => fields.opponent)
-  );
+  userField$: Observable<HalfField> = this.players.userField$;
+  opponentField$: Observable<HalfField> = this.players.opponentField$;
 
   private subSink: SubSink = new SubSink();
 
@@ -62,7 +58,9 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
           this.goal.updateScoreAndDelayGame(collision)
         ),
         map((collision: Collision) =>
-          collision === Collision.Player1Gate ? HalfField.Left : HalfField.Right
+          collision === Collision.PlayerLeftGate
+            ? HalfField.Left
+            : HalfField.Right
         )
       )
       .subscribe((halfField: HalfField) => {

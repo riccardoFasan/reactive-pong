@@ -1,5 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { HalfField } from '../enums';
+import { HalfField } from 'src/app/shared/enums';
 import { Artifact } from '../models';
 
 @Injectable({

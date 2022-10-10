@@ -1,10 +1,10 @@
+@use "abstracts/mixins" as mixins;
+
 :host {
   z-index: 102;
 
   ion-list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include mixins.flex-row();
     border-radius: 0.75rem;
     padding: 0 0.25rem;
     background-color: rgba(var(--ion-color-dark-rgb), 0.1);

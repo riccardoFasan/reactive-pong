@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Animation, AnimationController } from '@ionic/angular';
-import { HalfField } from '../enums';
+import { HalfField } from 'src/app/shared/enums';
 import { sleep } from 'src/utilities';
 
 @Injectable({

@@ -1,15 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Player } from 'src/app/shared/enums';
+import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, HalfField, Player } from '../../enums';
+import { GameStatus } from '../../enums';
 import { Score } from '../../models';
-import {
-  GameControlsService,
-  PlayersService,
-  ScoreService,
-} from '../../services';
+import { GameControlsService, ScoreService } from '../../services';
 
 @Component({
   selector: 'app-game-bar',
@@ -35,7 +33,8 @@ export class GameBarComponent implements OnDestroy {
 
   async start(): Promise<void> {
     await isIonicReady();
-    // await this.askWhatPaddleToUse();
+    this.controls.start();
+    this.onGameOver();
   }
 
   pause(): void {
@@ -51,37 +50,6 @@ export class GameBarComponent implements OnDestroy {
 
   private resume(): void {
     this.controls.resume();
-  }
-
-  private async askWhatPaddleToUse(): Promise<void> {
-    const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Half field',
-      inputs: [
-        {
-          label: 'Right',
-          type: 'radio',
-          value: this.players.getPlayerByField(HalfField.Right),
-          checked: true,
-        },
-        {
-          label: 'Left',
-          type: 'radio',
-          value: this.players.getPlayerByField(HalfField.Left),
-          checked: false,
-        },
-      ],
-      buttons: [
-        {
-          text: 'Next',
-          handler: (player: Player) => {
-            this.players.user = player;
-            this.controls.start();
-            this.onGameOver();
-          },
-        },
-      ],
-    });
-    await alert.present();
   }
 
   private onGameOver(): void {

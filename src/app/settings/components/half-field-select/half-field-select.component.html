@@ -1,0 +1,6 @@
+<app-select
+  [label]="'Half field'"
+  [value]="userField$ | async"
+  [options]="halfFields"
+  (valueChange)="setDefaultPlayer($event)"
+></app-select>

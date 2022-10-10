@@ -15,8 +15,9 @@ export class CollisionService {
       if (this.thereIsALeftPaddleCollision) return Collision.LeftPaddle;
       if (this.thereIsARightPaddleCollision) return Collision.RightPaddle;
       if (this.therIsAnEdgeCollision) return Collision.Edge;
-      if (this.thereIsAPlayer1GateCollision) return Collision.Player1Gate;
-      if (this.thereIsAPlayer2GateCollision) return Collision.Player2Gate;
+      if (this.thereIsAPlayerLeftGateCollision) return Collision.PlayerLeftGate;
+      if (this.thereIsAPlayerRightGateCollision)
+        return Collision.PlayerRightGate;
       if (this.thereIsALeftShieldCollision) return Collision.LeftShield;
       if (this.thereIsARightShieldCollision) return Collision.RightShield;
       return Collision.None;
@@ -43,8 +44,8 @@ export class CollisionService {
   onGatesCollision$: Observable<Collision> = this.collisionStore$.pipe(
     filter(
       (collision: Collision) =>
-        collision === Collision.Player1Gate ||
-        collision === Collision.Player2Gate
+        collision === Collision.PlayerLeftGate ||
+        collision === Collision.PlayerRightGate
     ),
     share()
   );
@@ -82,11 +83,11 @@ export class CollisionService {
     );
   }
 
-  private get thereIsAPlayer1GateCollision(): boolean {
+  private get thereIsAPlayerLeftGateCollision(): boolean {
     return this.elements.ballX < 0;
   }
 
-  private get thereIsAPlayer2GateCollision(): boolean {
+  private get thereIsAPlayerRightGateCollision(): boolean {
     return this.elements.groundWidth < this.elements.ballX;
   }
 

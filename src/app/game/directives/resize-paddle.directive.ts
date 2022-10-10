@@ -6,23 +6,27 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { filter, map } from 'rxjs/operators';
+import { HalfField, Player } from 'src/app/shared/enums';
+import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action, HalfField, Player } from '../enums';
+import { Action } from '../enums';
+
 import {
   HitArtifact,
   Artifact,
   ResizingSettings,
   LevelSettings,
 } from '../models';
+
 import {
   AnimationsService,
   ArtifactsService,
   CollisionService,
   ElementsService,
   LevelService,
-  PlayersService,
 } from '../services';
+
 import { NORMAL_RESIZING } from '../store';
 
 @Directive({

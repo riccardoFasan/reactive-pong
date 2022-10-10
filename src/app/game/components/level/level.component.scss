@@ -4,7 +4,7 @@
 .page {
   @include mixins.flex-column;
   div {
-    @include mixins.flex-column(start);
+    @include mixins.flex-column(flex-start);
     button {
       display: inline-block;
       &:not(:last-child) {

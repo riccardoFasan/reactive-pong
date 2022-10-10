@@ -1,0 +1,10 @@
+@use "abstracts/functions" as functions;
+@use "abstracts/mixins" as mixins;
+
+.page {
+  @include mixins.flex-column;
+  .selects-container {
+    margin: 0 auto;
+    width: functions.responsive-size(20rem, 25rem, 42.3vw);
+  }
+}

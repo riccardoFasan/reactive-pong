@@ -9,9 +9,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { filter } from 'rxjs/operators';
+import { HalfField } from 'src/app/shared/enums';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { GameStatus, HalfField } from '../enums';
+import { GameStatus } from '../enums';
 import { PaddleController } from '../interfaces';
 import { ElementsService, GameControlsService } from '../services';
 

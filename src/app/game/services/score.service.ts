@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Player } from '../enums';
+import { Player } from 'src/app/shared/enums';
 import { Score } from '../models/score.model';
 
 @Injectable({

@@ -4,7 +4,7 @@
 .page {
   @include mixins.flex-column;
   nav {
-    @include mixins.flex-column(start);
+    @include mixins.flex-column(flex-start);
     a {
       padding-bottom: functions.responsive-size(2.33rem, 2.66rem, 2.875vw);
     }

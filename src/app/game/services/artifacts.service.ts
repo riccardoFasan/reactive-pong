@@ -3,13 +3,9 @@ import { Observable } from 'rxjs';
 import { filter, map, share } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Artifact, HitArtifact } from '../models';
-import {
-  GameControlsService,
-  BallDirectionService,
-  PlayersService,
-  ElementsService,
-} from '.';
-import { HalfField, Player } from '../enums';
+import { GameControlsService, BallDirectionService, ElementsService } from '.';
+import { HalfField, Player } from 'src/app/shared/enums';
+import { PlayersService } from 'src/app/shared/services';
 
 @Injectable({
   providedIn: 'root',

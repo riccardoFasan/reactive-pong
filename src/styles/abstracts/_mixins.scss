@@ -4,3 +4,10 @@
   flex-direction: column;
   justify-content: $justify;
 }
+
+@mixin flex-row($justify: space-between) {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: $justify;
+}

@@ -1,0 +1,15 @@
+@use "abstracts/mixins" as mixins;
+@use "abstracts/functions" as functions;
+
+.select {
+  @include mixins.flex-row();
+
+  label {
+    display: inline-block;
+  }
+
+  label,
+  button {
+    font-size: functions.responsive-size(0.75rem, 0.85rem, 0.24vw);
+  }
+}

@@ -11,9 +11,11 @@ import {
 } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { filter, first, map, throttleTime } from 'rxjs/operators';
+import { HalfField, Player } from 'src/app/shared/enums';
+import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady, sleep } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action, Collision, HalfField, Player } from '../../enums';
+import { Action, Collision } from '../../enums';
 import { HitArtifact, LevelSettings } from '../../models';
 import {
   AnimationsService,
@@ -21,7 +23,6 @@ import {
   CollisionService,
   ElementsService,
   LevelService,
-  PlayersService,
 } from '../../services';
 import { NORMAL_LEVEL } from '../../store';
 

@@ -1,4 +1,4 @@
-import { Player } from '../enums';
+import { Player } from 'src/app/shared/enums';
 import { Artifact } from './artifact.model';
 
 export interface HitArtifact {
