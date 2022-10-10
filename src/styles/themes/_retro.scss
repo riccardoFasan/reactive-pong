@@ -1,5 +1,89 @@
+@use "abstracts/functions" as functions;
+
+@import url("https://fonts.googleapis.com/css2?family=Monoton&family=Press+Start+2P&display=swap");
+
 .retro-theme {
-  .page {
-    background-color: red;
+  $font-title: "Monoton", cursive;
+  $font-text: "Press Start 2P", monospace;
+  $retro-black: #090b0d;
+
+  font-family: $font-text;
+
+  button {
+    text-transform: uppercase;
   }
+
+  .ion-page {
+    width: 100%;
+    height: 100vh;
+
+    .page {
+      --angle: 0deg;
+      border: 4px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(
+        var(--angle),
+        #ff0000 5%,
+        #ff8a00 15%,
+        #faff00 30%,
+        #52ff00 40%,
+        #00ffc2 50%,
+        #0047ff 70%,
+        #7000ff 85%,
+        #fa00ff 95%
+      );
+      filter: brightness(1.33);
+
+      animation: 6.6s animate-border linear infinite;
+      background-color: $retro-black;
+
+      &.home .logo {
+        height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
+        width: functions.responsive-size(15rem, 25rem, 40vw);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("../../assets/icons/retropong-title.svg");
+        margin-top: -9px; // adjust with page padding
+      }
+
+      .select {
+        button {
+          position: relative;
+          &::before,
+          &::after {
+            position: absolute;
+            font-size: 0.66rem;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          &::after {
+            content: ">";
+            right: -1rem;
+          }
+
+          &::before {
+            content: "<";
+            left: -1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes animate-border {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }

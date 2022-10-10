@@ -1,25 +1,27 @@
-<app-game-bar></app-game-bar>
-<div class="playground" #ground>
-  <app-paddle
-    appComputerController
-    appResizePaddle
-    *ngIf="opponentField$ | async as field"
-    [halfField]="field"
-  ></app-paddle>
-  <app-ball></app-ball>
-  <app-paddle
-    appUserController
-    appResizePaddle
-    *ngIf="userField$ | async as field"
-    [halfField]="field"
-  ></app-paddle>
-  <ng-template appRandomArtifactsGenerator></ng-template>
-  <app-shield
-    *ngIf="opponentField$ | async as field"
-    [halfField]="field"
-  ></app-shield>
-  <app-shield
-    *ngIf="userField$ | async as field"
-    [halfField]="field"
-  ></app-shield>
-</div>
+<main class="page">
+  <app-game-bar></app-game-bar>
+  <div class="playground" #ground>
+    <app-paddle
+      appComputerController
+      appResizePaddle
+      *ngIf="opponentField$ | async as field"
+      [halfField]="field"
+    ></app-paddle>
+    <app-ball></app-ball>
+    <app-paddle
+      appUserController
+      appResizePaddle
+      *ngIf="userField$ | async as field"
+      [halfField]="field"
+    ></app-paddle>
+    <ng-template appRandomArtifactsGenerator></ng-template>
+    <app-shield
+      *ngIf="opponentField$ | async as field"
+      [halfField]="field"
+    ></app-shield>
+    <app-shield
+      *ngIf="userField$ | async as field"
+      [halfField]="field"
+    ></app-shield>
+  </div>
+</main>
