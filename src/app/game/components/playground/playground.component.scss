@@ -3,8 +3,7 @@
 $grid-size: 19vh;
 
 main {
-  padding: 2rem 3.75rem;
-  position: relative;
+  padding: 0 3.75rem;
   background: colors.$black;
 
   $playground-border-width: 1px;
@@ -19,14 +18,5 @@ main {
   .playground {
     position: relative;
     height: 100%;
-    border-top: calc($playground-border-width * 2) solid
-      rgba(colors.$white, 0.66);
-    border-bottom: calc($playground-border-width * 2) solid
-      rgba(colors.$white, 0.66);
-    border-left: calc($playground-border-width * 3) dashed
-      rgba(colors.$white, 0.66);
-    border-right: calc($playground-border-width * 3) dashed
-      rgba(colors.$white, 0.66);
-    border-radius: 1rem;
   }
 }

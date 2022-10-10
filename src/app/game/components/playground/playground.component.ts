@@ -12,7 +12,6 @@ import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision } from '../../enums';
-import { Fields } from '../../models';
 import {
   AnimationsService,
   CollisionService,
