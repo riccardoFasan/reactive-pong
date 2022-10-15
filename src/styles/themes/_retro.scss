@@ -6,18 +6,78 @@
 $font-title: "Monoton", cursive;
 $font-text: "Press Start 2P", monospace;
 $retro-black: #090b0d;
+$retro-white: #fbfeff;
 $playground-border-width: 2px;
 
 .retro-theme {
   font-family: $font-text;
+  color: $retro-white;
 
+  &,
   button {
-    text-transform: uppercase;
+    font-family: $font-text;
+    color: $retro-white;
+  }
+
+  ion-alert .alert-wrapper {
+    background-color: $retro-black;
+    padding: 0.5rem 2rem;
+    text-align: center;
+    .alert-head {
+      margin-bottom: 1.33rem;
+      h2 {
+        font-family: $font-text;
+        text-transform: lowercase;
+        font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
+      }
+    }
+    .alert-button-group {
+      flex-direction: column;
+      button {
+        border: 0;
+        text-transform: uppercase;
+        font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
+        color: $retro-white;
+        display: block;
+        span {
+          justify-content: center;
+        }
+      }
+    }
   }
 
   .ion-page {
     width: 100%;
     height: 100vh;
+
+    button {
+      text-transform: uppercase;
+    }
+
+    app-game-bar {
+      ion-list.game-bar {
+        background-color: transparent;
+        padding: 0;
+        border: 0;
+
+        ion-item {
+          &:nth-child(2) {
+            margin: 0 2vw;
+          }
+
+          button,
+          ion-badge {
+            font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+          }
+
+          ion-badge {
+            font-family: $font-text;
+            background-color: transparent;
+            color: $retro-white;
+          }
+        }
+      }
+    }
 
     .page {
       --angle: 0deg;
@@ -75,17 +135,24 @@ $playground-border-width: 2px;
         }
       }
 
-      .playground::after {
-        content: "";
-        height: 100%;
-        position: absolute;
-        width: $playground-border-width;
-        top: 0;
-        left: calc(50% - $playground-border-width);
-        transform: translateX(-50%);
-        background-color: transparent;
-        border-right: calc($playground-border-width * 1.5) dashed;
-        border-color: rgba(colors.$white, 0.2);
+      .playground {
+        &::after {
+          content: "";
+          height: 100%;
+          position: absolute;
+          width: $playground-border-width;
+          top: 0;
+          left: calc(50% - $playground-border-width);
+          transform: translateX(-50%);
+          background-color: transparent;
+          border-right: calc($playground-border-width * 1.5) dashed;
+          border-color: rgba(colors.$white, 0.2);
+        }
+
+        app-paddle div,
+        app-ball div {
+          background-color: $retro-white;
+        }
       }
     }
   }

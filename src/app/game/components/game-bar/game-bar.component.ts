@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Player } from 'src/app/shared/enums';
@@ -24,7 +25,8 @@ export class GameBarComponent implements OnDestroy {
     private score: ScoreService,
     private controls: GameControlsService,
     private alertController: AlertController,
-    private players: PlayersService
+    private players: PlayersService,
+    private router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -57,7 +59,7 @@ export class GameBarComponent implements OnDestroy {
       (winner: Player) => {
         this.stop();
         const message: string =
-          winner === this.players.user ? 'You won' : 'Game lost';
+          winner === this.players.user ? 'Victory' : 'Game over';
         this.openGameOverAlert(message);
       }
     );
@@ -65,8 +67,7 @@ export class GameBarComponent implements OnDestroy {
 
   private async openGameOverAlert(message: string): Promise<void> {
     const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Game Over',
-      subHeader: message,
+      header: message,
       buttons: ['OK'],
     });
     await alert.present();
@@ -75,14 +76,13 @@ export class GameBarComponent implements OnDestroy {
   private async openPauseAlert(): Promise<void> {
     const alert: HTMLIonAlertElement = await this.alertController.create({
       header: 'Pause',
-      message:
-        'The game is paused. Choose whether to resume the game from where it left off or close the game.',
       buttons: [
         {
           text: 'Stop',
           role: 'destructive',
           handler: () => {
             this.stop();
+            this.router.navigateByUrl('/home');
           },
         },
         {
