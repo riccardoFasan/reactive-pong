@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
-import { isIonicReady } from 'src/utilities';
+import { isIonicReady, sleep } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus } from '../../enums';
 import { Score } from '../../models';
@@ -18,7 +18,7 @@ import {
   templateUrl: './game-bar.component.html',
   styleUrls: ['./game-bar.component.scss'],
 })
-export class GameBarComponent implements AfterViewInit, OnDestroy {
+export class GameBarComponent implements OnDestroy {
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
   points$: Observable<Score> = this.score.scoreChanged$;
 
@@ -32,13 +32,14 @@ export class GameBarComponent implements AfterViewInit, OnDestroy {
     private alerts: AlertsService
   ) {}
 
-  async ngAfterViewInit(): Promise<void> {
-    await isIonicReady();
-    this.start();
-  }
-
   ngOnDestroy(): void {
     this.quit();
+  }
+
+  async start(): Promise<void> {
+    await isIonicReady();
+    this.controls.start();
+    this.onGameOver();
   }
 
   pause(): void {
@@ -47,11 +48,6 @@ export class GameBarComponent implements AfterViewInit, OnDestroy {
       { text: 'Quit', role: 'destructive', handler: () => this.quit() },
       { text: 'Play again', role: 'confirm', handler: () => this.resume() },
     ]);
-  }
-
-  private start(): void {
-    this.controls.start();
-    this.onGameOver();
   }
 
   private quit(): void {

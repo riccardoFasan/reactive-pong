@@ -7,16 +7,8 @@
     </ion-badge>
   </ion-item>
   <ion-item lines="none" *ngIf="gameStatus$ | async as status">
-    <button
-      (click)="pause()"
-      *ngIf="status !== 'STOPPED'"
-      fill="outline"
-      color="primary"
-      expand="block"
-      size="defualt"
-    >
-      Pause
-    </button>
+    <button (click)="start()" *ngIf="status === 'STOPPED'">Start</button>
+    <button (click)="pause()" *ngIf="status !== 'STOPPED'">Pause</button>
   </ion-item>
   <ion-item lines="none">
     <ion-badge
