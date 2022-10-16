@@ -5,7 +5,15 @@ import {
   OnDestroy,
   ViewContainerRef,
 } from '@angular/core';
-import { combineLatest, interval, Observable, race, timer } from 'rxjs';
+import {
+  combineLatest,
+  EMPTY,
+  iif,
+  interval,
+  Observable,
+  race,
+  timer,
+} from 'rxjs';
 import { filter, first, map, switchMap, tap } from 'rxjs/operators';
 import {
   generator,
@@ -154,7 +162,15 @@ export class RandomArtifactsGeneratorDirective
   ): void {
     this.subSink.sink = race([
       this.onActivation(componentRef),
-      timer(this.timing.profitTime).pipe(first()),
+      this.controls.statusChanged$.pipe(
+        switchMap((status: GameStatus) =>
+          iif(
+            () => status === GameStatus.Running,
+            timer(this.timing.profitTime).pipe(first()),
+            EMPTY
+          )
+        )
+      ),
     ]).subscribe(() => {
       componentRef.destroy();
     });
