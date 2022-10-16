@@ -153,15 +153,6 @@ $gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
         app-artifact {
           max-width: 1.75rem;
           span {
-            position: relative;
-            &::before {
-              content: "";
-              position: absolute;
-              height: 100%;
-              width: 100%;
-              background-color: linear-gradient($gradient);
-              filter: blur(1rem);
-            }
             $icons: ("enlarge", "reduce", "shield");
             @each $icon in $icons {
               &.#{$icon} {

@@ -1,6 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
@@ -8,14 +7,18 @@ import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus } from '../../enums';
 import { Score } from '../../models';
-import { GameControlsService, ScoreService } from '../../services';
+import {
+  AlertsService,
+  GameControlsService,
+  ScoreService,
+} from '../../services';
 
 @Component({
   selector: 'app-game-bar',
   templateUrl: './game-bar.component.html',
   styleUrls: ['./game-bar.component.scss'],
 })
-export class GameBarComponent implements OnDestroy {
+export class GameBarComponent implements AfterViewInit, OnDestroy {
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
   points$: Observable<Score> = this.score.scoreChanged$;
 
@@ -24,30 +27,46 @@ export class GameBarComponent implements OnDestroy {
   constructor(
     private score: ScoreService,
     private controls: GameControlsService,
-    private alertController: AlertController,
     private players: PlayersService,
-    private router: Router
+    private router: Router,
+    private alerts: AlertsService
   ) {}
 
-  ngOnDestroy(): void {
-    this.stop();
+  async ngAfterViewInit(): Promise<void> {
+    await isIonicReady();
+    this.start();
   }
 
-  async start(): Promise<void> {
-    await isIonicReady();
-    this.controls.start();
-    this.onGameOver();
+  ngOnDestroy(): void {
+    this.quit();
   }
 
   pause(): void {
     this.controls.pause();
-    this.openPauseAlert();
+    this.alerts.renderAlert('Resume', [
+      { text: 'Quit', role: 'destructive', handler: () => this.quit() },
+      { text: 'Play again', role: 'confirm', handler: () => this.resume() },
+    ]);
+  }
+
+  private start(): void {
+    this.controls.start();
+    this.onGameOver();
+  }
+
+  private quit(): void {
+    this.stop();
+    this.backToHome();
   }
 
   private stop(): void {
     this.controls.stop();
     this.score.resetScore();
     this.subSink.unsubscribe();
+  }
+
+  private backToHome(): void {
+    this.router.navigateByUrl('/home');
   }
 
   private resume(): void {
@@ -60,40 +79,15 @@ export class GameBarComponent implements OnDestroy {
         this.stop();
         const message: string =
           winner === this.players.user ? 'Victory' : 'Game over';
-        this.openGameOverAlert(message);
+        this.alerts.renderAlert(message, [
+          {
+            text: 'Quit',
+            role: 'destructive',
+            handler: () => this.backToHome(),
+          },
+          { text: 'Play again', role: 'confirm', handler: () => this.start() },
+        ]);
       }
     );
-  }
-
-  private async openGameOverAlert(message: string): Promise<void> {
-    const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: message,
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  private async openPauseAlert(): Promise<void> {
-    const alert: HTMLIonAlertElement = await this.alertController.create({
-      header: 'Pause',
-      buttons: [
-        {
-          text: 'Stop',
-          role: 'destructive',
-          handler: () => {
-            this.stop();
-            this.router.navigateByUrl('/home');
-          },
-        },
-        {
-          text: 'Resume',
-          role: 'confirm',
-          handler: () => {
-            this.resume();
-          },
-        },
-      ],
-    });
-    await alert.present();
   }
 }
