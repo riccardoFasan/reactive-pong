@@ -9,18 +9,14 @@ import { sleep } from 'src/utilities';
 export class AnimationsService {
   constructor(private animations: AnimationController) {}
 
-  animateBorder(ground: HTMLElement, halfField: HalfField): void {
-    const property: string =
-      halfField === HalfField.Left ? 'borderLeft' : 'borderRight';
-    this.animations
-      .create()
-      .addElement(ground)
-      .easing('ease')
-      .duration(300)
-      .iterations(3)
-      .to(property, 'calc(1px * 3) dashed #ef1010')
-      .fill('none')
-      .play();
+  async animateBorder(
+    ground: HTMLElement,
+    halfField: HalfField
+  ): Promise<void> {
+    // const className:string = `border-fade-${halfField === HalfField.Left ? 'left' : 'right'}`
+    // ground.classList.add(className);
+    // await sleep(200);
+    // ground.classList.remove(className);
   }
 
   async fadePaddle(paddle: HTMLElement): Promise<void> {

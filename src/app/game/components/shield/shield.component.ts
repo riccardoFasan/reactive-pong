@@ -9,19 +9,20 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { filter, first, map, throttleTime } from 'rxjs/operators';
+import { EMPTY, iif, Observable, timer } from 'rxjs';
+import { filter, first, map, switchMap, throttleTime } from 'rxjs/operators';
 import { HalfField, Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady, sleep } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action, Collision } from '../../enums';
+import { Action, Collision, GameStatus } from '../../enums';
 import { HitArtifact, LevelSettings } from '../../models';
 import {
   AnimationsService,
   ArtifactsService,
   CollisionService,
   ElementsService,
+  GameControlsService,
   LevelService,
 } from '../../services';
 import { NORMAL_LEVEL } from '../../store';
@@ -58,7 +59,8 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
     private players: PlayersService,
     private level: LevelService,
     private animations: AnimationsService,
-    private elements: ElementsService
+    private elements: ElementsService,
+    private controls: GameControlsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -144,8 +146,16 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private onShieldDestroy(): void {
-    this.subSink.sink = timer(this.duration)
-      .pipe(first())
+    this.subSink.sink = this.controls.statusChanged$
+      .pipe(
+        switchMap((status: GameStatus) =>
+          iif(
+            () => status === GameStatus.Running,
+            timer(this.duration).pipe(first()),
+            EMPTY
+          )
+        )
+      )
       .subscribe(() => this.turnDown());
   }
 
