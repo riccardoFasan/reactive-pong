@@ -1,3 +1,5 @@
+@use "abstracts/colors" as colors;
+
 @mixin flex-column($justify: space-between) {
   display: flex;
   align-items: center;
@@ -10,4 +12,13 @@
   align-items: center;
   flex-direction: row;
   justify-content: $justify;
+}
+
+@mixin icon($icon) {
+  display: inline-block;
+  background-color: colors.$white;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-image: url("^assets/icons/#{$icon}.svg");
 }

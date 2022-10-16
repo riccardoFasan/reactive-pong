@@ -3,18 +3,12 @@
 
 :host {
   width: 3.5%;
-  max-width: 18px;
+  max-width: 20px;
   position: absolute;
   transform: translate(-50%, 50%);
   aspect-ratio: 1/1;
-
-  & > div {
+  span {
     width: 100%;
     height: 100%;
-    border-radius: 40%;
-    background-color: rgba(colors.$white, 0.5);
-    border: 1px solid colors.$white;
-
-    @include mixins.flex-row(center);
   }
 }

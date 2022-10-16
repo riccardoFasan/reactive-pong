@@ -132,7 +132,7 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private canActivate(hitArtifact: HitArtifact): boolean {
     return (
-      hitArtifact.artifact.action === Action.Shields &&
+      hitArtifact.artifact.action === Action.Shield &&
       hitArtifact.player === this.player
     );
   }
