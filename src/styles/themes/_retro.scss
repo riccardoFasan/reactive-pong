@@ -10,8 +10,8 @@ $retro-black: #090b0d;
 $retro-white: #fbfeff;
 $playground-border-width: 2px;
 
-$gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
-  #0047ff 70%, #7000ff 85%, #fa00ff 95%;
+$gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
+  #0047ff 62.5%, #7000ff 75%, #fa00ff 87.5%, #ff0000 100%;
 
 .retro-theme {
   font-family: $font-text;
@@ -27,8 +27,10 @@ $gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
     background-color: $retro-black;
     padding: 0.5rem 2rem;
     text-align: center;
+
     .alert-head {
       margin-bottom: 1.33rem;
+
       h2 {
         font-family: $font-text;
         text-transform: lowercase;
@@ -36,14 +38,17 @@ $gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
         text-align: center;
       }
     }
+
     .alert-button-group {
       flex-direction: column;
+
       button {
         border: 0;
         text-transform: uppercase;
         font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
         color: $retro-white;
         display: block;
+
         span {
           justify-content: center;
         }
@@ -85,13 +90,29 @@ $gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
     }
 
     .page {
-      --angle: 0deg;
-      border: 4px solid;
-      border-image-slice: 1;
-      border-image-source: linear-gradient(var(--angle), $gradient);
+      position: relative;
       filter: brightness(1.33);
-      animation: 6.6s animate-border linear infinite;
       background-color: $retro-black;
+
+      &,
+      &::before {
+        --angle: 0deg;
+        width: 100%;
+        height: 100%;
+        border: 4px solid;
+        border-image-slice: 1;
+        border-image-source: conic-gradient(from var(--angle), $gradient);
+        animation: 6s animate-border linear infinite;
+      }
+
+      &::before {
+        content: "";
+        filter: blur(1rem);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
 
       &.home .logo {
         height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
@@ -110,6 +131,7 @@ $gradient: #ff0000 5%, #ff8a00 15%, #faff00 30%, #52ff00 40%, #00ffc2 50%,
       .select {
         button {
           position: relative;
+
           &::before,
           &::after {
             position: absolute;
