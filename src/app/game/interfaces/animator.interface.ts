@@ -1,8 +1,7 @@
 import { HalfField } from 'src/app/shared/enums';
 
-export interface Animations {
+export interface Animator {
   animateBorder(ground: HTMLElement, halfField: HalfField): void;
-
   fadePaddle(paddle: HTMLElement): void;
   resizePaddle(
     paddle: HTMLElement,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HalfField, Theme } from 'src/app/shared/enums';
 import { ThemeManagerService } from 'src/app/shared/services';
+import { Animator } from '../interfaces';
 import { NeonAnimationsService } from './neon-animations.service';
 import { RetroAnimationsService } from './retro-animations.service';
 
@@ -14,20 +15,17 @@ export class AnimationsService {
     private neon: NeonAnimationsService
   ) {}
 
+  private get themeAnimator(): Animator {
+    if (this.themeManager.theme === Theme.Retro) return this.retro;
+    return this.neon;
+  }
+
   animateBorder(ground: HTMLElement, halfField: HalfField): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.animateBorder(ground, halfField);
-      return;
-    }
-    this.neon.animateBorder(ground, halfField);
+    this.themeAnimator.animateBorder(ground, halfField);
   }
 
   fadePaddle(paddle: HTMLElement): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.fadePaddle(paddle);
-      return;
-    }
-    this.neon.fadePaddle(paddle);
+    this.themeAnimator.fadePaddle(paddle);
   }
 
   resizePaddle(
@@ -36,42 +34,22 @@ export class AnimationsService {
     targetHeight: number,
     defaultHeight: number
   ): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.resizePaddle(paddle, delay, targetHeight, defaultHeight);
-      return;
-    }
-    this.neon.resizePaddle(paddle, delay, targetHeight, defaultHeight);
+    this.themeAnimator.resizePaddle(paddle, delay, targetHeight, defaultHeight);
   }
 
   setPaddleHeight(paddle: HTMLElement, height: number): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.setPaddleHeight(paddle, height);
-      return;
-    }
-    this.neon.setPaddleHeight(paddle, height);
+    this.themeAnimator.setPaddleHeight(paddle, height);
   }
 
   fadeShield(shield: HTMLElement): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.fadeShield(shield);
-      return;
-    }
-    this.neon.fadeShield(shield);
+    this.themeAnimator.fadeShield(shield);
   }
 
   turnUpShield(shield: HTMLElement): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.turnUpShield(shield);
-      return;
-    }
-    this.neon.turnUpShield(shield);
+    this.themeAnimator.turnUpShield(shield);
   }
 
   turnDownShield(shield: HTMLElement): void {
-    if (this.themeManager.theme === Theme.Retro) {
-      this.retro.turnDownShield(shield);
-      return;
-    }
-    this.neon.turnDownShield(shield);
+    this.themeAnimator.turnDownShield(shield);
   }
 }

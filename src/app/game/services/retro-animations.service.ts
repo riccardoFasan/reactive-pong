@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Animation, AnimationController } from '@ionic/angular';
 import { HalfField } from 'src/app/shared/enums';
-import { Animations } from '../interfaces';
+import { Animator } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RetroAnimationsService implements Animations {
+export class RetroAnimationsService implements Animator {
   constructor(private animationController: AnimationController) {}
 
   animateBorder(ground: HTMLElement, halfField: HalfField): void {
