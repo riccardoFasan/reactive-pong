@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Animation, AnimationController } from '@ionic/angular';
-import { HalfField } from 'src/app/shared/enums';
-import { sleep } from 'src/utilities';
+import { HalfField, Theme } from 'src/app/shared/enums';
+import { ThemeManagerService } from 'src/app/shared/services';
+import { NeonAnimationsService } from './neon-animations.service';
+import { RetroAnimationsService } from './retro-animations.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnimationsService {
-  constructor(private animations: AnimationController) {}
+  constructor(
+    private themeManager: ThemeManagerService,
+    private retro: RetroAnimationsService,
+    private neon: NeonAnimationsService
+  ) {}
 
-  async animateBorder(
-    ground: HTMLElement,
-    halfField: HalfField
-  ): Promise<void> {
-    // const className:string = `border-fade-${halfField === HalfField.Left ? 'left' : 'right'}`
-    // ground.classList.add(className);
-    // await sleep(200);
-    // ground.classList.remove(className);
+  animateBorder(ground: HTMLElement, halfField: HalfField): void {
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.animateBorder(ground, halfField);
+      return;
+    }
+    this.neon.animateBorder(ground, halfField);
   }
 
-  async fadePaddle(paddle: HTMLElement): Promise<void> {
-    // paddle.classList.add('hit');
-    // await sleep(200);
-    // paddle.classList.remove('hit');
+  fadePaddle(paddle: HTMLElement): void {
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.fadePaddle(paddle);
+      return;
+    }
+    this.neon.fadePaddle(paddle);
   }
 
   resizePaddle(
@@ -31,77 +36,42 @@ export class AnimationsService {
     targetHeight: number,
     defaultHeight: number
   ): void {
-    const resize: Animation = this.animations
-      .create()
-      .addElement(paddle)
-      .duration(200)
-      .easing('ease')
-      .to('height', `${targetHeight}px`)
-      .fill('forwards');
-
-    const reset: Animation = this.animations
-      .create()
-      .addElement(paddle)
-      .duration(200)
-      .easing('ease')
-      .delay(delay)
-      .to('height', `${defaultHeight}px`)
-      .fill('forwards');
-
-    this.animations.create().addAnimation(resize).addAnimation(reset).play();
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.resizePaddle(paddle, delay, targetHeight, defaultHeight);
+      return;
+    }
+    this.neon.resizePaddle(paddle, delay, targetHeight, defaultHeight);
   }
 
   setPaddleHeight(paddle: HTMLElement, height: number): void {
-    this.animations
-      .create()
-      .addElement(paddle)
-      .duration(200)
-      .easing('ease')
-      .to('height', `${height}px`)
-      .fill('forwards')
-      .play();
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.setPaddleHeight(paddle, height);
+      return;
+    }
+    this.neon.setPaddleHeight(paddle, height);
   }
 
   fadeShield(shield: HTMLElement): void {
-    this.animations
-      .create()
-      .addElement(shield)
-      .easing('ease')
-      .duration(300)
-      .iterations(3)
-      .keyframes([
-        {
-          offset: 0,
-          backgroundColor: 'var(--ion-color-dark)',
-        },
-        {
-          offset: 1,
-          backgroundColor: 'var(--ion-color-success)',
-        },
-      ])
-      .fill('none')
-      .play();
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.fadeShield(shield);
+      return;
+    }
+    this.neon.fadeShield(shield);
   }
 
   turnUpShield(shield: HTMLElement): void {
-    this.animations
-      .create()
-      .addElement(shield)
-      .duration(200)
-      .easing('ease')
-      .to('opacity', 0.75)
-      .fill('forwards')
-      .play();
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.turnUpShield(shield);
+      return;
+    }
+    this.neon.turnUpShield(shield);
   }
 
   turnDownShield(shield: HTMLElement): void {
-    this.animations
-      .create()
-      .addElement(shield)
-      .duration(200)
-      .easing('ease')
-      .to('opacity', 0)
-      .fill('forwards')
-      .play();
+    if (this.themeManager.theme === Theme.Retro) {
+      this.retro.turnDownShield(shield);
+      return;
+    }
+    this.neon.turnDownShield(shield);
   }
 }

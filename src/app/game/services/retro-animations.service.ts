@@ -18,8 +18,7 @@ export class RetroAnimationsService implements Animations {
   }
 
   fadePaddle(paddle: HTMLElement): void {
-    paddle.classList.add('hit');
-    paddle.classList.remove('hit');
+    console.log('retro fade');
   }
 
   resizePaddle(
