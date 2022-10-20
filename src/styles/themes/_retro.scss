@@ -51,6 +51,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
 
         span {
           justify-content: center;
+          text-align: center;
         }
       }
     }
@@ -186,10 +187,14 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
         }
 
         app-shield div {
-          width: 1px;
-          background-color: transparent;
-          border-left: clamp(0.2rem, 0.33vw, 0.5rem) dashed;
-          border-color: $retro-white;
+          width: clamp(0.2rem, 0.33vw, 0.5rem);
+          background: repeating-linear-gradient(
+            0,
+            transparent,
+            transparent 4vh,
+            $retro-white 4vh,
+            $retro-white 8vh
+          );
         }
       }
     }
