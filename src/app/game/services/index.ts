@@ -8,3 +8,5 @@ export * from './artifacts.service';
 export * from './animations.service';
 export * from './game-controls.service';
 export * from './ball-direction.service';
+export * from './neon-animations.service';
+export * from './retro-animations.service';
