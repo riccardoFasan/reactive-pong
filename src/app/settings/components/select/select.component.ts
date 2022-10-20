@@ -27,7 +27,7 @@ export class SelectComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selected']) {
+    if (changes['value']) {
       this.currentIndex = this.options.findIndex((o) => o.value === this.value);
     }
   }
