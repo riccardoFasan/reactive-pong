@@ -11,7 +11,7 @@ import { HalfField } from 'src/app/shared/enums';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision } from '../../enums';
-import { AnimationsService, CollisionService } from '../../services';
+import { AnimatorService, CollisionService } from '../../services';
 
 @Component({
   selector: 'app-paddle',
@@ -26,7 +26,7 @@ export class PaddleComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private collision: CollisionService,
-    private animations: AnimationsService
+    private animator: AnimatorService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -49,6 +49,6 @@ export class PaddleComponent implements AfterViewInit, OnDestroy {
       .pipe(
         filter((collision: Collision) => collision === this.paddleCollision)
       )
-      .subscribe(() => this.animations.fadePaddle(this.paddle.nativeElement));
+      .subscribe(() => this.animator.fadePaddle(this.paddle.nativeElement));
   }
 }

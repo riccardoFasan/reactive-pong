@@ -219,6 +219,12 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
           );
         }
       }
+
+      .goal {
+        font-size: functions.responsive-size(2.75rem, 3.5rem, 3vw);
+        text-transform: uppercase;
+        transform: scale(0);
+      }
     }
   }
 }

@@ -13,4 +13,5 @@ export interface Animator {
   fadeShield(shield: HTMLElement): void;
   turnUpShield(shield: HTMLElement): void;
   turnDownShield(shield: HTMLElement): void;
+  writeGoal(): void;
 }

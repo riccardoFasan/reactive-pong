@@ -20,7 +20,7 @@ import {
 } from '../models';
 
 import {
-  AnimationsService,
+  AnimatorService,
   ArtifactsService,
   CollisionService,
   ElementsService,
@@ -44,7 +44,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
   constructor(
     private players: PlayersService,
     private artifacts: ArtifactsService,
-    private animations: AnimationsService,
+    private animator: AnimatorService,
     private ref: ElementRef,
     private collision: CollisionService,
     private level: LevelService,
@@ -97,10 +97,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
 
   private onGoal(): void {
     this.subSink.sink = this.collision.onGatesCollision$.subscribe(() =>
-      this.animations.setPaddleHeight(
-        this.ref.nativeElement,
-        this.defaultHeight
-      )
+      this.animator.setPaddleHeight(this.ref.nativeElement, this.defaultHeight)
     );
   }
 
@@ -127,7 +124,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
       action === Action.Enlarge
         ? this.currentHeight + this.scalingDifference
         : this.currentHeight - this.scalingDifference;
-    this.animations.resizePaddle(
+    this.animator.resizePaddle(
       this.ref.nativeElement,
       this.settings.duration,
       targetHeight,

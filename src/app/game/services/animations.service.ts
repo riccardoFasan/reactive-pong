@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { HalfField, Theme } from 'src/app/shared/enums';
 import { ThemeManagerService } from 'src/app/shared/services';
 import { Animator } from '../interfaces';
-import { NeonAnimationsService } from './neon-animations.service';
-import { RetroAnimationsService } from './retro-animations.service';
+import { NeonAnimatorService } from './neon-animations.service';
+import { RetroAnimatorService } from './retro-animations.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AnimationsService {
+export class AnimatorService implements Animator {
   constructor(
     private themeManager: ThemeManagerService,
-    private retro: RetroAnimationsService,
-    private neon: NeonAnimationsService
+    private retro: RetroAnimatorService,
+    private neon: NeonAnimatorService
   ) {}
 
   private get themeAnimator(): Animator {
@@ -51,5 +51,9 @@ export class AnimationsService {
 
   turnDownShield(shield: HTMLElement): void {
     this.themeAnimator.turnDownShield(shield);
+  }
+
+  writeGoal(): void {
+    this.themeAnimator.writeGoal();
   }
 }

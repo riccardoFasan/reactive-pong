@@ -6,7 +6,7 @@ import { Animator } from '../interfaces';
 @Injectable({
   providedIn: 'root',
 })
-export class NeonAnimationsService implements Animator {
+export class NeonAnimatorService implements Animator {
   constructor(private controller: AnimationController) {}
 
   animateBorder(ground: HTMLElement, halfField: HalfField): void {}
@@ -29,4 +29,6 @@ export class NeonAnimationsService implements Animator {
   turnUpShield(shield: HTMLElement): void {}
 
   turnDownShield(shield: HTMLElement): void {}
+
+  writeGoal(): void {}
 }

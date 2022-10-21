@@ -13,7 +13,7 @@ import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision } from '../../enums';
 import {
-  AnimationsService,
+  AnimatorService,
   CollisionService,
   GoalService,
   ElementsService,
@@ -34,7 +34,7 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private players: PlayersService,
-    private animations: AnimationsService,
+    private animator: AnimatorService,
     private collision: CollisionService,
     private goal: GoalService,
     private elements: ElementsService
@@ -63,7 +63,8 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
         )
       )
       .subscribe((halfField: HalfField) => {
-        this.animations.animateBorder(this.groundRef.nativeElement, halfField);
+        this.animator.animateBorder(this.groundRef.nativeElement, halfField);
+        this.animator.writeGoal();
       });
   }
 }

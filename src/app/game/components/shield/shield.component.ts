@@ -18,7 +18,7 @@ import { SubSink } from 'subsink';
 import { Action, Collision, GameStatus } from '../../enums';
 import { HitArtifact, LevelSettings } from '../../models';
 import {
-  AnimationsService,
+  AnimatorService,
   ArtifactsService,
   CollisionService,
   ElementsService,
@@ -58,7 +58,7 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
     private artifacts: ArtifactsService,
     private players: PlayersService,
     private level: LevelService,
-    private animations: AnimationsService,
+    private animator: AnimatorService,
     private elements: ElementsService,
     private controls: GameControlsService
   ) {}
@@ -141,7 +141,7 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private turnUp(): void {
     this.registerShield();
-    this.animations.turnUpShield(this.ref.nativeElement);
+    this.animator.turnUpShield(this.ref.nativeElement);
     this.onShieldDestroy();
   }
 
@@ -161,11 +161,11 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private turnDown(): void {
     this.unRegisterShield();
-    this.animations.turnDownShield(this.ref.nativeElement);
+    this.animator.turnDownShield(this.ref.nativeElement);
   }
 
   private fade(): void {
-    this.animations.fadeShield(this.ref.nativeElement);
+    this.animator.fadeShield(this.ref.nativeElement);
   }
 
   private registerShield(): void {
