@@ -142,10 +142,10 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
   private turnUp(): void {
     this.registerShield();
     this.animator.turnUpShield(this.ref.nativeElement);
-    this.onShieldDestroy();
+    this.onEffectFinished();
   }
 
-  private onShieldDestroy(): void {
+  private onEffectFinished(): void {
     this.subSink.sink = this.controls.statusChanged$
       .pipe(
         switchMap((status: GameStatus) =>

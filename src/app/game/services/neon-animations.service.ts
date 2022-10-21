@@ -15,13 +15,6 @@ export class NeonAnimatorService implements Animator {
     console.log('neon fade');
   }
 
-  resizePaddle(
-    paddle: HTMLElement,
-    delay: number,
-    targetHeight: number,
-    defaultHeight: number
-  ): void {}
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {}
 
   fadeShield(shield: HTMLElement): void {}

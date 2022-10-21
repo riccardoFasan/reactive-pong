@@ -28,15 +28,6 @@ export class AnimatorService implements Animator {
     this.themeAnimator.fadePaddle(paddle);
   }
 
-  resizePaddle(
-    paddle: HTMLElement,
-    delay: number,
-    targetHeight: number,
-    defaultHeight: number
-  ): void {
-    this.themeAnimator.resizePaddle(paddle, delay, targetHeight, defaultHeight);
-  }
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {
     this.themeAnimator.setPaddleHeight(paddle, height);
   }

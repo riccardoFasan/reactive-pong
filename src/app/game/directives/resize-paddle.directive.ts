@@ -5,12 +5,13 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { filter, map } from 'rxjs/operators';
+import { EMPTY, iif, timer } from 'rxjs';
+import { filter, first, map, switchMap } from 'rxjs/operators';
 import { HalfField, Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action } from '../enums';
+import { Action, GameStatus } from '../enums';
 
 import {
   HitArtifact,
@@ -24,6 +25,7 @@ import {
   ArtifactsService,
   CollisionService,
   ElementsService,
+  GameControlsService,
   LevelService,
 } from '../services';
 
@@ -48,7 +50,8 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
     private ref: ElementRef,
     private collision: CollisionService,
     private level: LevelService,
-    private elements: ElementsService
+    private elements: ElementsService,
+    private controls: GameControlsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
@@ -97,7 +100,7 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
 
   private onGoal(): void {
     this.subSink.sink = this.collision.onGatesCollision$.subscribe(() =>
-      this.animator.setPaddleHeight(this.ref.nativeElement, this.defaultHeight)
+      this.resetPaddleHeight()
     );
   }
 
@@ -124,11 +127,25 @@ export class ResizePaddleDirective implements AfterViewInit, OnDestroy {
       action === Action.Enlarge
         ? this.currentHeight + this.scalingDifference
         : this.currentHeight - this.scalingDifference;
-    this.animator.resizePaddle(
-      this.ref.nativeElement,
-      this.settings.duration,
-      targetHeight,
-      this.currentHeight
-    );
+    this.animator.setPaddleHeight(this.ref.nativeElement, targetHeight);
+    this.onEffectFinished();
+  }
+
+  private onEffectFinished(): void {
+    this.subSink.sink = this.controls.statusChanged$
+      .pipe(
+        switchMap((status: GameStatus) =>
+          iif(
+            () => status === GameStatus.Running,
+            timer(this.settings.duration).pipe(first()),
+            EMPTY
+          )
+        )
+      )
+      .subscribe(() => this.resetPaddleHeight());
+  }
+
+  private resetPaddleHeight(): void {
+    this.animator.setPaddleHeight(this.ref.nativeElement, this.defaultHeight);
   }
 }
