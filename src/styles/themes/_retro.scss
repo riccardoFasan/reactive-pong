@@ -173,6 +173,28 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
           background-color: $retro-white;
         }
 
+        app-paddle div {
+          &::after,
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+          }
+          &::after {
+            background-color: $retro-white;
+            opacity: 0.25;
+          }
+          &::before {
+            filter: blur(1.5vw);
+            background-color: inherit;
+            border-radius: 1rem;
+            opacity: 0.33;
+          }
+        }
+
         app-artifact {
           max-width: 1.75rem;
 

@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Animation, AnimationController } from '@ionic/angular';
 import { HalfField } from 'src/app/shared/enums';
+import { randomCoupleInArray } from 'src/utilities';
 import { Animator } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RetroAnimationsService implements Animator {
+  private readonly rainbowColors: string[] = [
+    '#ff8a00',
+    '#faff00',
+    '#52ff00',
+    '#00ffc2',
+    '#0047ff',
+    '#7000ff',
+    '#fa00ff',
+    '#ff0000',
+  ];
+
   constructor(private animationController: AnimationController) {}
 
   animateBorder(ground: HTMLElement, halfField: HalfField): void {
@@ -18,7 +30,21 @@ export class RetroAnimationsService implements Animator {
   }
 
   fadePaddle(paddle: HTMLElement): void {
-    console.log('retro fade');
+    const [firstColor, secondColor]: [string, string] = randomCoupleInArray(
+      this.rainbowColors
+    );
+
+    this.animationController
+      .create()
+      .addElement(paddle)
+      .duration(300)
+      .easing('ease')
+      .to(
+        'background',
+        `linear-gradient(${firstColor} 0%, ${secondColor} 100%)`
+      )
+      .fill('none')
+      .play();
   }
 
   resizePaddle(

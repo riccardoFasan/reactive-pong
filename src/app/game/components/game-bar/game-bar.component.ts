@@ -46,7 +46,7 @@ export class GameBarComponent implements OnDestroy {
     this.controls.pause();
     this.alerts.renderAlert('Resume', [
       { text: 'Quit', role: 'destructive', handler: () => this.quit() },
-      { text: 'Play again', role: 'confirm', handler: () => this.resume() },
+      { text: 'Resume', role: 'confirm', handler: () => this.resume() },
     ]);
   }
 
