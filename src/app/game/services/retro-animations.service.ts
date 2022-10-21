@@ -38,7 +38,6 @@ export class RetroAnimationsService implements Animator {
       .create()
       .addElement(paddle)
       .duration(300)
-      .easing('ease')
       .to(
         'background',
         `linear-gradient(${firstColor} 0%, ${secondColor} 100%)`
@@ -81,7 +80,7 @@ export class RetroAnimationsService implements Animator {
     this.animationController
       .create()
       .addElement(paddle)
-      .duration(200)
+      .duration(300)
       .easing('ease')
       .to('height', `${height}px`)
       .fill('forwards')
@@ -92,19 +91,9 @@ export class RetroAnimationsService implements Animator {
     this.animationController
       .create()
       .addElement(shield)
-      .easing('ease')
       .duration(300)
-      .iterations(3)
-      .keyframes([
-        {
-          offset: 0,
-          backgroundColor: 'var(--ion-color-dark)',
-        },
-        {
-          offset: 1,
-          backgroundColor: 'var(--ion-color-success)',
-        },
-      ])
+      // .iterations(1)
+      .to('background', '#fbfeff')
       .fill('none')
       .play();
   }
