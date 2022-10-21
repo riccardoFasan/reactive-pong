@@ -92,7 +92,6 @@ export class RetroAnimationsService implements Animator {
       .create()
       .addElement(shield)
       .duration(300)
-      // .iterations(1)
       .to('background', '#fbfeff')
       .fill('none')
       .play();
