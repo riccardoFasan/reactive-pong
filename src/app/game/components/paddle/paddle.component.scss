@@ -6,6 +6,7 @@ $paddle-width: clamp(0.5rem, 0.75vw, 1rem);
   height: 23%;
   max-height: 150px;
   position: absolute;
+  will-change: top;
 
   &:before {
     position: relative;
