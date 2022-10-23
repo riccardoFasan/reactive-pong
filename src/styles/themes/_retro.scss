@@ -103,7 +103,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
         border: 4px solid;
         border-image-slice: 1;
         border-image-source: conic-gradient(from var(--angle), $gradient);
-        animation: 6s animate-border linear infinite;
+        animation: 10s animate-border linear infinite;
       }
 
       &::before {

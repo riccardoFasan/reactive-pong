@@ -1,6 +1,6 @@
 export enum ComputerSpeed {
-  Slow = 0.04,
-  Medium = 0.07,
-  Fast = 0.1,
-  Supersonic = 0.13,
+  Slow = 0.03 * 4,
+  Medium = 0.06 * 4,
+  Fast = 0.09 * 4,
+  Supersonic = 0.12 * 4,
 }
