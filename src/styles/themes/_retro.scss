@@ -2,24 +2,21 @@
 @use "abstracts/mixins" as mixins;
 @use "abstracts/colors" as colors;
 
-@import url("https://fonts.googleapis.com/css2?family=Monoton&family=Press+Start+2P&display=swap");
-
-$font-title: "Monoton", cursive;
-$font-text: "Press Start 2P", monospace;
-$retro-black: #090b0d;
-$retro-white: #fbfeff;
-$playground-border-width: 2px;
-
-$gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
-  #0047ff 62.5%, #7000ff 75%, #fa00ff 87.5%, #ff0000 100%;
-
 .retro-theme {
-  font-family: $font-text;
+  $retro-text: "Press Start 2P", monospace;
+  $retro-black: #090b0d;
+  $retro-white: #fbfeff;
+  $playground-border-width: 2px;
+
+  $retro-gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%,
+    #00ffc2 50%, #0047ff 62.5%, #7000ff 75%, #fa00ff 87.5%, #ff0000 100%;
+
+  font-family: $retro-text;
   color: $retro-white;
 
   &,
   button {
-    font-family: $font-text;
+    font-family: $retro-text;
     color: $retro-white;
   }
 
@@ -32,7 +29,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
       margin-bottom: 1.33rem;
 
       h2 {
-        font-family: $font-text;
+        font-family: $retro-text;
         text-transform: lowercase;
         font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
         text-align: center;
@@ -82,7 +79,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
           }
 
           ion-badge {
-            font-family: $font-text;
+            font-family: $retro-text;
             background-color: transparent;
             color: $retro-white;
           }
@@ -102,7 +99,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
         height: 100%;
         border: 4px solid;
         border-image-slice: 1;
-        border-image-source: conic-gradient(from var(--angle), $gradient);
+        border-image-source: conic-gradient(from var(--angle), $retro-gradient);
         animation: 10s animate-border linear infinite;
       }
 
@@ -203,6 +200,7 @@ $gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%, #00ffc2 50%,
             @each $icon in $icons {
               &.#{$icon} {
                 @include mixins.icon("retro/#{$icon}");
+                background-color: $retro-white;
               }
             }
           }

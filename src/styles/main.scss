@@ -9,10 +9,10 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
-@use "vendors";
 @use "layout";
-@use "components";
 @use "themes";
+@use "vendors";
+@use "components";
 
 // /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
@@ -29,3 +29,5 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");

@@ -1,5 +1,219 @@
-.neon-theme {
-  .page {
-    background-color: blue;
+@use "abstracts/functions" as functions;
+@use "abstracts/mixins" as mixins;
+@use "abstracts/colors" as colors;
+
+.dory-theme {
+  $dory-text: "Press Start 2P", monospace;
+  $retro-black: #081831;
+  $dory-white: #ffffff;
+  $playground-border-width: 2px;
+
+  $dory-gradient: #1af84b 1%, #1af84b 2%, #2f2fff 2%, #2f2fff 3%, #3cbdff 3%,
+    #3cbdff 4%, #8d06f6 4%, #8d06f6 5%, #e61af8 5%, #e61af8 6%, #f2f606 6%,
+    #f2f606 7%, #ff7b31 7%, #ff7b31 8%, #ffffff 8%, #ffffff 9%;
+
+  $dory-background: linear-gradient(
+    90deg,
+    $retro-black 0%,
+    lighten($retro-black, 3%) 50%,
+    $retro-black 100%
+  );
+
+  font-family: $dory-text;
+  color: $dory-white;
+
+  &,
+  button {
+    font-family: $dory-text;
+    color: $dory-white;
   }
+
+  ion-alert .alert-wrapper {
+    background-color: $retro-black;
+    padding: 0.5rem 2rem;
+    text-align: center;
+
+    .alert-head {
+      margin-bottom: 1.33rem;
+
+      h2 {
+        font-family: $dory-text;
+        text-transform: lowercase;
+        font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
+        text-align: center;
+      }
+    }
+
+    .alert-button-group {
+      flex-direction: column;
+
+      button {
+        border: 0;
+        text-transform: uppercase;
+        font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
+        color: $dory-white;
+        display: block;
+
+        span {
+          justify-content: center;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .ion-page {
+    width: 100%;
+    height: 100vh;
+    background: $dory-background;
+
+    button {
+      text-transform: uppercase;
+    }
+
+    app-game-bar {
+      ion-list.game-bar {
+        background-color: transparent;
+        padding: 0;
+        border: 0;
+
+        ion-item {
+          &:nth-child(2) {
+            margin: 0 2vw;
+          }
+
+          button,
+          ion-badge {
+            font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+          }
+
+          ion-badge {
+            font-family: $dory-text;
+            background-color: transparent;
+            color: $dory-white;
+          }
+        }
+      }
+    }
+
+    .page {
+      position: relative;
+      background-color: transparent;
+      border: 3px solid;
+      border-image-slice: 1;
+      border-image-source: repeating-conic-gradient($dory-gradient);
+
+      &.home .logo {
+        height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
+        width: functions.responsive-size(15rem, 25rem, 40vw);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("^assets/icons/dory/title.svg");
+        margin-top: -9px; // adjust with page padding
+      }
+
+      h2 {
+        text-transform: lowercase;
+      }
+
+      .select {
+        button {
+          position: relative;
+
+          &::before,
+          &::after {
+            position: absolute;
+            font-size: 0.66rem;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+
+          &::after {
+            content: ">";
+            right: -1rem;
+          }
+
+          &::before {
+            content: "<";
+            left: -1rem;
+          }
+        }
+      }
+
+      .playground {
+        app-paddle div,
+        app-artifact span,
+        app-ball div {
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          background-color: transparent;
+        }
+
+        app-paddle {
+          div {
+            min-width: 1.125rem;
+          }
+          &:first-of-type div {
+            background-image: url("^assets/icons/dory/left-paddle.svg");
+          }
+          &:last-of-type div {
+            background-image: url("^assets/icons/dory/right-paddle.svg");
+          }
+        }
+
+        app-ball div {
+          background-image: url("^assets/icons/dory/ball.svg");
+        }
+
+        app-artifact {
+          max-width: 1.75rem;
+          width: 6%;
+
+          span {
+            $icons: ("enlarge", "reduce", "shield");
+            @each $icon in $icons {
+              &.#{$icon} {
+                background-image: url("^assets/icons/dory/#{$icon}.svg");
+                display: inline-block;
+              }
+            }
+          }
+        }
+
+        app-shield div {
+          width: clamp(0.2rem, 0.33vw, 0.5rem);
+          background: repeating-linear-gradient(
+            0,
+            transparent,
+            transparent 3vh,
+            $dory-white 3vh,
+            $dory-white 8vh
+          );
+        }
+      }
+
+      .goal {
+        font-size: functions.responsive-size(2.75rem, 3.5rem, 3vw);
+        text-transform: uppercase;
+        transform: scale(0);
+      }
+    }
+  }
+}
+
+@keyframes animate-border {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
