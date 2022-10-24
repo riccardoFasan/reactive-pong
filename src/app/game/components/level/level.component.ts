@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Level } from '../../enums';
 import { LevelSettings } from '../../models';
@@ -9,6 +9,7 @@ import { LEVELS } from '../../store';
   selector: 'app-level',
   templateUrl: './level.component.html',
   styleUrls: ['./level.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LevelComponent {
   readonly levels: LevelSettings[] = LEVELS;

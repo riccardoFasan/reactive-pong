@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Theme } from 'src/app/shared/enums';
 import { ThemeManagerService } from 'src/app/shared/services';
@@ -8,6 +8,7 @@ import { Option } from '../../models';
   selector: 'app-theme-select',
   templateUrl: './theme-select.component.html',
   styleUrls: ['./theme-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeSelectComponent {
   themes: Option[] = [

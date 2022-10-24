@@ -1,4 +1,9 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+} from '@angular/core';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { StatusBar, StatusBarInfo } from '@capacitor/status-bar';
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
@@ -21,12 +26,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   constructor(
     private orientation: ScreenOrientation,
     private platform: Platform,
-    private themeManager: ThemeManagerService
+    private themeManager: ThemeManagerService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await this.adjustStyle();
     this.hasStyleBeenAdjusted = true;
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

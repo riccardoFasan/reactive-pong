@@ -24,10 +24,6 @@ export class AnimatorService implements Animator {
     this.themeAnimator.animateBorder(ground, halfField);
   }
 
-  fadePaddle(paddle: HTMLElement): void {
-    this.themeAnimator.fadePaddle(paddle);
-  }
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {
     this.themeAnimator.setPaddleHeight(paddle, height);
   }

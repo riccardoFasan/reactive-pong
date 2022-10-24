@@ -7,7 +7,7 @@ import { GameStatus } from '../enums';
   providedIn: 'root',
 })
 export class GameControlsService {
-  timer$: Observable<number> = interval(20).pipe(share());
+  timer$: Observable<number> = interval(5).pipe(share());
 
   private statusStore$: BehaviorSubject<GameStatus> =
     new BehaviorSubject<GameStatus>(GameStatus.Stopped);

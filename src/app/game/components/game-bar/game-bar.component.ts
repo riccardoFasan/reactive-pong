@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
-import { isIonicReady, sleep } from 'src/utilities';
+import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus } from '../../enums';
 import { Score } from '../../models';
@@ -17,6 +17,7 @@ import {
   selector: 'app-game-bar',
   templateUrl: './game-bar.component.html',
   styleUrls: ['./game-bar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameBarComponent implements OnDestroy {
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;

@@ -11,10 +11,6 @@ export class NeonAnimatorService implements Animator {
 
   animateBorder(ground: HTMLElement, halfField: HalfField): void {}
 
-  fadePaddle(paddle: HTMLElement): void {
-    console.log('neon fade');
-  }
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {}
 
   fadeShield(shield: HTMLElement): void {}
