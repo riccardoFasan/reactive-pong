@@ -136,8 +136,12 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private increaseSpeed(): void {
-    if (this.currentSpeed < this.ball.maximumSpeed) {
-      this.currentSpeed += this.ball.acceleration;
+    if (this.currentSpeed <= this.ball.maximumSpeed) {
+      const nextSpeed: number = this.currentSpeed + this.ball.acceleration;
+      this.currentSpeed =
+        nextSpeed <= this.ball.maximumSpeed
+          ? nextSpeed
+          : this.ball.maximumSpeed;
     }
   }
 }

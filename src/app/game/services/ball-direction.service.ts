@@ -12,7 +12,7 @@ import { CollisionService } from './collision.service';
 export class BallDirectionService {
   private paddleCollision$: Observable<Collision> =
     this.collision.onPaddleCollision$.pipe(
-      tap((collision: Collision) => this.adjustAfterPaddleCollision(collision))
+      tap(() => this.adjustAfterPaddleCollision())
     );
 
   private edgeCollision$: Observable<Collision> =
@@ -61,7 +61,7 @@ export class BallDirectionService {
     }
   }
 
-  private adjustAfterPaddleCollision(collision: Collision): void {
+  private adjustAfterPaddleCollision(): void {
     this.trajectory.x *= -1;
     const angleCorrection: number = this.getRandomCorrection();
     this.trajectory.y += angleCorrection * Math.sign(this.trajectory.y);
