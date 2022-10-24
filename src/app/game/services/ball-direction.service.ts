@@ -32,7 +32,6 @@ export class BallDirectionService {
   ]);
 
   trajectory: Coordinates = { x: 0, y: 0 };
-  position: Coordinates = { x: 0, y: 0 };
 
   constructor(private collision: CollisionService) {}
 

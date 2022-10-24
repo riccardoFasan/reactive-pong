@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 import { filter, map, share, throttleTime } from 'rxjs/operators';
 import { areColliding } from 'src/utilities';
 import { Collision } from '../enums';
-import { ElementsService } from './elements.service';
-import { GameControlsService } from './game-controls.service';
+import { BallService, ElementsService, GameControlsService } from '.';
 
 @Injectable({
   providedIn: 'root',
@@ -61,43 +60,55 @@ export class CollisionService {
 
   constructor(
     private controls: GameControlsService,
-    private elements: ElementsService
+    private elements: ElementsService,
+    private ballElement: BallService
   ) {}
 
   private get thereIsALeftPaddleCollision(): boolean {
-    if (!(this.elements.leftPaddle && this.elements.ball)) return false;
-    return areColliding(this.elements.leftPaddle, this.elements.ball);
+    if (!this.elements.leftPaddle) return false;
+    return areColliding(
+      this.elements.leftPaddleRect,
+      this.ballElement.ballRect
+    );
   }
 
   private get thereIsARightPaddleCollision(): boolean {
-    if (!(this.elements.rightPaddle && this.elements.ball)) return false;
-    return areColliding(this.elements.rightPaddle, this.elements.ball);
+    if (!this.elements.rightPaddle) return false;
+    return areColliding(
+      this.elements.rightPaddleRect,
+      this.ballElement.ballRect
+    );
   }
 
   private get therIsAnEdgeCollision(): boolean {
-    if (!(this.elements.ground && this.elements.ball)) return false;
-    const bottomPosition: number =
-      this.elements.ballY + this.elements.ballHeight;
+    if (!(this.elements.ground && this.ballElement.ball)) return false;
     return !(
-      this.elements.ballY >= 0 && bottomPosition <= this.elements.groundHeight
+      this.ballElement.ballRect.top >= 0 &&
+      this.ballElement.ballRect.bottom <= this.elements.groundHeight
     );
   }
 
   private get thereIsAPlayerLeftGateCollision(): boolean {
-    return this.elements.ballX < 0;
+    return this.ballElement.ballRect.left < 0;
   }
 
   private get thereIsAPlayerRightGateCollision(): boolean {
-    return this.elements.groundWidth < this.elements.ballX;
+    return this.elements.groundWidth < this.ballElement.ballRect.right;
   }
 
   private get thereIsALeftShieldCollision(): boolean {
-    if (!(this.elements.leftShield && this.elements.ball)) return false;
-    return areColliding(this.elements.leftShield, this.elements.ball);
+    if (!(this.elements.leftShield && this.ballElement.ball)) return false;
+    return areColliding(
+      this.elements.leftShieldRect!,
+      this.ballElement.ballRect
+    );
   }
 
   private get thereIsARightShieldCollision(): boolean {
-    if (!(this.elements.rightShield && this.elements.ball)) return false;
-    return areColliding(this.elements.rightShield, this.elements.ball);
+    if (!(this.elements.rightShield && this.ballElement.ball)) return false;
+    return areColliding(
+      this.elements.rightShieldRect!,
+      this.ballElement.ballRect
+    );
   }
 }

@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostBinding,
-  OnDestroy,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { isIonicReady, randomFloatBetween } from 'src/utilities';
@@ -17,6 +11,7 @@ import {
   GameControlsService,
   LevelService,
   ElementsService,
+  BallService,
 } from '../../services';
 import { NORMAL_BALL } from '../../store';
 
@@ -26,16 +21,6 @@ import { NORMAL_BALL } from '../../store';
   styleUrls: ['./ball.component.scss'],
 })
 export class BallComponent implements AfterViewInit, OnDestroy {
-  @HostBinding('style.left.px')
-  get x(): number {
-    return this.direction.position.x;
-  }
-
-  @HostBinding('style.top.px')
-  get y(): number {
-    return this.direction.position.y;
-  }
-
   private ball: Ball = NORMAL_BALL;
   currentSpeed: number = this.ball.baseSpeed;
 
@@ -52,12 +37,13 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     private controls: GameControlsService,
     private level: LevelService,
     private direction: BallDirectionService,
+    private ballElement: BallService,
     private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     await isIonicReady();
-    this.elements.registerBall(this.ref.nativeElement);
+    this.ballElement.registerBall(this.ref.nativeElement);
     this.onLevelChanged();
     this.onStatusChanged();
     this.onCollisionChanged();
@@ -117,10 +103,11 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private centerBall(): void {
-    this.direction.position.x =
-      this.elements.groundWidth / 2 - this.elements.ballWidth / 2;
-    this.direction.position.y =
-      this.elements.groundHeight / 2 - this.elements.ballHeight / 2;
+    this.ballElement.position.x =
+      this.elements.groundWidth / 2 - this.ballElement.ballWidth / 2;
+    this.ballElement.position.y =
+      this.elements.groundHeight / 2 - this.ballElement.ballHeight / 2;
+    this.setPosition();
   }
 
   private resetAfterGoal(): void {
@@ -129,10 +116,21 @@ export class BallComponent implements AfterViewInit, OnDestroy {
 
   private move(): void {
     this.increaseSpeed();
-    this.direction.position.x +=
+    this.ballElement.position.x +=
       this.direction.trajectory.x * this.currentSpeed;
-    this.direction.position.y +=
+    this.ballElement.position.y +=
       this.direction.trajectory.y * this.currentSpeed;
+    this.setPosition();
+  }
+
+  private setPosition(): void {
+    const x: number =
+      this.ballElement.position.x -
+      (this.elements.groundWidth / 2 - this.ballElement.ballWidth / 2);
+    const y: number =
+      this.ballElement.position.y -
+      (this.elements.groundHeight / 2 - this.ballElement.ballHeight / 2);
+    this.ref.nativeElement.style.transform = `translate(${x}px, ${y}px)`;
   }
 
   private increaseSpeed(): void {

@@ -1,40 +1,18 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { HalfField } from 'src/app/shared/enums';
+import { getLocatedRect, LocatedRect } from 'src/utilities';
 import { Artifact } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ElementsService {
-  ball!: HTMLElement;
   activators: { artifact: Artifact; ref: ElementRef }[] = [];
   leftPaddle!: HTMLElement;
   rightPaddle!: HTMLElement;
   ground!: HTMLElement;
   leftShield: HTMLElement | undefined;
   rightShield: HTMLElement | undefined;
-
-  constructor() {}
-
-  get ballHeight(): number {
-    if (!this.ball) return 0;
-    return this.ball.offsetHeight;
-  }
-
-  get ballWidth(): number {
-    if (!this.ball) return 0;
-    return this.ball.offsetWidth;
-  }
-
-  get ballY(): number {
-    if (!this.ball) return 0;
-    return parseInt(this.ball.style.top);
-  }
-
-  get ballX(): number {
-    if (!this.ball) return 0;
-    return parseInt(this.ball.style.left);
-  }
 
   get groundHeight(): number {
     if (!this.ground) return 0;
@@ -53,6 +31,24 @@ export class ElementsService {
     return parseInt(style.paddingLeft);
   }
 
+  get leftPaddleRect(): LocatedRect {
+    return getLocatedRect(this.leftPaddle);
+  }
+
+  get rightPaddleRect(): LocatedRect {
+    return getLocatedRect(this.rightPaddle);
+  }
+
+  get leftShieldRect(): LocatedRect | undefined {
+    if (!this.leftShield) return;
+    return getLocatedRect(this.leftShield);
+  }
+
+  get rightShieldRect(): LocatedRect | undefined {
+    if (!this.rightShield) return;
+    return getLocatedRect(this.rightShield);
+  }
+
   registerArtifact(artifact: Artifact, ref: ElementRef): void {
     this.activators = [...this.activators, { artifact, ref }];
   }
@@ -61,10 +57,6 @@ export class ElementsService {
     this.activators = this.activators.filter(
       (activator) => activator.artifact.id !== id
     );
-  }
-
-  registerBall(ball: HTMLElement): void {
-    this.ball = ball;
   }
 
   registerGround(ground: HTMLElement): void {

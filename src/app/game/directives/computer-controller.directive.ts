@@ -14,6 +14,7 @@ import {
   LevelService,
   BallDirectionService,
   ElementsService,
+  BallService,
 } from '../services';
 import { BaseControllerDirective } from './base-controller.directive';
 
@@ -32,7 +33,8 @@ export class ComputerControllerDirective
     ref: ElementRef,
     controls: GameControlsService,
     private level: LevelService,
-    private direction: BallDirectionService
+    private direction: BallDirectionService,
+    private ballElement: BallService
   ) {
     super(elements, ref, controls);
   }
@@ -59,7 +61,7 @@ export class ComputerControllerDirective
         ? correctionFactor
         : this.height - correctionFactor;
       const movement: number =
-        this.direction.position.y - this.y - correctedPaddleHeight;
+        this.ballElement.position.y - this.y - correctedPaddleHeight;
       const positionY: number = this.y + this.speed * movement;
       if (this.canMove(positionY)) {
         this.y = positionY;
