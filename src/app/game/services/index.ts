@@ -9,5 +9,3 @@ export * from './collision.service';
 export * from './artifacts.service';
 export * from './game-controls.service';
 export * from './ball-direction.service';
-export * from './neon-animations.service';
-export * from './retro-animations.service';
