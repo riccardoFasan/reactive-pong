@@ -14,6 +14,8 @@ export class ElementsService {
   leftShield: HTMLElement | undefined;
   rightShield: HTMLElement | undefined;
 
+  readonly edgesDistance: number = 6.5 * 16;
+
   get groundHeight(): number {
     if (!this.ground) return 0;
     return this.ground.offsetHeight;
@@ -22,13 +24,6 @@ export class ElementsService {
   get groundWidth(): number {
     if (!this.ground) return 0;
     return this.ground.offsetWidth;
-  }
-
-  get edgesDistance(): number {
-    if (!this.ground) return 0;
-    const groundContainer: HTMLElement = this.ground.parentElement!;
-    const style: CSSStyleDeclaration = window.getComputedStyle(groundContainer);
-    return parseInt(style.paddingLeft);
   }
 
   get leftPaddleRect(): LocatedRect {

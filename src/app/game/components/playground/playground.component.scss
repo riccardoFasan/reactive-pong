@@ -2,7 +2,7 @@
 @use "abstracts/mixins" as mixins;
 
 main {
-  padding: 0 3.75rem;
+  padding: 0;
   background: colors.$black;
 
   $playground-border-width: 1px;
