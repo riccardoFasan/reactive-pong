@@ -6,8 +6,6 @@ import { Player, Theme } from '../enums';
   providedIn: 'root',
 })
 export class PreferencesService {
-  constructor() {}
-
   setPlayer(player: Player): void {
     this.setPreference('player', player);
   }
@@ -22,6 +20,14 @@ export class PreferencesService {
 
   getTheme(): Promise<Theme | null> {
     return this.getPreference('theme');
+  }
+
+  setLanguage(lang: string): void {
+    this.setPreference('lang', lang);
+  }
+
+  getLanguage(): Promise<string | null> {
+    return this.getPreference('lang');
   }
 
   private async setPreference(key: string, value: any): Promise<void> {

@@ -12,7 +12,7 @@ import { Option } from '../../models';
 })
 export class ThemeSelectComponent {
   themes: Option[] = [
-    { label: 'Neon', value: Theme.Neon },
+    { label: 'Dory', value: Theme.Dory },
     { label: 'Retro', value: Theme.Retro },
   ];
 

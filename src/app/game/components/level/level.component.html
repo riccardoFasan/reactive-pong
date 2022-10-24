@@ -1,8 +1,8 @@
 <main class="page">
-  <h2>Difficulty</h2>
+  <h2>{{ "DIFFICULTY" | translate }}</h2>
   <div>
     <button *ngFor="let level of levels" (click)="setLevel(level.value)">
-      {{ level.name }}
+      {{ level.name | translate }}
     </button>
   </div>
   <app-back></app-back>

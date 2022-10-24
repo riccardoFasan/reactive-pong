@@ -1,0 +1,23 @@
+{
+  "START": "Avvia",
+  "PAUSE": "Pausa",
+  "DIFFICULTY": "Difficoltà",
+  "PLAY": "Gioca",
+  "SETTINGS": "Impostazioni",
+  "QUIT": "Chiudi",
+  "HALF_FIELD": "Metà campo",
+  "THEME": "Tema",
+  "LEFT": "Sinistra",
+  "RIGHT": "Destra",
+  "BACK": "Indietro",
+  "LANGUAGE": "Lingua",
+  "ENGLISH": "Inglese",
+  "ITALIAN": "Italiano",
+  "EASY": "Facile",
+  "NORMAL": "Normale",
+  "HARD": "Difficile",
+  "INSANE": "Folle",
+  "RESUME": "Riprendi",
+  "VICTORY": "Vittoria",
+  "GAME_OVER": "Game over"
+}

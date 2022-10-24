@@ -10,11 +10,11 @@ import { App } from '@capacitor/app';
 export class HomeComponent {
   readonly pages: { name: string; url: string[] }[] = [
     {
-      name: 'Play',
+      name: 'PLAY',
       url: ['/', 'game', 'level'],
     },
     {
-      name: 'Settings',
+      name: 'SETTINGS',
       url: ['/', 'settings'],
     },
   ];

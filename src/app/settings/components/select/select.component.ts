@@ -1,4 +1,5 @@
 import {
+  Attribute,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -17,14 +18,13 @@ import { Option } from '../../models';
 })
 export class SelectComponent implements OnChanges {
   @Input() options: Option[] = [];
-  @Input() label!: string;
   @Input() value!: any;
 
   @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();
 
   private currentIndex: number = 0;
 
-  constructor() {}
+  constructor(@Attribute('label') public label: string = '') {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['value']) {

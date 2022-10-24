@@ -3,12 +3,14 @@
 
 .page {
   @include mixins.flex-column;
+
   .selects-container {
     margin: 0 auto;
-    width: functions.responsive-size(20rem, 25rem, 42.3vw);
+    width: functions.responsive-size(20rem, 22.5rem, 40vw);
+
     .select:not(:last-child) {
       display: block;
-      margin-bottom: functions.responsive-size(0.9rem, 1.1rem, 0.11vw);
+      margin-bottom: functions.responsive-size(1.25rem, 1.75rem, 0.25vw);
     }
   }
 }

@@ -30,6 +30,8 @@
     "@hugotomazi/capacitor-navigation-bar": "^2.0.0",
     "@ionic-native/navigation-bar": "^5.36.0",
     "@ionic/angular": "^6.1.9",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "es6-promise-plugin": "^4.2.2",
     "rxjs": "~6.6.0",

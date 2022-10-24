@@ -2,8 +2,8 @@
   <div class="logo"></div>
   <nav>
     <a *ngFor="let page of pages" [routerLink]="page.url">
-      <button>{{ page.name }}</button>
+      <button>{{ page.name | translate }}</button>
     </a>
-    <button (click)="quit()">Quit</button>
+    <button (click)="quit()">{{ "QUIT" | translate }}</button>
   </nav>
 </main>

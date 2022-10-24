@@ -8,6 +8,7 @@ import {
   SelectComponent,
   SettingsComponent,
   ThemeSelectComponent,
+  LanguageSelectComponent,
 } from './components';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {
     SelectComponent,
     HalfFieldSelectComponent,
     ThemeSelectComponent,
+    LanguageSelectComponent,
   ],
   imports: [CommonModule, IonicModule, SettingsRoutingModule, SharedModule],
 })

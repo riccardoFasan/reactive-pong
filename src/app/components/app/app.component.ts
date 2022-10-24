@@ -3,20 +3,24 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { StatusBar, StatusBarInfo } from '@capacitor/status-bar';
 import { NavigationBar } from '@hugotomazi/capacitor-navigation-bar';
 import { Platform } from '@ionic/angular';
 import { interval, Observable } from 'rxjs';
-import { ThemeManagerService } from 'src/app/shared/services';
+import {
+  ThemeManagerService,
+  TranslationsService,
+} from 'src/app/shared/services';
 import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   hasStyleBeenAdjusted: boolean = false;
 
   theme$: Observable<string> = this.themeManager.themeClass$;
@@ -27,8 +31,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     private orientation: ScreenOrientation,
     private platform: Platform,
     private themeManager: ThemeManagerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private i18n: TranslationsService
   ) {}
+
+  ngOnInit(): void {
+    this.i18n.init();
+  }
 
   async ngAfterViewInit(): Promise<void> {
     await this.adjustStyle();

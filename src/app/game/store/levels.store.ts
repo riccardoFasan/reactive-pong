@@ -24,7 +24,7 @@ import {
 } from './computer.store';
 
 export const EASY_LEVEL: LevelSettings = {
-  name: 'Easy',
+  name: 'EASY',
   value: Level.Easy,
   ball: SLOW_BALL,
   computer: EASY_COMPUTER,
@@ -34,7 +34,7 @@ export const EASY_LEVEL: LevelSettings = {
 };
 
 export const NORMAL_LEVEL: LevelSettings = {
-  name: 'Normal',
+  name: 'NORMAL',
   value: Level.Normal,
   ball: NORMAL_BALL,
   computer: MEDIUM_COMPUTER,
@@ -44,7 +44,7 @@ export const NORMAL_LEVEL: LevelSettings = {
 };
 
 export const HARD_LEVEL: LevelSettings = {
-  name: 'Hard',
+  name: 'HARD',
   value: Level.Hard,
   ball: FAST_BALL,
   computer: HARD_COMPUTER,
@@ -54,7 +54,7 @@ export const HARD_LEVEL: LevelSettings = {
 };
 
 export const INSANE_LEVEL: LevelSettings = {
-  name: 'Insane',
+  name: 'INSANE',
   value: Level.Insane,
   ball: CRAZY_BALL,
   computer: INSANE_COMPUTER,

@@ -1,0 +1,23 @@
+{
+  "START": "Start",
+  "PAUSE": "Pause",
+  "DIFFICULTY": "Difficulty",
+  "PLAY": "Play",
+  "SETTINGS": "Settings",
+  "QUIT": "Quit",
+  "HALF_FIELD": "Half field",
+  "THEME": "Theme",
+  "LEFT": "Left",
+  "RIGHT": "Right",
+  "BACK": "Back",
+  "LANGUAGE": "Language",
+  "ENGLISH": "English",
+  "ITALIAN": "Italian",
+  "EASY": "Easy",
+  "NORMAL": "Normal",
+  "HARD": "Hard",
+  "INSANE": "Insane",
+  "RESUME": "Resume",
+  "VICTORY": "Victory",
+  "GAME_OVER": "Game over"
+}

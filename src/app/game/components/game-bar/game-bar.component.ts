@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
@@ -30,7 +31,8 @@ export class GameBarComponent implements OnDestroy {
     private controls: GameControlsService,
     private players: PlayersService,
     private router: Router,
-    private alerts: AlertsService
+    private alerts: AlertsService,
+    private translate: TranslateService
   ) {}
 
   ngOnDestroy(): void {
@@ -45,9 +47,17 @@ export class GameBarComponent implements OnDestroy {
 
   pause(): void {
     this.controls.pause();
-    this.alerts.renderAlert('Resume', [
-      { text: 'Quit', role: 'destructive', handler: () => this.quit() },
-      { text: 'Resume', role: 'confirm', handler: () => this.resume() },
+    this.alerts.renderAlert(this.translate.instant('RESUME'), [
+      {
+        text: this.translate.instant('QUIT'),
+        role: 'destructive',
+        handler: () => this.quit(),
+      },
+      {
+        text: this.translate.instant('RESUME'),
+        role: 'confirm',
+        handler: () => this.resume(),
+      },
     ]);
   }
 
@@ -75,10 +85,10 @@ export class GameBarComponent implements OnDestroy {
       (winner: Player) => {
         this.stop();
         const message: string =
-          winner === this.players.user ? 'Victory' : 'Game over';
-        this.alerts.renderAlert(message, [
+          winner === this.players.user ? 'VICTORY' : 'GAME_OVER';
+        this.alerts.renderAlert(this.translate.instant(message), [
           {
-            text: 'Quit',
+            text: this.translate.instant('QUIT'),
             role: 'destructive',
             handler: () => this.backToHome(),
           },

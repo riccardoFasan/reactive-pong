@@ -12,8 +12,8 @@ import { Option } from '../../models';
 })
 export class HalfFieldSelectComponent {
   halfFields: Option[] = [
-    { label: 'Left', value: HalfField.Left },
-    { label: 'Right', value: HalfField.Right },
+    { label: 'LEFT', value: HalfField.Left },
+    { label: 'RIGHT', value: HalfField.Right },
   ];
 
   userField$: Observable<HalfField> = this.players.userField$;
