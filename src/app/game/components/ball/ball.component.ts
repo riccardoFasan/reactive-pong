@@ -130,7 +130,8 @@ export class BallComponent implements AfterViewInit, OnDestroy {
     const y: number =
       this.ballElement.position.y -
       (this.elements.groundHeight / 2 - this.ballElement.ballHeight / 2);
-    this.ref.nativeElement.style.transform = `translate(${x}px, ${y}px)`;
+    this.ref.nativeElement.style.setProperty('--x', `${x}px`);
+    this.ref.nativeElement.style.setProperty('--y', `${y}px`);
   }
 
   private increaseSpeed(): void {

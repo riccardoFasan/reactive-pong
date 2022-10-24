@@ -1,11 +1,14 @@
 @use "abstracts/colors" as colors;
 
 :host {
+  --x: 0;
+  --y: 0;
+  transform: translate(var(--x), (var(--y)));
   position: absolute;
   width: 2.66%;
   max-width: 20px;
   aspect-ratio: 1/1;
-  // will-change: left, top;
+  will-change: transform;
 
   div {
     height: 100%;

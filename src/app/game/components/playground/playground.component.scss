@@ -1,8 +1,6 @@
 @use "abstracts/colors" as colors;
 @use "abstracts/mixins" as mixins;
 
-$grid-size: 19vh;
-
 main {
   padding: 0 3.75rem;
   background: colors.$black;
