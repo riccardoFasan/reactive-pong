@@ -9,13 +9,13 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { EMPTY, iif, Observable, timer } from 'rxjs';
+import { EMPTY, iif, timer } from 'rxjs';
 import { filter, first, map, switchMap, throttleTime } from 'rxjs/operators';
 import { HalfField, Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady, sleep } from 'src/utilities';
 import { SubSink } from 'subsink';
-import { Action, Collision, GameStatus } from '../../enums';
+import { Action, GameStatus } from '../../enums';
 import { HitArtifact, LevelSettings } from '../../models';
 import {
   AnimatorService,
@@ -39,16 +39,6 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   x: number = 0;
 
-  private onCollision$: Observable<Collision> =
-    this.collision.onShieldsCollision$.pipe(
-      filter((collision: Collision) => {
-        if (this.halfField === HalfField.Right) {
-          return collision === Collision.RightShield;
-        }
-        return collision === Collision.LeftShield;
-      })
-    );
-
   private readonly sleepingTime: number = 50;
   private subSink: SubSink = new SubSink();
   private duration: number = NORMAL_LEVEL.shieldsDuration;
@@ -68,7 +58,7 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
     await sleep(this.sleepingTime);
     this.setLeftPosition();
     this.onActivation();
-    this.onCollision();
+
     this.onLevelChanged();
     this.onGoal();
   }
@@ -112,10 +102,6 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
         map((hitArtifact: HitArtifact) => hitArtifact.artifact)
       )
       .subscribe(() => this.turnUp());
-  }
-
-  private onCollision(): void {
-    this.subSink.sink = this.onCollision$.subscribe(() => this.fade());
   }
 
   private onLevelChanged(): void {
@@ -162,10 +148,6 @@ export class ShieldComponent implements AfterViewInit, OnChanges, OnDestroy {
   private turnDown(): void {
     this.unRegisterShield();
     this.animator.turnDownShield(this.ref.nativeElement);
-  }
-
-  private fade(): void {
-    this.animator.fadeShield(this.ref.nativeElement);
   }
 
   private registerShield(): void {

@@ -62,9 +62,6 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
             : HalfField.Right
         )
       )
-      .subscribe((halfField: HalfField) => {
-        this.animator.animateBorder(this.groundRef.nativeElement, halfField);
-        this.animator.writeGoal();
-      });
+      .subscribe(() => this.animator.writeGoal());
   }
 }

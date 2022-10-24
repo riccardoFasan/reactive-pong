@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HalfField, Theme } from 'src/app/shared/enums';
+import { Theme } from 'src/app/shared/enums';
 import { ThemeManagerService } from 'src/app/shared/services';
 import { Animator } from '../interfaces';
 import { NeonAnimatorService } from './neon-animations.service';
@@ -20,16 +20,8 @@ export class AnimatorService implements Animator {
     return this.neon;
   }
 
-  animateBorder(ground: HTMLElement, halfField: HalfField): void {
-    this.themeAnimator.animateBorder(ground, halfField);
-  }
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {
     this.themeAnimator.setPaddleHeight(paddle, height);
-  }
-
-  fadeShield(shield: HTMLElement): void {
-    this.themeAnimator.fadeShield(shield);
   }
 
   turnUpShield(shield: HTMLElement): void {

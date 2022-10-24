@@ -9,11 +9,7 @@ import { Animator } from '../interfaces';
 export class NeonAnimatorService implements Animator {
   constructor(private controller: AnimationController) {}
 
-  animateBorder(ground: HTMLElement, halfField: HalfField): void {}
-
   setPaddleHeight(paddle: HTMLElement, height: number): void {}
-
-  fadeShield(shield: HTMLElement): void {}
 
   turnUpShield(shield: HTMLElement): void {}
 

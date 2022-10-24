@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Animation, AnimationController } from '@ionic/angular';
-import { HalfField } from 'src/app/shared/enums';
 import { Animator } from '../interfaces';
 
 @Injectable({
@@ -8,14 +7,6 @@ import { Animator } from '../interfaces';
 })
 export class RetroAnimatorService implements Animator {
   constructor(private animationController: AnimationController) {}
-
-  animateBorder(ground: HTMLElement, halfField: HalfField): void {
-    const className: string = `border-fade-${
-      halfField === HalfField.Left ? 'left' : 'right'
-    }`;
-    ground.classList.add(className);
-    ground.classList.remove(className);
-  }
 
   setPaddleHeight(paddle: HTMLElement, height: number): void {
     this.animationController
@@ -25,16 +16,6 @@ export class RetroAnimatorService implements Animator {
       .easing('ease')
       .to('height', `${height}px`)
       .fill('forwards')
-      .play();
-  }
-
-  fadeShield(shield: HTMLElement): void {
-    this.animationController
-      .create()
-      .addElement(shield)
-      .duration(300)
-      .to('background', '#fbfeff')
-      .fill('none')
       .play();
   }
 
