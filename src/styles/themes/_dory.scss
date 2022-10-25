@@ -184,13 +184,7 @@
 
         app-shield div {
           width: clamp(0.2rem, 0.33vw, 0.5rem);
-          background: repeating-linear-gradient(
-            0,
-            transparent,
-            transparent 3vh,
-            $dory-white 3vh,
-            $dory-white 8vh
-          );
+          background: repeating-linear-gradient($dory-gradient);
         }
       }
 
