@@ -1,0 +1,34 @@
+@use "abstracts/functions" as functions;
+
+ion-alert {
+  ion-backdrop {
+    background: none;
+  }
+  .alert-wrapper {
+    box-shadow: none !important;
+    padding: 0.5rem 2rem;
+    text-align: center;
+
+    .alert-head h2 {
+      text-transform: lowercase;
+      font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
+      text-align: center;
+    }
+
+    .alert-button-group {
+      flex-direction: column;
+
+      button {
+        display: block;
+        border: 0;
+        text-transform: uppercase;
+        font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
+
+        span {
+          justify-content: center;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

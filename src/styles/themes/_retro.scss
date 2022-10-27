@@ -22,35 +22,13 @@
 
   ion-alert .alert-wrapper {
     background-color: $retro-black;
-    padding: 0.5rem 2rem;
-    text-align: center;
 
-    .alert-head {
-      margin-bottom: 1.33rem;
-
-      h2 {
-        font-family: $retro-text;
-        text-transform: lowercase;
-        font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
-        text-align: center;
-      }
+    .alert-head h2 {
+      font-family: $retro-text;
     }
 
-    .alert-button-group {
-      flex-direction: column;
-
-      button {
-        border: 0;
-        text-transform: uppercase;
-        font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
-        color: $retro-white;
-        display: block;
-
-        span {
-          justify-content: center;
-          text-align: center;
-        }
-      }
+    .alert-button-group button {
+      color: $retro-white;
     }
   }
 
@@ -64,29 +42,9 @@
       text-transform: uppercase;
     }
 
-    app-game-bar {
-      ion-list.game-bar {
-        background-color: transparent;
-        padding: 0;
-        border: 0;
-
-        ion-item {
-          &:nth-child(2) {
-            margin: 0 2vw;
-          }
-
-          button,
-          ion-badge {
-            font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
-          }
-
-          ion-badge {
-            font-family: $retro-text;
-            background-color: transparent;
-            color: $retro-white;
-          }
-        }
-      }
+    app-game-bar ion-list.game-bar ion-item ion-badge {
+      font-family: $retro-text;
+      color: $retro-white;
     }
 
     .page {
@@ -120,16 +78,14 @@
         z-index: 10;
       }
 
-      &.home {
-        .logo {
-          height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
-          width: functions.responsive-size(15rem, 25rem, 40vw);
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: contain;
-          background-image: url("^assets/icons/retro/title.svg");
-          margin-top: -9px; // adjust with page padding
-        }
+      &.home .logo {
+        height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
+        width: functions.responsive-size(15rem, 25rem, 40vw);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-image: url("^assets/icons/retro/title.svg");
+        margin-top: -9px; // adjust with page padding
       }
 
       h2 {

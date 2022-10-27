@@ -4,7 +4,7 @@
 
 .dory-theme {
   $dory-text: "Press Start 2P", monospace;
-  $retro-black: #081831;
+  $dory-black: #081831;
   $dory-white: #ffffff;
   $playground-border-width: 2px;
 
@@ -14,9 +14,9 @@
 
   $dory-background: linear-gradient(
     90deg,
-    $retro-black 0%,
-    lighten($retro-black, 3%) 50%,
-    $retro-black 100%
+    $dory-black 0%,
+    lighten($dory-black, 3%) 50%,
+    $dory-black 100%
   );
 
   font-family: $dory-text;
@@ -29,36 +29,14 @@
   }
 
   ion-alert .alert-wrapper {
-    background-color: $retro-black;
-    padding: 0.5rem 2rem;
-    text-align: center;
+    background-color: $dory-black;
 
-    .alert-head {
-      margin-bottom: 1.33rem;
-
-      h2 {
-        font-family: $dory-text;
-        text-transform: lowercase;
-        font-size: functions.responsive-size(1.33rem, 1.5rem, 0.33vw);
-        text-align: center;
-      }
+    .alert-head h2 {
+      font-family: $dory-text;
     }
 
-    .alert-button-group {
-      flex-direction: column;
-
-      button {
-        border: 0;
-        text-transform: uppercase;
-        font-size: functions.responsive-size(0.75rem, 1.1rem, 0.15vw);
-        color: $dory-white;
-        display: block;
-
-        span {
-          justify-content: center;
-          text-align: center;
-        }
-      }
+    .alert-button-group button {
+      color: $dory-white;
     }
   }
 
@@ -72,29 +50,9 @@
       text-transform: uppercase;
     }
 
-    app-game-bar {
-      ion-list.game-bar {
-        background-color: transparent;
-        padding: 0;
-        border: 0;
-
-        ion-item {
-          &:nth-child(2) {
-            margin: 0 2vw;
-          }
-
-          button,
-          ion-badge {
-            font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
-          }
-
-          ion-badge {
-            font-family: $dory-text;
-            background-color: transparent;
-            color: $dory-white;
-          }
-        }
-      }
+    app-game-bar ion-list.game-bar ion-item ion-badge {
+      font-family: $dory-text;
+      color: $dory-white;
     }
 
     .page {
