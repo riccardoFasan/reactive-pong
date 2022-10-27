@@ -69,13 +69,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
           if (status === GameStatus.Stopped) this.init();
         }),
         switchMap((status: GameStatus) =>
-          // ! do not use filter operator
           iif(
             () => status === GameStatus.Running,
             timer(this.millisecondsBeforeKickStart).pipe(
-              switchMap(() => {
-                return this.controls.timer$.pipe(tap(() => this.move()));
-              })
+              switchMap(() => this.controls.timer$.pipe(tap(() => this.move())))
             ),
             EMPTY
           )

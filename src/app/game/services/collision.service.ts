@@ -83,17 +83,21 @@ export class CollisionService {
   private get therIsAnEdgeCollision(): boolean {
     if (!(this.elements.ground && this.ballElement.ball)) return false;
     return !(
-      this.ballElement.ballRect.top >= 0 &&
-      this.ballElement.ballRect.bottom <= this.elements.groundHeight
+      this.ballElement.ballRect.top >= this.elements.pagePadding &&
+      this.ballElement.ballRect.bottom <=
+        this.elements.groundHeight + this.elements.pagePadding
     );
   }
 
   private get thereIsAPlayerLeftGateCollision(): boolean {
-    return this.ballElement.ballRect.left < 0;
+    return this.ballElement.ballRect.left < this.elements.pagePadding;
   }
 
   private get thereIsAPlayerRightGateCollision(): boolean {
-    return this.elements.groundWidth < this.ballElement.ballRect.right;
+    return (
+      this.elements.groundWidth <
+      this.ballElement.ballRect.right + this.elements.pagePadding
+    );
   }
 
   private get thereIsALeftShieldCollision(): boolean {

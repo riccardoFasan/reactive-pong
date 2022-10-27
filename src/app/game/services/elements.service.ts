@@ -44,6 +44,12 @@ export class ElementsService {
     return getLocatedRect(this.rightShield);
   }
 
+  get pagePadding(): number {
+    const page: HTMLElement | null = document.querySelector('ion-app');
+    if (!page) return 0;
+    return parseInt(getComputedStyle(page).getPropertyValue('--page-padding'));
+  }
+
   registerArtifact(artifact: Artifact, ref: ElementRef): void {
     this.activators = [...this.activators, { artifact, ref }];
   }
