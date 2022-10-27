@@ -95,8 +95,8 @@ export class CollisionService {
 
   private get thereIsAPlayerRightGateCollision(): boolean {
     return (
-      this.elements.groundWidth <
-      this.ballElement.ballRect.right + this.elements.pagePadding
+      this.ballElement.ballRect.right >
+      this.elements.groundWidth + this.elements.pagePadding
     );
   }
 
