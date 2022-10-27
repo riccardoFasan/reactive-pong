@@ -14,8 +14,3 @@ export const HARD_RESIZING: ResizingSettings = {
   duration: 10000,
   percentage: 6,
 };
-
-export const INSANE_RESIZING: ResizingSettings = {
-  duration: 11000,
-  percentage: 8,
-};

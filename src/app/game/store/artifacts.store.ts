@@ -18,14 +18,6 @@ export const NORMAL_ARTIFACT: ArtifactsTiming = {
 
 export const HARD_ARTIFACT: ArtifactsTiming = {
   timer: {
-    min: 9000,
-    max: 13000,
-  },
-  profitTime: 11000,
-};
-
-export const INSANE_ARTIFACT: ArtifactsTiming = {
-  timer: {
     min: 8000,
     max: 12000,
   },

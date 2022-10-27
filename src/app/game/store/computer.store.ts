@@ -15,8 +15,3 @@ export const HARD_COMPUTER: ComputerSettings = {
   speed: ComputerSpeed.Fast,
   inaccuracy: Inaccuracy.Low,
 };
-
-export const INSANE_COMPUTER: ComputerSettings = {
-  speed: ComputerSpeed.Supersonic,
-  inaccuracy: Inaccuracy.None,
-};

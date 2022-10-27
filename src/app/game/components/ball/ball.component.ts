@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { combineLatest, EMPTY, iif, Observable, timer } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { isIonicReady, randomFloatBetween } from 'src/utilities';
+import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { Collision, GameStatus } from '../../enums';
 import { Ball, LevelSettings } from '../../models';
@@ -22,7 +22,6 @@ import { NORMAL_BALL } from '../../store';
 })
 export class BallComponent implements AfterViewInit, OnDestroy {
   private ball: Ball = NORMAL_BALL;
-  currentSpeed: number = this.ball.baseSpeed;
 
   private subSink: SubSink = new SubSink();
 
@@ -58,7 +57,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       .pipe(map((level: LevelSettings) => level.ball))
       .subscribe((ball: Ball) => {
         this.ball = ball;
-        this.currentSpeed = this.ball.baseSpeed;
       });
   }
 
@@ -91,10 +89,6 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   private init(): void {
     this.centerBall();
     this.direction.init();
-    this.currentSpeed = randomFloatBetween(
-      this.ball.baseSpeed,
-      this.ball.maximumSpeed
-    );
   }
 
   private centerBall(): void {
@@ -110,11 +104,10 @@ export class BallComponent implements AfterViewInit, OnDestroy {
   }
 
   private move(): void {
-    this.increaseSpeed();
     this.ballElement.position.x +=
-      this.direction.trajectory.x * this.currentSpeed;
+      this.direction.trajectory.x * this.ball.speed;
     this.ballElement.position.y +=
-      this.direction.trajectory.y * this.currentSpeed;
+      this.direction.trajectory.y * this.ball.speed;
     this.setPosition();
   }
 
@@ -127,15 +120,5 @@ export class BallComponent implements AfterViewInit, OnDestroy {
       (this.elements.groundHeight / 2 - this.ballElement.ballHeight / 2);
     this.ref.nativeElement.style.setProperty('--x', `${x}px`);
     this.ref.nativeElement.style.setProperty('--y', `${y}px`);
-  }
-
-  private increaseSpeed(): void {
-    if (this.currentSpeed <= this.ball.maximumSpeed) {
-      const nextSpeed: number = this.currentSpeed + this.ball.acceleration;
-      this.currentSpeed =
-        nextSpeed <= this.ball.maximumSpeed
-          ? nextSpeed
-          : this.ball.maximumSpeed;
-    }
   }
 }
