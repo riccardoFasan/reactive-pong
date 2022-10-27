@@ -1,25 +1,17 @@
-@use "abstracts/colors" as colors;
-
-$paddle-width: clamp(0.5rem, 0.75vw, 1rem);
+@use "abstracts/mixins" as mixins;
 
 :host {
-  height: 24%;
-  max-height: 150px;
   position: absolute;
   will-change: top;
-
-  &:before {
-    position: relative;
-    height: 100%;
-    width: $paddle-width;
-    transition: border-color 0.2s ease;
-  }
+  height: 26.66%;
+  max-height: 75%;
+  // width: 1.75%;
+  // ! ensure the backgound images that will place in this div follows the ration behind
 
   div {
+    aspect-ratio: 0.15/1; // prefered over width on container to simplify animations and overrides
     position: relative;
-    width: $paddle-width;
     height: 100%;
-    background-color: colors.$white;
-    transition: background-color 0.2s ease;
+    @include mixins.background-image;
   }
 }

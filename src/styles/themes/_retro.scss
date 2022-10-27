@@ -164,44 +164,20 @@
           border-color: rgba($retro-white, 0.2);
         }
 
-        app-paddle div,
-        app-ball div,
-        app-artifact span {
-          background-color: $retro-white;
+        app-ball div {
+          background-image: url("^assets/icons/retro/ball.svg");
         }
 
         app-paddle div {
-          &::after,
-          &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-          }
-          &::after {
-            background-color: $retro-white;
-            opacity: 0.25;
-          }
-          &::before {
-            filter: blur(1.5vw);
-            background-color: inherit;
-            border-radius: 1rem;
-            opacity: 0.33;
-          }
+          background-image: url("^assets/icons/retro/paddle.svg");
         }
 
-        app-artifact {
-          max-width: 1.75rem;
-
-          span {
-            $icons: ("enlarge", "reduce", "shield");
-            @each $icon in $icons {
-              &.#{$icon} {
-                @include mixins.icon("retro/#{$icon}");
-                background-color: $retro-white;
-              }
+        app-artifact span {
+          $icons: ("enlarge", "reduce", "shield");
+          @each $icon in $icons {
+            &.#{$icon} {
+              background-image: url("^assets/icons/retro/#{$icon}.svg");
+              display: inline-block;
             }
           }
         }
@@ -216,12 +192,6 @@
             $retro-white 8vh
           );
         }
-      }
-
-      .goal {
-        font-size: functions.responsive-size(2.75rem, 3.5rem, 3vw);
-        text-transform: uppercase;
-        transform: scale(0);
       }
     }
   }

@@ -142,24 +142,14 @@
       }
 
       .playground {
-        app-paddle div,
-        app-artifact span,
-        app-ball div {
-          background-repeat: no-repeat;
-          background-size: contain;
-          background-position: center;
-          background-color: transparent;
-        }
-
         app-paddle {
-          div {
-            min-width: 1.125rem;
-          }
+          height: 28.5%;
+
           &:first-of-type div {
-            background-image: url("^assets/icons/dory/left-paddle.svg");
+            background-image: url("^assets/icons/dory/paddle-left.svg");
           }
           &:last-of-type div {
-            background-image: url("^assets/icons/dory/right-paddle.svg");
+            background-image: url("^assets/icons/dory/paddle-right.svg");
           }
         }
 
@@ -167,17 +157,12 @@
           background-image: url("^assets/icons/dory/ball.svg");
         }
 
-        app-artifact {
-          max-width: 1.75rem;
-          width: 6%;
-
-          span {
-            $icons: ("enlarge", "reduce", "shield");
-            @each $icon in $icons {
-              &.#{$icon} {
-                background-image: url("^assets/icons/dory/#{$icon}.svg");
-                display: inline-block;
-              }
+        app-artifact span {
+          $icons: ("enlarge", "reduce", "shield");
+          @each $icon in $icons {
+            &.#{$icon} {
+              background-image: url("^assets/icons/dory/#{$icon}.svg");
+              display: inline-block;
             }
           }
         }
@@ -186,12 +171,6 @@
           width: clamp(0.2rem, 0.33vw, 0.5rem);
           background: repeating-linear-gradient($dory-gradient);
         }
-      }
-
-      .goal {
-        font-size: functions.responsive-size(2.75rem, 3.5rem, 3vw);
-        text-transform: uppercase;
-        transform: scale(0);
       }
     }
   }

@@ -1,5 +1,6 @@
 @use "abstracts/colors" as colors;
 @use "abstracts/mixins" as mixins;
+@use "abstracts/functions" as functions;
 
 main {
   padding: 0;
@@ -22,6 +23,9 @@ main {
     .goal {
       opacity: 0;
       pointer-events: none;
+      font-size: functions.responsive-size(2.75rem, 3.5rem, 3vw);
+      text-transform: uppercase;
+      transform: scale(0);
     }
   }
 }

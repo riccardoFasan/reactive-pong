@@ -22,3 +22,9 @@
   mask-position: center;
   mask-image: url("^assets/icons/#{$icon}.svg");
 }
+
+@mixin background-image($size: contain) {
+  background-repeat: no-repeat;
+  background-size: $size;
+  background-position: center;
+}
