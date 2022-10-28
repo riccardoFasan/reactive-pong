@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Howl } from 'howler';
 import { BehaviorSubject, EMPTY, Observable, combineLatest, iif } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import { SoundsStatus } from 'src/app/shared/enums';
@@ -45,11 +46,21 @@ export class SoundsService {
     )
   );
 
-  private paddle: HTMLAudioElement = new Audio('/assets/sounds/bounce.mp3');
-  private edge: HTMLAudioElement = new Audio('/assets/sounds/bounce.mp3');
-  private goal: HTMLAudioElement = new Audio('/assets/sounds/goal.mp3');
-  private shield: HTMLAudioElement = new Audio('/assets/sounds/shield.mp3');
-  private artifact: HTMLAudioElement = new Audio('/assets/sounds/artifact.mp3');
+  private paddle: Howl = new Howl({
+    src: ['/assets/sounds/bounce.mp3'],
+  });
+  private edge: Howl = new Howl({
+    src: ['/assets/sounds/bounce.mp3'],
+  });
+  private goal: Howl = new Howl({
+    src: ['/assets/sounds/goal.mp3'],
+  });
+  private shield: Howl = new Howl({
+    src: ['/assets/sounds/shield.mp3'],
+  });
+  private artifact: Howl = new Howl({
+    src: ['/assets/sounds/artifact.mp3'],
+  });
 
   constructor(
     private collisions: CollisionService,
@@ -66,7 +77,7 @@ export class SoundsService {
   }
 
   async init(): Promise<void> {
-    this.preload();
+    // this.preload();
     const soundsStatus: SoundsStatus | null =
       await this.perefences.getSoundsStatus();
     if (soundsStatus === SoundsStatus.Off) this.status = SoundsStatus.Off;
