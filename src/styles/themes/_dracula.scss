@@ -12,6 +12,7 @@
   $dracula-black: #282a36;
   $dracula-white: #f8f8f2;
   $dracula-yellow: #f1fa8c;
+  $dracula-cyan: #8be9fd;
   $dracula-pink: #ff79c6;
   $dracula-purple: #6272a4;
 
@@ -41,6 +42,7 @@
     }
 
     .alert-button-group button {
+      height: 1.5rem;
       @include dracula-button();
     }
   }
@@ -124,9 +126,9 @@
           background: repeating-linear-gradient(
             0,
             transparent,
-            transparent 3vh,
-            $dracula-white 3vh,
-            $dracula-white 8vh
+            transparent 2vh,
+            $dracula-cyan 2vh,
+            $dracula-cyan 8vh
           );
         }
 
