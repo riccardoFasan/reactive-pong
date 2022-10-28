@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, combineLatest, iif } from 'rxjs';
-import { tap, switchMap, mergeMap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { Collision } from '../enums';
+import { ArtifactsService } from './artifacts.service';
 import { CollisionService } from './collision.service';
 
 @Injectable({
@@ -11,18 +12,23 @@ export class SoundsService {
   private onSoundsEnabled$: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(true);
 
-  private onPaddleSoundPlayer$: Observable<Collision> =
+  private onPaddleSoundPlayed$: Observable<Collision> =
     this.collisions.onPaddleCollision$.pipe(tap(() => this.playPaddleSound()));
 
-  private onEdgeSoundPlayer$: Observable<Collision> =
+  private onEdgeSoundPlayed$: Observable<Collision> =
     this.collisions.onEdgeCollision$.pipe(tap(() => this.playEdgeSound()));
 
-  private onGatesSoundPlayer$: Observable<Collision> =
+  private onGatesSoundPlayed$: Observable<Collision> =
     this.collisions.onGatesCollision$.pipe(tap(() => this.playGatesSound()));
 
-  private onShieldsSoundPlayer$: Observable<Collision> =
+  private onShieldsSoundPlayed$: Observable<Collision> =
     this.collisions.onShieldsCollision$.pipe(
       tap(() => this.playShieldsSound())
+    );
+
+  private onArtifactSoundPlayed$: Observable<Collision> =
+    this.artifacts.onArtifactCollision$.pipe(
+      tap(() => this.playArtifactSound())
     );
 
   onSoundPlayed$: Observable<void> = this.onSoundsEnabled$.pipe(
@@ -30,10 +36,11 @@ export class SoundsService {
       iif(
         () => isEnabled,
         combineLatest([
-          this.onPaddleSoundPlayer$,
-          this.onEdgeSoundPlayer$,
-          this.onGatesSoundPlayer$,
-          this.onShieldsSoundPlayer$,
+          this.onPaddleSoundPlayed$,
+          this.onEdgeSoundPlayed$,
+          this.onGatesSoundPlayed$,
+          this.onShieldsSoundPlayed$,
+          this.onArtifactSoundPlayed$,
         ]).pipe(switchMap(() => EMPTY)),
         EMPTY
       )
@@ -42,7 +49,10 @@ export class SoundsService {
 
   private readonly soundsPath: string = 'assets/sounds';
 
-  constructor(private collisions: CollisionService) {}
+  constructor(
+    private collisions: CollisionService,
+    private artifacts: ArtifactsService
+  ) {}
 
   private playPaddleSound(): void {
     this.playSound('bounce');
@@ -58,6 +68,10 @@ export class SoundsService {
 
   private playShieldsSound(): void {
     this.playSound('shield');
+  }
+
+  private playArtifactSound(): void {
+    this.playSound('artifact');
   }
 
   private playSound(sound: string): void {

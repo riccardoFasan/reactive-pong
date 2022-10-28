@@ -11,6 +11,7 @@ import {
 } from '.';
 import { HalfField, Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
+import { Collision } from '../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,11 @@ export class ArtifactsService {
     map(() => this.getHitArtifact()),
     // @ts-ignore
     filter((hitArtifact: HitArtifact | undefined) => hitArtifact !== undefined),
+    share()
+  );
+
+  onArtifactCollision$: Observable<Collision> = this.onActivation$.pipe(
+    map(() => Collision.Artifact),
     share()
   );
 

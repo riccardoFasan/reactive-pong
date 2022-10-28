@@ -7,4 +7,5 @@ export enum Collision {
   None = 'NONE',
   LeftShield = 'LEFT_SHIELD',
   RightShield = 'RIGHT_SHIELD',
+  Artifact = 'ARTIFACT',
 }
