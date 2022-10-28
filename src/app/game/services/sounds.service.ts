@@ -15,23 +15,19 @@ export class SoundsService {
     new BehaviorSubject<SoundsStatus>(SoundsStatus.On);
 
   private onPaddleSoundPlayed$: Observable<Collision> =
-    this.collisions.onPaddleCollision$.pipe(tap(() => this.playPaddleSound()));
+    this.collisions.onPaddleCollision$.pipe(tap(() => this.paddle.play()));
 
   private onEdgeSoundPlayed$: Observable<Collision> =
-    this.collisions.onEdgeCollision$.pipe(tap(() => this.playEdgeSound()));
+    this.collisions.onEdgeCollision$.pipe(tap(() => this.edge.play()));
 
   private onGatesSoundPlayed$: Observable<Collision> =
-    this.collisions.onGatesCollision$.pipe(tap(() => this.playGatesSound()));
+    this.collisions.onGatesCollision$.pipe(tap(() => this.goal.play()));
 
   private onShieldsSoundPlayed$: Observable<Collision> =
-    this.collisions.onShieldsCollision$.pipe(
-      tap(() => this.playShieldsSound())
-    );
+    this.collisions.onShieldsCollision$.pipe(tap(() => this.shield.play()));
 
   private onArtifactSoundPlayed$: Observable<Collision> =
-    this.artifacts.onArtifactCollision$.pipe(
-      tap(() => this.playArtifactSound())
-    );
+    this.artifacts.onArtifactCollision$.pipe(tap(() => this.artifact.play()));
 
   onSoundPlayed$: Observable<void> = this.statusStore$.pipe(
     switchMap((status: SoundsStatus) =>
@@ -49,7 +45,11 @@ export class SoundsService {
     )
   );
 
-  private readonly soundsPath: string = 'assets/sounds';
+  private paddle: HTMLAudioElement = new Audio('/assets/sounds/bounce.mp3');
+  private edge: HTMLAudioElement = new Audio('/assets/sounds/bounce.mp3');
+  private goal: HTMLAudioElement = new Audio('/assets/sounds/goal.mp3');
+  private shield: HTMLAudioElement = new Audio('/assets/sounds/shield.mp3');
+  private artifact: HTMLAudioElement = new Audio('/assets/sounds/artifact.mp3');
 
   constructor(
     private collisions: CollisionService,
@@ -78,45 +78,10 @@ export class SoundsService {
   }
 
   private preload(): void {
-    this.preloadSound('bounce');
-    this.preloadSound('bounce');
-    this.preloadSound('goal');
-    this.preloadSound('shield');
-    this.preloadSound('artifact');
-  }
-
-  private playPaddleSound(): void {
-    this.playSound('bounce');
-  }
-
-  private playEdgeSound(): void {
-    this.playSound('bounce');
-  }
-
-  private playGatesSound(): void {
-    this.playSound('goal');
-  }
-
-  private playShieldsSound(): void {
-    this.playSound('shield');
-  }
-
-  private playArtifactSound(): void {
-    this.playSound('artifact');
-  }
-
-  private preloadSound(sound: string): void {
-    const audio: HTMLAudioElement = new Audio(
-      `${this.soundsPath}/${sound}.mp3`
-    );
-    audio.volume = 0;
-    audio.play();
-  }
-
-  private playSound(sound: string): void {
-    const audio: HTMLAudioElement = new Audio(
-      `${this.soundsPath}/${sound}.mp3`
-    );
-    audio.play();
+    this.paddle.load();
+    this.edge.load();
+    this.goal.load();
+    this.shield.load();
+    this.artifact.load();
   }
 }

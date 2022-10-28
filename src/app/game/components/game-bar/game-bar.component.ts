@@ -12,6 +12,7 @@ import {
   AlertsService,
   GameControlsService,
   ScoreService,
+  SoundsService,
 } from '../../services';
 
 @Component({
@@ -32,7 +33,8 @@ export class GameBarComponent implements OnDestroy {
     private players: PlayersService,
     private router: Router,
     private alerts: AlertsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private sounds: SoundsService
   ) {}
 
   ngOnDestroy(): void {
@@ -41,7 +43,9 @@ export class GameBarComponent implements OnDestroy {
 
   async start(): Promise<void> {
     await isIonicReady();
+    this.sounds.init();
     this.controls.start();
+    this.onSoundsSwitched();
     this.onGameOver();
   }
 
@@ -96,5 +100,9 @@ export class GameBarComponent implements OnDestroy {
         ]);
       }
     );
+  }
+
+  private onSoundsSwitched(): void {
+    this.subSink.sink = this.sounds.onSoundPlayed$.subscribe();
   }
 }

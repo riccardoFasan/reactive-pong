@@ -38,24 +38,17 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     private animator: AnimatorService,
     private collision: CollisionService,
     private goal: GoalService,
-    private elements: ElementsService,
-    private sounds: SoundsService
+    private elements: ElementsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
-    this.sounds.init();
     this.elements.registerGround(this.groundRef.nativeElement);
-    await isIonicReady();
+    await isIonicReady(); // ! Do not move the register method below this line
     this.onScoreChanged();
-    this.onSoundsSwitched();
   }
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
-  }
-
-  private onSoundsSwitched(): void {
-    this.subSink.sink = this.sounds.onSoundPlayed$.subscribe();
   }
 
   private onScoreChanged(): void {
