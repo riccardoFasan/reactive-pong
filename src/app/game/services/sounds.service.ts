@@ -6,7 +6,6 @@ import { PreferencesService } from 'src/app/shared/services';
 import { Collision } from '../enums';
 import { ArtifactsService } from './artifacts.service';
 import { CollisionService } from './collision.service';
-import { NativeAudio } from '@awesome-cordova-plugins/native-audio/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -55,8 +54,7 @@ export class SoundsService {
   constructor(
     private collisions: CollisionService,
     private artifacts: ArtifactsService,
-    private perefences: PreferencesService,
-    private nativeAudio: NativeAudio
+    private perefences: PreferencesService
   ) {}
 
   get status(): SoundsStatus {
@@ -80,32 +78,45 @@ export class SoundsService {
   }
 
   private preload(): void {
-    this.nativeAudio.preloadSimple('bounce', `${this.soundsPath}/bounce.mp3`);
-    this.nativeAudio.preloadSimple('goal', `${this.soundsPath}/goal.mp3`);
-    this.nativeAudio.preloadSimple('shield', `${this.soundsPath}/shield.mp3`);
-    this.nativeAudio.preloadSimple(
-      'artifact',
-      `${this.soundsPath}/artifact.mp3`
-    );
+    this.preloadSound('bounce');
+    this.preloadSound('bounce');
+    this.preloadSound('goal');
+    this.preloadSound('shield');
+    this.preloadSound('artifact');
   }
 
   private playPaddleSound(): void {
-    this.nativeAudio.play('bounce');
+    this.playSound('bounce');
   }
 
   private playEdgeSound(): void {
-    this.nativeAudio.play('bounce');
+    this.playSound('bounce');
   }
 
   private playGatesSound(): void {
-    this.nativeAudio.play('goal');
+    this.playSound('goal');
   }
 
   private playShieldsSound(): void {
-    this.nativeAudio.play('shield');
+    this.playSound('shield');
   }
 
   private playArtifactSound(): void {
-    this.nativeAudio.play('artifact');
+    this.playSound('artifact');
+  }
+
+  private preloadSound(sound: string): void {
+    const audio: HTMLAudioElement = new Audio(
+      `${this.soundsPath}/${sound}.mp3`
+    );
+    audio.volume = 0;
+    audio.play();
+  }
+
+  private playSound(sound: string): void {
+    const audio: HTMLAudioElement = new Audio(
+      `${this.soundsPath}/${sound}.mp3`
+    );
+    audio.play();
   }
 }
