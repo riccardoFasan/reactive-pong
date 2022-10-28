@@ -9,12 +9,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    margin-top: -9px; // adjust with page padding
+    margin-top: -9px;
   }
   nav {
     @include mixins.flex-column(flex-start);
-    a {
-      padding-bottom: functions.responsive-size(2.33rem, 2.66rem, 2.875vw);
-    }
   }
 }

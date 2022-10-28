@@ -10,11 +10,6 @@ main app-game-bar ion-list.game-bar {
       margin: 0 2vw;
     }
 
-    button,
-    ion-badge {
-      font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
-    }
-
     ion-badge {
       background-color: transparent;
     }

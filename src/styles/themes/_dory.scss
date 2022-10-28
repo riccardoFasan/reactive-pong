@@ -14,7 +14,7 @@
 
   $dory-gradient: #1af84b 1%, #1af84b 2%, #2f2fff 2%, #2f2fff 3%, #3cbdff 3%,
     #3cbdff 4%, #8d06f6 4%, #8d06f6 5%, #e61af8 5%, #e61af8 6%, #f2f606 6%,
-    #f2f606 7%, #ff7b31 7%, #ff7b31 8%, #ffffff 8%, #ffffff 9%;
+    #f2f606 7%, #ff7b31 7%, #ff7b31 8%;
 
   $dory-background: linear-gradient(
     90deg,
@@ -23,13 +23,16 @@
     $dory-black 100%
   );
 
-  font-family: $dory-font;
-  color: $dory-white;
-
   &,
   button {
     font-family: $dory-font;
     color: $dory-white;
+  }
+
+  button {
+    text-transform: uppercase;
+    line-height: 0.8;
+    font-size: functions.responsive-size(1.33rem, 2rem, 1vw);
   }
 
   ion-alert .alert-wrapper {
@@ -50,13 +53,15 @@
     padding: var(--page-padding);
     background: $dory-background;
 
-    button {
-      text-transform: uppercase;
-    }
-
-    app-game-bar ion-list.game-bar ion-item ion-badge {
-      font-family: $dory-font;
-      color: $dory-white;
+    app-game-bar ion-list.game-bar ion-item {
+      button,
+      ion-badge {
+        font-size: functions.responsive-size(1.33rem, 2rem, 1.66vw);
+      }
+      ion-badge {
+        font-family: $dory-font;
+        color: $dory-white;
+      }
     }
 
     .page {
@@ -66,8 +71,23 @@
       border-image-slice: 1;
       border-image-source: repeating-conic-gradient($dory-gradient);
 
-      &.home .logo {
-        background-image: url("^assets/icons/dory/title.svg");
+      &.home {
+        .logo {
+          background-image: url("^assets/icons/dory/title.svg");
+        }
+
+        nav {
+          width: 25%;
+
+          a,
+          button {
+            width: 100%;
+          }
+
+          a {
+            padding-bottom: functions.responsive-size(1rem, 1.5rem, 1.75vw);
+          }
+        }
       }
 
       h2 {
@@ -130,6 +150,11 @@
         app-shield div {
           width: clamp(0.33rem, 0.45vw, 0.66rem);
           background: repeating-linear-gradient($dory-gradient);
+        }
+
+        .goal {
+          font-size: functions.responsive-size(5rem, 6rem, 5vw) !important;
+          margin-top: -2.5vw;
         }
       }
     }

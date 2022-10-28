@@ -15,9 +15,6 @@
   $retro-gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%,
     #00ffc2 50%, #0047ff 62.5%, #7000ff 75%, #fa00ff 87.5%, #ff0000 100%;
 
-  font-family: $retro-font;
-  color: $retro-white;
-
   &,
   button {
     font-family: $retro-font;
@@ -46,9 +43,15 @@
       text-transform: uppercase;
     }
 
-    app-game-bar ion-list.game-bar ion-item ion-badge {
-      font-family: $retro-font;
-      color: $retro-white;
+    app-game-bar ion-list.game-bar ion-item {
+      button,
+      ion-badge {
+        font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+      }
+      ion-badge {
+        font-family: $retro-font;
+        color: $retro-white;
+      }
     }
 
     .page {
@@ -82,8 +85,13 @@
         z-index: 10;
       }
 
-      &.home .logo {
-        background-image: url("^assets/icons/retro/title.svg");
+      &.home {
+        nav a {
+          padding-bottom: functions.responsive-size(2.33rem, 2.66rem, 2.875vw);
+        }
+        .logo {
+          background-image: url("^assets/icons/retro/title.svg");
+        }
       }
 
       h2 {
