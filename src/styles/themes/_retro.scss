@@ -2,21 +2,25 @@
 @use "abstracts/mixins" as mixins;
 @use "abstracts/colors" as colors;
 
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("^assets/fonts/press-start-2p.woff") format("woff");
+}
+
 .retro-theme {
-  $retro-text: "Press Start 2P", monospace;
+  $retro-font: "Press Start 2P", monospace;
   $retro-black: #090b0d;
   $retro-white: #fbfeff;
-  $playground-border-width: 2px;
 
   $retro-gradient: #ff0000 0%, #ff8a00 12.5%, #faff00 25%, #52ff00 37.5%,
     #00ffc2 50%, #0047ff 62.5%, #7000ff 75%, #fa00ff 87.5%, #ff0000 100%;
 
-  font-family: $retro-text;
+  font-family: $retro-font;
   color: $retro-white;
 
   &,
   button {
-    font-family: $retro-text;
+    font-family: $retro-font;
     color: $retro-white;
   }
 
@@ -24,7 +28,7 @@
     background-color: $retro-black;
 
     .alert-head h2 {
-      font-family: $retro-text;
+      font-family: $retro-font;
     }
 
     .alert-button-group button {
@@ -43,7 +47,7 @@
     }
 
     app-game-bar ion-list.game-bar ion-item ion-badge {
-      font-family: $retro-text;
+      font-family: $retro-font;
       color: $retro-white;
     }
 
@@ -79,13 +83,7 @@
       }
 
       &.home .logo {
-        height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
-        width: functions.responsive-size(15rem, 25rem, 40vw);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
         background-image: url("^assets/icons/retro/title.svg");
-        margin-top: -9px; // adjust with page padding
       }
 
       h2 {

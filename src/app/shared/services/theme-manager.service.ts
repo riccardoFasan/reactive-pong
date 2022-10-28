@@ -9,7 +9,7 @@ import { PreferencesService } from './preferences.service';
 })
 export class ThemeManagerService {
   private themeStore$: BehaviorSubject<Theme> = new BehaviorSubject<Theme>(
-    Theme.Dory
+    Theme.Retro
   );
 
   themeChange$: Observable<Theme> = this.themeStore$.asObservable();

@@ -1,8 +1,16 @@
 @use "abstracts/mixins" as mixins;
 @use "abstracts/functions" as functions;
 
-.page {
+.page.home {
   @include mixins.flex-column;
+  .logo {
+    height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
+    width: functions.responsive-size(15rem, 25rem, 40vw);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: -9px; // adjust with page padding
+  }
   nav {
     @include mixins.flex-column(flex-start);
     a {

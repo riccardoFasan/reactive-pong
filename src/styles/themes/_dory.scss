@@ -2,11 +2,15 @@
 @use "abstracts/mixins" as mixins;
 @use "abstracts/colors" as colors;
 
+@font-face {
+  font-family: "Fundstueck";
+  src: url("^assets/fonts/fundstueck.woff") format("woff");
+}
+
 .dory-theme {
-  $dory-text: "Press Start 2P", monospace;
+  $dory-font: "Fundstueck", monospace;
   $dory-black: #081831;
   $dory-white: #ffffff;
-  $playground-border-width: 2px;
 
   $dory-gradient: #1af84b 1%, #1af84b 2%, #2f2fff 2%, #2f2fff 3%, #3cbdff 3%,
     #3cbdff 4%, #8d06f6 4%, #8d06f6 5%, #e61af8 5%, #e61af8 6%, #f2f606 6%,
@@ -19,12 +23,12 @@
     $dory-black 100%
   );
 
-  font-family: $dory-text;
+  font-family: $dory-font;
   color: $dory-white;
 
   &,
   button {
-    font-family: $dory-text;
+    font-family: $dory-font;
     color: $dory-white;
   }
 
@@ -32,7 +36,7 @@
     background-color: $dory-black;
 
     .alert-head h2 {
-      font-family: $dory-text;
+      font-family: $dory-font;
     }
 
     .alert-button-group button {
@@ -51,7 +55,7 @@
     }
 
     app-game-bar ion-list.game-bar ion-item ion-badge {
-      font-family: $dory-text;
+      font-family: $dory-font;
       color: $dory-white;
     }
 
@@ -63,13 +67,7 @@
       border-image-source: repeating-conic-gradient($dory-gradient);
 
       &.home .logo {
-        height: functions.responsive-size(2.5rem, 3rem, 4.5vw);
-        width: functions.responsive-size(15rem, 25rem, 40vw);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
         background-image: url("^assets/icons/dory/title.svg");
-        margin-top: -9px; // adjust with page padding
       }
 
       h2 {
