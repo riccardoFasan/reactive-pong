@@ -17,6 +17,7 @@ import {
   CollisionService,
   GoalService,
   ElementsService,
+  SoundsService,
 } from '../../services';
 
 @Component({
@@ -37,17 +38,23 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
     private animator: AnimatorService,
     private collision: CollisionService,
     private goal: GoalService,
-    private elements: ElementsService
+    private elements: ElementsService,
+    private sounds: SoundsService
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
     this.elements.registerGround(this.groundRef.nativeElement);
     await isIonicReady();
     this.onScoreChanged();
+    this.onSoundsSwitched();
   }
 
   ngOnDestroy(): void {
     this.subSink.unsubscribe();
+  }
+
+  private onSoundsSwitched(): void {
+    this.subSink.sink = this.sounds.onSoundPlayed$.subscribe();
   }
 
   private onScoreChanged(): void {
