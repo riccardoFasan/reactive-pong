@@ -8,7 +8,6 @@ import { AppComponent } from './components';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { NativeAudio } from '@awesome-cordova-plugins/native-audio/ngx';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 
 import {
@@ -38,7 +37,6 @@ import { createTranslateLoader } from './translate-loader';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ScreenOrientation,
     HttpClient,
-    NativeAudio,
   ],
   bootstrap: [AppComponent],
 })
