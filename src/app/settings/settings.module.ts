@@ -9,6 +9,7 @@ import {
   SettingsComponent,
   ThemeSelectComponent,
   LanguageSelectComponent,
+  SoundSwitchComponent,
 } from './components';
 
 @NgModule({
@@ -18,6 +19,7 @@ import {
     HalfFieldSelectComponent,
     ThemeSelectComponent,
     LanguageSelectComponent,
+    SoundSwitchComponent,
   ],
   imports: [CommonModule, IonicModule, SettingsRoutingModule, SharedModule],
 })

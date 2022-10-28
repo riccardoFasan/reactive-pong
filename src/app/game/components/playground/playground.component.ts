@@ -43,6 +43,7 @@ export class PlayGroundComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   async ngAfterViewInit(): Promise<void> {
+    this.sounds.init();
     this.elements.registerGround(this.groundRef.nativeElement);
     await isIonicReady();
     this.onScoreChanged();

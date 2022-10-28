@@ -20,5 +20,8 @@
   "RESUME": "Riprendi",
   "VICTORY": "Vittoria",
   "GAME_OVER": "Game over",
-  "GAME_PAUSED": "Gioco in pausa"
+  "GAME_PAUSED": "Gioco in pausa",
+  "SOUNDS": "Effetti sonori",
+  "YES": "Sì",
+  "NO": "No"
 }
