@@ -93,12 +93,20 @@
       h2 {
         text-transform: lowercase;
         color: $dracula-yellow;
+        font-size: functions.responsive-size(1.5rem, 1.875rem, 1vw);
       }
 
       .select {
         button,
         label {
-          font-size: functions.responsive-size(1.33rem, 1.66rem, 0.66vw);
+          font-size: functions.responsive-size(1.25rem, 1.5rem, 0.5vw);
+        }
+        &:not(:last-child) {
+          margin-bottom: functions.responsive-size(
+            0.875rem,
+            1rem,
+            0.5vw
+          ) !important;
         }
       }
 

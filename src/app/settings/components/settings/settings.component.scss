@@ -6,11 +6,11 @@
 
   .selects-container {
     margin: 0 auto;
-    width: functions.responsive-size(18rem, 21rem, 35vw);
+    width: functions.responsive-size(20rem, 25rem, 40vw);
 
     .select:not(:last-child) {
       display: block;
-      margin-bottom: functions.responsive-size(1.33rem, 2rem, 0.33vw);
+      margin-bottom: functions.responsive-size(1.5rem, 2rem, 1vw);
     }
   }
 }
