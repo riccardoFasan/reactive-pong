@@ -19,5 +19,6 @@
   "INSANE": "Insane",
   "RESUME": "Resume",
   "VICTORY": "Victory",
-  "GAME_OVER": "Game over"
+  "GAME_OVER": "Game over",
+  "GAME_PAUSED": "Game paused"
 }

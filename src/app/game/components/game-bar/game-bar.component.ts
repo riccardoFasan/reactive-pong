@@ -47,7 +47,7 @@ export class GameBarComponent implements OnDestroy {
 
   pause(): void {
     this.controls.pause();
-    this.alerts.renderAlert(this.translate.instant('RESUME'), [
+    this.alerts.renderAlert(this.translate.instant('GAME_PAUSED'), [
       {
         text: this.translate.instant('QUIT'),
         role: 'destructive',

@@ -1,0 +1,141 @@
+@use "abstracts/functions" as functions;
+@use "abstracts/mixins" as mixins;
+@use "abstracts/colors" as colors;
+
+@font-face {
+  font-family: "Gabriela";
+  src: url("^assets/fonts/gabriela.woff") format("woff");
+}
+
+.dracula-theme {
+  $dracula-font: "Gabriela", monospace;
+  $dracula-black: #282a36;
+  $dracula-white: #f8f8f2;
+  $dracula-yellow: #f1fa8c;
+  $dracula-pink: #ff79c6;
+  $dracula-purple: #6272a4;
+
+  @mixin dracula-button {
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: functions.responsive-size(1.25rem, 1.5rem, 0.5vw);
+    color: $dracula-pink;
+  }
+
+  color: $dracula-white;
+
+  &,
+  button {
+    font-family: $dracula-font;
+  }
+
+  button {
+    @include dracula-button();
+  }
+
+  ion-alert .alert-wrapper {
+    background-color: $dracula-black;
+
+    .alert-head h2 {
+      font-family: $dracula-font;
+    }
+
+    .alert-button-group button {
+      @include dracula-button();
+    }
+  }
+
+  .ion-page {
+    width: 100%;
+    height: 100vh;
+    padding: var(--page-padding);
+    background-color: $dracula-black;
+
+    button {
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: functions.responsive-size(1.25rem, 1.5rem, 0.5vw);
+    }
+
+    app-game-bar ion-list.game-bar ion-item {
+      button {
+        font-size: functions.responsive-size(1.33rem, 1.66rem, 0.66vw);
+      }
+      ion-badge {
+        font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+        font-family: $dracula-font;
+        color: $dracula-white;
+      }
+    }
+
+    .page {
+      position: relative;
+      background-color: transparent;
+      border-radius: 1rem;
+      border: $dracula-purple 3px solid;
+
+      &.difficulty button,
+      &.home nav {
+        z-index: 10;
+      }
+
+      &.home {
+        nav a {
+          padding-bottom: functions.responsive-size(2.33rem, 2.66rem, 2.875vw);
+        }
+        .logo {
+          background-image: url("^assets/icons/dracula/title.svg");
+        }
+      }
+
+      h2 {
+        text-transform: lowercase;
+        color: $dracula-yellow;
+      }
+
+      .select {
+        button,
+        label {
+          font-size: functions.responsive-size(1.33rem, 1.66rem, 0.66vw);
+        }
+      }
+
+      .playground {
+        app-ball div {
+          background-image: url("^assets/icons/dracula/ball.svg");
+        }
+
+        app-paddle div {
+          background-image: url("^assets/icons/dracula/paddle.svg");
+        }
+
+        app-artifact span {
+          $icons: ("enlarge", "reduce", "shield");
+          @each $icon in $icons {
+            &.#{$icon} {
+              background-image: url("^assets/icons/dracula/#{$icon}.svg");
+              display: inline-block;
+            }
+          }
+        }
+
+        app-shield div {
+          width: clamp(0.2rem, 0.33vw, 0.5rem);
+          background: repeating-linear-gradient(
+            0,
+            transparent,
+            transparent 3vh,
+            $dracula-white 3vh,
+            $dracula-white 8vh
+          );
+        }
+
+        .goal {
+          font-size: functions.responsive-size(4rem, 5rem, 5vw) !important;
+          color: $dracula-pink;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

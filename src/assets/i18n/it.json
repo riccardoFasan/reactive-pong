@@ -19,5 +19,6 @@
   "INSANE": "Folle",
   "RESUME": "Riprendi",
   "VICTORY": "Vittoria",
-  "GAME_OVER": "Game over"
+  "GAME_OVER": "Game over",
+  "GAME_PAUSED": "Gioco in pausa"
 }

@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslationsService } from 'src/app/shared/services';
 import { Option } from '../../models';
 
 @Component({
   selector: 'app-language-select',
   templateUrl: './language-select.component.html',
-  styleUrls: ['./language-select.component.scss'],
+  styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSelectComponent {
   languages: Option[] = [

@@ -7,7 +7,7 @@ import { Option } from '../../models';
 @Component({
   selector: 'app-half-field-select',
   templateUrl: './half-field-select.component.html',
-  styleUrls: ['./half-field-select.component.scss'],
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HalfFieldSelectComponent {
