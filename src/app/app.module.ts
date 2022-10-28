@@ -3,11 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components';
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+
+import { NativeAudio } from '@awesome-cordova-plugins/native-audio/ngx';
+import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
+
 import {
   HttpClient,
   HttpClientModule,
@@ -35,6 +38,7 @@ import { createTranslateLoader } from './translate-loader';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ScreenOrientation,
     HttpClient,
+    NativeAudio,
   ],
   bootstrap: [AppComponent],
 })

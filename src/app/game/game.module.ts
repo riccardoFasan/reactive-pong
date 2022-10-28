@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { GameRoutingModule } from './game-routing.module';
-import { NativeAudio } from '@awesome-cordova-plugins/native-audio/ngx';
 
 import {
   PlayGroundComponent,
@@ -39,6 +38,5 @@ import { SharedModule } from '../shared/shared.module';
     ResizePaddleDirective,
   ],
   imports: [CommonModule, IonicModule, GameRoutingModule, SharedModule],
-  providers: [NativeAudio],
 })
 export class GameModule {}
