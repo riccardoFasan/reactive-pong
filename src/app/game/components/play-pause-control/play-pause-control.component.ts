@@ -1,10 +1,12 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   Input,
   OnDestroy,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { App } from '@capacitor/app';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -26,7 +28,7 @@ import {
   styleUrls: ['./play-pause-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PlayPauseControlComponent implements OnDestroy {
+export class PlayPauseControlComponent implements AfterViewInit, OnDestroy {
   @Input() halfField!: HalfField;
 
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
@@ -62,6 +64,17 @@ export class PlayPauseControlComponent implements OnDestroy {
     private translate: TranslateService,
     private sounds: SoundsService
   ) {}
+
+  ngAfterViewInit(): void {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (isActive && this.controls.currentStatus === 'PAUSED') {
+        this.controls.resume();
+      }
+      if (!isActive && this.controls.currentStatus === 'RUNNING') {
+        this.controls.start();
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.quit();

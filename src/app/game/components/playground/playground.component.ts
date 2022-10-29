@@ -17,7 +17,6 @@ import {
   CollisionService,
   GoalService,
   ElementsService,
-  SoundsService,
 } from '../../services';
 
 @Component({
