@@ -1,7 +1,11 @@
 @use "abstracts/mixins" as mixins;
 
 :host {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 102;
+  opacity: 0.66;
 
   ion-list {
     @include mixins.flex-row();
@@ -11,8 +15,7 @@
       display: inline-block;
 
       ion-badge {
-        padding: 0.1rem 0.33rem;
-        border-radius: 0.33rem;
+        padding: 0 0.75rem;
       }
     }
   }

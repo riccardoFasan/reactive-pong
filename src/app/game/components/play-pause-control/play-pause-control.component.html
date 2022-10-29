@@ -1,0 +1,8 @@
+<div [ngClass]="halfField | lowercase" *ngIf="gameStatus$ | async as status">
+  <button (click)="start()" *ngIf="status === 'STOPPED'">
+    {{ "START" | translate }}
+  </button>
+  <button (click)="pause()" *ngIf="status !== 'STOPPED'">
+    {{ "PAUSE" | translate }}
+  </button>
+</div>

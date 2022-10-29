@@ -53,7 +53,7 @@
     padding: var(--page-padding);
     background: $dory-background;
 
-    app-game-bar ion-list.game-bar ion-item {
+    app-score ion-list.score ion-item {
       button,
       ion-badge {
         font-size: functions.responsive-size(1.33rem, 2rem, 1.66vw);

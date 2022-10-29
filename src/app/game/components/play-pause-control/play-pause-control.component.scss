@@ -1,0 +1,11 @@
+div {
+  position: absolute;
+  z-index: 102;
+  bottom: 0.75rem;
+  &.right {
+    right: 1rem;
+  }
+  &.left {
+    left: 1rem;
+  }
+}

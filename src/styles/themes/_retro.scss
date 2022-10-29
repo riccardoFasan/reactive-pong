@@ -43,15 +43,14 @@
       text-transform: uppercase;
     }
 
-    app-game-bar ion-list.game-bar ion-item {
-      button,
-      ion-badge {
-        font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
-      }
-      ion-badge {
-        font-family: $retro-font;
-        color: $retro-white;
-      }
+    app-play-pause-control button {
+      font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+    }
+
+    app-score ion-list.score ion-item ion-badge {
+      font-size: functions.responsive-size(1rem, 1.125rem, 0.2vw);
+      font-family: $retro-font;
+      color: $retro-white;
     }
 
     .page {

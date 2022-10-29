@@ -1,5 +1,5 @@
 {
-  "START": "Avvia",
+  "START": "Gioca",
   "PAUSE": "Pausa",
   "DIFFICULTY": "Difficoltà",
   "PLAY": "Gioca",
@@ -23,5 +23,6 @@
   "GAME_PAUSED": "Gioco in pausa",
   "SOUNDS": "Effetti sonori",
   "YES": "Sì",
-  "NO": "No"
+  "NO": "No",
+  "PLAY_AGAIN": "Gioca ancora"
 }

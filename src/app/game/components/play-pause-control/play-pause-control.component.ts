@@ -1,13 +1,18 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { Player } from 'src/app/shared/enums';
+import { tap } from 'rxjs/operators';
+import { HalfField, Player } from 'src/app/shared/enums';
 import { PlayersService } from 'src/app/shared/services';
 import { isIonicReady } from 'src/utilities';
 import { SubSink } from 'subsink';
 import { GameStatus } from '../../enums';
-import { Score } from '../../models';
 import {
   AlertsService,
   GameControlsService,
@@ -16,14 +21,35 @@ import {
 } from '../../services';
 
 @Component({
-  selector: 'app-game-bar',
-  templateUrl: './game-bar.component.html',
-  styleUrls: ['./game-bar.component.scss'],
+  selector: 'app-play-pause-control',
+  templateUrl: './play-pause-control.component.html',
+  styleUrls: ['./play-pause-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameBarComponent implements OnDestroy {
+export class PlayPauseControlComponent implements OnDestroy {
+  @Input() halfField!: HalfField;
+
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
-  points$: Observable<Score> = this.score.scoreChanged$;
+
+  private onGameOver$: Observable<Player> = this.score.winnerChanged$.pipe(
+    tap((winner: Player) => {
+      this.stop();
+      const message: string =
+        winner === this.players.user ? 'VICTORY' : 'GAME_OVER';
+      this.alerts.renderAlert(this.translate.instant(message), [
+        {
+          text: this.translate.instant('QUIT'),
+          role: 'destructive',
+          handler: () => this.backToHome(),
+        },
+        {
+          text: this.translate.instant('PLAY_AGAIN'),
+          role: 'confirm',
+          handler: () => this.start(),
+        },
+      ]);
+    })
+  );
 
   private subSink: SubSink = new SubSink();
 
@@ -85,21 +111,7 @@ export class GameBarComponent implements OnDestroy {
   }
 
   private onGameOver(): void {
-    this.subSink.sink = this.score.winnerChanged$.subscribe(
-      (winner: Player) => {
-        this.stop();
-        const message: string =
-          winner === this.players.user ? 'VICTORY' : 'GAME_OVER';
-        this.alerts.renderAlert(this.translate.instant(message), [
-          {
-            text: this.translate.instant('QUIT'),
-            role: 'destructive',
-            handler: () => this.backToHome(),
-          },
-          { text: 'Play again', role: 'confirm', handler: () => this.start() },
-        ]);
-      }
-    );
+    this.subSink.sink = this.onGameOver$.subscribe();
   }
 
   private onSoundsSwitched(): void {

@@ -7,10 +7,11 @@ import {
   PlayGroundComponent,
   PaddleComponent,
   BallComponent,
-  GameBarComponent,
+  PlayPauseControlComponent,
   ArtifactComponent,
   ShieldComponent,
   LevelComponent,
+  ScoreComponent,
 } from './components';
 
 import {
@@ -28,9 +29,10 @@ import { SharedModule } from '../shared/shared.module';
     LevelComponent,
     PlayGroundComponent,
     BallComponent,
-    GameBarComponent,
+    PlayPauseControlComponent,
     ArtifactComponent,
     ShieldComponent,
+    ScoreComponent,
     UserControllerDirective,
     ComputerControllerDirective,
     BaseControllerDirective,
