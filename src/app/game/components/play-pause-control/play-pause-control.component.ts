@@ -67,11 +67,8 @@ export class PlayPauseControlComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     App.addListener('appStateChange', ({ isActive }) => {
-      if (isActive && this.controls.currentStatus === 'PAUSED') {
-        this.controls.resume();
-      }
       if (!isActive && this.controls.currentStatus === 'RUNNING') {
-        this.controls.pause();
+        this.pause();
       }
     });
   }
