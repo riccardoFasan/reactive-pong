@@ -15,7 +15,6 @@ ion-app {
     h3,
     h2 {
       color: colors.$white;
-
       margin: 0;
     }
 
@@ -28,6 +27,10 @@ ion-app {
     }
 
     .large-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: functions.responsive-size(1.75rem, 2.5rem, 2.5vw);
       margin: 0 auto;
       width: functions.responsive-size(20rem, 30rem, 45vw);
     }

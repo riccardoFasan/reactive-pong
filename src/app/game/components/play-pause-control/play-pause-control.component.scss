@@ -3,7 +3,7 @@
 div {
   position: absolute;
   z-index: 102;
-  bottom: functions.responsive-size(1.75rem, 2.5rem, 2.5vw);
+  bottom: functions.responsive-size(1.66rem, 2rem, 2vw);
   &.right {
     right: functions.responsive-size(1.75rem, 2.5rem, 2.5vw);
   }
