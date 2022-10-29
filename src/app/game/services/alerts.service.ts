@@ -11,6 +11,7 @@ export class AlertsService {
     const alert: HTMLIonAlertElement = await this.alertController.create({
       header: message,
       buttons,
+      backdropDismiss: false,
     });
     await alert.present();
   }

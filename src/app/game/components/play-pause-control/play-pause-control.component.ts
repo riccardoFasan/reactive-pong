@@ -33,19 +33,18 @@ export class PlayPauseControlComponent implements OnDestroy {
 
   private onGameOver$: Observable<Player> = this.score.winnerChanged$.pipe(
     tap((winner: Player) => {
-      this.stop();
       const message: string =
         winner === this.players.user ? 'VICTORY' : 'GAME_OVER';
       this.alerts.renderAlert(this.translate.instant(message), [
         {
           text: this.translate.instant('QUIT'),
           role: 'destructive',
-          handler: () => this.backToHome(),
+          handler: () => this.quit(),
         },
         {
           text: this.translate.instant('PLAY_AGAIN'),
           role: 'confirm',
-          handler: () => this.start(),
+          handler: () => this.restart(),
         },
       ]);
     })
@@ -84,6 +83,11 @@ export class PlayPauseControlComponent implements OnDestroy {
         handler: () => this.quit(),
       },
       {
+        text: this.translate.instant('RESTART'),
+        role: 'destructive',
+        handler: () => this.restart(),
+      },
+      {
         text: this.translate.instant('RESUME'),
         role: 'confirm',
         handler: () => this.resume(),
@@ -108,6 +112,11 @@ export class PlayPauseControlComponent implements OnDestroy {
 
   private resume(): void {
     this.controls.resume();
+  }
+
+  private restart(): void {
+    this.stop();
+    this.start();
   }
 
   private onGameOver(): void {
