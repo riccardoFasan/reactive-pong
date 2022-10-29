@@ -78,11 +78,6 @@ export class PlayPauseControlComponent implements OnDestroy {
     this.controls.pause();
     this.alerts.renderAlert(this.translate.instant('GAME_PAUSED'), [
       {
-        text: this.translate.instant('QUIT'),
-        role: 'destructive',
-        handler: () => this.quit(),
-      },
-      {
         text: this.translate.instant('RESTART'),
         role: 'destructive',
         handler: () => this.restart(),
@@ -91,6 +86,11 @@ export class PlayPauseControlComponent implements OnDestroy {
         text: this.translate.instant('RESUME'),
         role: 'confirm',
         handler: () => this.resume(),
+      },
+      {
+        text: this.translate.instant('QUIT'),
+        role: 'destructive',
+        handler: () => this.quit(),
       },
     ]);
   }

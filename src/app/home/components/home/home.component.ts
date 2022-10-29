@@ -17,6 +17,10 @@ export class HomeComponent {
       name: 'SETTINGS',
       url: ['/', 'settings'],
     },
+    {
+      name: 'CREDITS',
+      url: ['/', 'credits'],
+    },
   ];
 
   quit(): void {

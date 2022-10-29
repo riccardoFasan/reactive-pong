@@ -25,5 +25,9 @@
   "YES": "Yes",
   "NO": "No",
   "PLAY_AGAIN": "Play again",
-  "RESTART": "Restart"
+  "RESTART": "Restart",
+  "CREDITS": "Credits",
+  "SUPPORT": "Support the project",
+  "PAYPAL": "Donate with PayPal",
+  "GITHUB": "Contribute on GitHub"
 }

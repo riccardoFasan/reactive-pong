@@ -1,9 +1,9 @@
 <main class="page difficulty">
   <h2>{{ "DIFFICULTY" | translate }}</h2>
-  <div>
+  <section>
     <button *ngFor="let level of levels" (click)="setLevel(level.value)">
       {{ level.name | translate }}
     </button>
-  </div>
+  </section>
   <app-back></app-back>
 </main>

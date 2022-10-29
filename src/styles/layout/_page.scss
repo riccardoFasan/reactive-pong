@@ -18,5 +18,10 @@ ion-app {
       font-size: fonts.$title-size;
       margin: 0;
     }
+
+    .large-container {
+      margin: 0 auto;
+      width: functions.responsive-size(20rem, 25rem, 40vw);
+    }
   }
 }

@@ -25,5 +25,9 @@
   "YES": "Sì",
   "NO": "No",
   "PLAY_AGAIN": "Gioca ancora",
-  "RESTART": "Ricomincia"
+  "RESTART": "Ricomincia",
+  "CREDITS": "Ringraziamenti",
+  "SUPPORT": "Supporta il progetto",
+  "PAYPAL": "Dona con PayPal",
+  "GITHUB": "Contribuisci su GitHub"
 }

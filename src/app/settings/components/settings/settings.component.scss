@@ -4,13 +4,8 @@
 .page {
   @include mixins.flex-column;
 
-  .selects-container {
-    margin: 0 auto;
-    width: functions.responsive-size(20rem, 25rem, 40vw);
-
-    .select:not(:last-child) {
-      display: block;
-      margin-bottom: functions.responsive-size(1.5rem, 2rem, 1vw);
-    }
+  .large-container .select:not(:last-child) {
+    display: block;
+    margin-bottom: functions.responsive-size(1.5rem, 2rem, 1vw);
   }
 }

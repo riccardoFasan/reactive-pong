@@ -3,7 +3,7 @@
 
 .page {
   @include mixins.flex-column;
-  div {
+  section {
     @include mixins.flex-column(flex-start);
     button {
       display: inline-block;
