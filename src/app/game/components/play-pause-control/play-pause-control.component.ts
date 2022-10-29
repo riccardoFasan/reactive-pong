@@ -33,18 +33,19 @@ export class PlayPauseControlComponent implements OnDestroy {
 
   private onGameOver$: Observable<Player> = this.score.winnerChanged$.pipe(
     tap((winner: Player) => {
+      this.stop();
       const message: string =
         winner === this.players.user ? 'VICTORY' : 'GAME_OVER';
       this.alerts.renderAlert(this.translate.instant(message), [
         {
           text: this.translate.instant('QUIT'),
           role: 'destructive',
-          handler: () => this.quit(),
+          handler: () => this.backToHome(),
         },
         {
           text: this.translate.instant('PLAY_AGAIN'),
           role: 'confirm',
-          handler: () => this.restart(),
+          handler: () => this.start(),
         },
       ]);
     })

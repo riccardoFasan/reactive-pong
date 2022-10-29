@@ -1,11 +1,13 @@
+@use "abstracts/functions" as functions;
+
 div {
   position: absolute;
   z-index: 102;
-  bottom: 0.75rem;
+  bottom: functions.responsive-size(2.5rem, 3rem, 3vw);
   &.right {
-    right: 1rem;
+    right: functions.responsive-size(2.5rem, 3rem, 3vw);
   }
   &.left {
-    left: 1rem;
+    left: functions.responsive-size(2.5rem, 3rem, 3vw);
   }
 }

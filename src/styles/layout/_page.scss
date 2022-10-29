@@ -10,18 +10,26 @@ ion-app {
     background-color: colors.$black;
     height: 100vh;
     text-align: center;
-    padding: functions.responsive-size(2rem, 3rem, 3.5vw)
-      functions.responsive-size(2.5rem, 3rem, 7vw);
+    padding: functions.responsive-size(2.5rem, 3rem, 3vw);
 
+    h3,
     h2 {
       color: colors.$white;
-      font-size: fonts.$title-size;
+
       margin: 0;
+    }
+
+    h2 {
+      font-size: fonts.$title-size;
+    }
+
+    h3 {
+      font-size: fonts.$subtitle-size;
     }
 
     .large-container {
       margin: 0 auto;
-      width: functions.responsive-size(20rem, 25rem, 40vw);
+      width: functions.responsive-size(20rem, 30rem, 45vw);
     }
   }
 }

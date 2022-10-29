@@ -9,7 +9,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    margin-top: -9px;
   }
   nav {
     @include mixins.flex-column(flex-start);

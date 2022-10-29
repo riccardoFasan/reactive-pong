@@ -29,5 +29,6 @@
   "CREDITS": "Ringraziamenti",
   "SUPPORT": "Supporta il progetto",
   "PAYPAL": "Dona con PayPal",
-  "GITHUB": "Contribuisci su GitHub"
+  "GITHUB": "Contribuisci su GitHub",
+  "RETROPONG_INFO": "<b>Retropong</b> è gioco per smartphone progetto a sviluppato da <b>Riccardo Fasan</b> con Ionic Framework ed è rilasciato gratuitamente sotto licenza GNU General Public Licence 2.1."
 }

@@ -1,21 +1,19 @@
 <main class="page credits">
   <h2>{{ "CREDITS" | translate }}</h2>
-  <section class="large-container description">
-    <p>{{ "RETROPONG_INFO" | translate }}</p>
-  </section>
-  <section class="large-container support">
-    <h3>{{ "SUPPORT" | translate }}</h3>
-    <ul>
-      <!-- TODO: links and icons -->
-      <li>
-        <span>{{ "PAYPAL" | translate }}</span
-        ><span></span>
-      </li>
-      <li>
-        <span>{{ "GITHUB" | translate }}</span
-        ><span></span>
-      </li>
-    </ul>
+  <section class="large-container">
+    <p class="description" [innerHTML]="'RETROPONG_INFO' | translate"></p>
+    <div class="support">
+      <h3>{{ "SUPPORT" | translate }}</h3>
+      <ul>
+        <!-- TODO: links and icons -->
+        <li>
+          {{ "PAYPAL" | translate }}
+        </li>
+        <li>
+          {{ "GITHUB" | translate }}
+        </li>
+      </ul>
+    </div>
   </section>
   <app-back></app-back>
 </main>

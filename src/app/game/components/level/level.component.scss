@@ -7,9 +7,6 @@
     @include mixins.flex-column(flex-start);
     button {
       display: inline-block;
-      &:not(:last-child) {
-        padding-bottom: functions.responsive-size(2rem, 2.25rem, 2vw);
-      }
     }
   }
 }

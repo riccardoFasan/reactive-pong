@@ -80,13 +80,19 @@
         z-index: 10;
       }
 
+      &.home nav a,
+      &.difficulty button:not(:last-child) {
+        padding-bottom: functions.responsive-size(1.33rem, 1.66rem, 1.5vw);
+      }
+
       &.home {
-        nav a {
-          padding-bottom: functions.responsive-size(1.66rem, 1.85rem, 2vw);
-        }
         .logo {
           background-image: url("^assets/icons/dracula/title.svg");
         }
+      }
+
+      &.credits .description {
+        opacity: 0.95;
       }
 
       h2 {
