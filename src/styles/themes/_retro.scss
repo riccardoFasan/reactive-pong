@@ -79,6 +79,7 @@
         border-image-source: conic-gradient(from 0, $retro-gradient);
       }
 
+      &.credits li,
       &.difficulty button,
       &.home nav {
         z-index: 10;
@@ -86,7 +87,7 @@
 
       &.home nav a,
       &.difficulty button:not(:last-child) {
-        padding-bottom: functions.responsive-size(2rem, 2.25rem, 2vw);
+        padding-bottom: functions.responsive-size(1.75rem, 2rem, 2vw);
       }
 
       &.home .logo {
@@ -96,17 +97,17 @@
 
       &.credits {
         .description {
-          line-height: 2.5;
+          line-height: 2;
         }
 
         h3 {
           font-size: functions.responsive-size(0.66rem, 0.9rem, 0.9vw);
-          margin: 0 0 1.5rem 0;
+          margin: 0 0 1.75rem 0;
         }
 
         ul,
         .description {
-          font-size: functions.responsive-size(0.5rem, 0.6rem, 0.25vw);
+          font-size: 0.55rem;
         }
       }
 

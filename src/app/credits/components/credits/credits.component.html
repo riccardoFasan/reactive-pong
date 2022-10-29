@@ -5,11 +5,10 @@
     <div class="support">
       <h3>{{ "SUPPORT" | translate }}</h3>
       <ul>
-        <!-- TODO: links and icons -->
-        <li>
+        <li (click)="visitPayPal()">
           {{ "PAYPAL" | translate }}
         </li>
-        <li>
+        <li (click)="visitGitHub()">
           {{ "GITHUB" | translate }}
         </li>
       </ul>

@@ -82,7 +82,7 @@
 
       &.home nav a,
       &.difficulty button:not(:last-child) {
-        padding-bottom: functions.responsive-size(1.33rem, 1.66rem, 1.5vw);
+        padding-bottom: functions.responsive-size(1.25rem, 1.5rem, 1.33vw);
       }
 
       &.home {
@@ -91,8 +91,19 @@
         }
       }
 
-      &.credits .description {
-        opacity: 0.95;
+      &.credits {
+        .description {
+          opacity: 0.95;
+        }
+
+        ul,
+        .description {
+          font-size: 0.85rem;
+        }
+
+        li {
+          color: $dracula-pink;
+        }
       }
 
       h2 {
