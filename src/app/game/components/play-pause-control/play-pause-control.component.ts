@@ -71,7 +71,7 @@ export class PlayPauseControlComponent implements AfterViewInit, OnDestroy {
         this.controls.resume();
       }
       if (!isActive && this.controls.currentStatus === 'RUNNING') {
-        this.controls.start();
+        this.controls.pause();
       }
     });
   }
