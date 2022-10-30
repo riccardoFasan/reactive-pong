@@ -14,6 +14,7 @@ Just a boilerplate clone of pong written with Ionic framework and Angular for th
 ## Ideas for the future
 
 - Vertically screen orientation
+- Ask to leave a review after the first match
 - Ranking page
 - Effect shots
 - Multiplayer
