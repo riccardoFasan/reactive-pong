@@ -6,7 +6,7 @@
   "SETTINGS": "Settings",
   "QUIT": "Quit",
   "HALF_FIELD": "Half field",
-  "THEME": "Theme",
+  "THEME": "Color theme",
   "LEFT": "Left",
   "RIGHT": "Right",
   "BACK": "Back",
@@ -18,7 +18,7 @@
   "HARD": "Hard",
   "INSANE": "Insane",
   "RESUME": "Resume",
-  "VICTORY": "Victory",
+  "VICTORY": "You won!",
   "GAME_OVER": "Game over",
   "GAME_PAUSED": "Game paused",
   "SOUNDS": "Sound effects",
@@ -29,6 +29,5 @@
   "CREDITS": "Credits",
   "SUPPORT": "Support the project",
   "PAYPAL": "Donate with PayPal",
-  "GITHUB": "Contribute on GitHub",
-  "RETROPONG_INFO": "<b>Retropong</b> is a smartphone game designed and developed by <b>Riccardo Fasan</b> with Ionic Framework and it's released for free under the GNU General Public License 2.1."
+  "RETROPONG_INFO": "<b>Retropong</b> is a smartphone game designed and developed by <b>Riccardo Fasan</b> with Ionic Framework and Angular"
 }

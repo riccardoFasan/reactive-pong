@@ -14,10 +14,6 @@ export class CreditsComponent {
     );
   }
 
-  visitGitHub(): void {
-    this.openInAppBrowser('https://github.com/riccardoFasan/reactive-pong');
-  }
-
   private async openInAppBrowser(url: string): Promise<void> {
     await Browser.open({ url });
   }

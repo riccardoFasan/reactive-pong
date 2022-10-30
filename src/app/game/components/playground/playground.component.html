@@ -2,7 +2,7 @@
   <ng-container *ngIf="userField$ | async as userField">
     <ng-container *ngIf="opponentField$ | async as opponentField">
       <app-score></app-score>
-      <app-play-pause-control [halfField]="userField"></app-play-pause-control>
+      <app-play-pause-control></app-play-pause-control>
       <div class="playground" #ground>
         <app-paddle
           appComputerController

@@ -29,8 +29,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayPauseControlComponent implements AfterViewInit, OnDestroy {
-  @Input() halfField!: HalfField;
-
   gameStatus$: Observable<GameStatus> = this.controls.statusChanged$;
 
   private onGameOver$: Observable<Player> = this.score.winnerChanged$.pipe(
