@@ -1,11 +1,10 @@
-
 services:
-  ping-pong-ui:
+  retropong:
     container_name: ping-pong
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '8100:8100'
+      - "8100:8100"
     volumes:
-      - ./src:/ping-pong-ui/src
+      - ./src:/retropong/src

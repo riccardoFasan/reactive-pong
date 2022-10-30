@@ -1,5 +1,5 @@
 {
-  "name": "ping-pong-ui",
+  "name": "retropong",
   "integrations": {
     "capacitor": {}
   },
