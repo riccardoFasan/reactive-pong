@@ -8,7 +8,7 @@ import { PreferencesService } from './preferences.service';
 export class TranslationsService {
   currentLanguage!: string;
 
-  readonly languages: string[] = ['it', 'en'];
+  readonly languages: string[] = ['it', 'en', 'de', 'es', 'fr'];
   private readonly defaultLanguage: string = 'en';
 
   constructor(

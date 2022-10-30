@@ -12,6 +12,9 @@ export class LanguageSelectComponent {
   languages: Option[] = [
     { label: 'ITALIAN', value: 'it' },
     { label: 'ENGLISH', value: 'en' },
+    { label: 'GERMAN', value: 'de' },
+    { label: 'SPANISH', value: 'es' },
+    { label: 'FRENCH', value: 'fr' },
   ];
 
   currentLanguage: string = this.i18n.currentLanguage;
