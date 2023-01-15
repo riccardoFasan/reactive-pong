@@ -1,5 +1,5 @@
 {
-  "START": "Gioca",
+  "START": "Inizia",
   "PAUSE": "Pausa",
   "DIFFICULTY": "Difficoltà",
   "PLAY": "Gioca",
@@ -28,5 +28,5 @@
   "CREDITS": "Ringraziamenti",
   "SUPPORT": "Supporta il progetto",
   "PAYPAL": "Dona con PayPal",
-  "RETROPONG_INFO": "<b>retropong</b> è gioco per smartphone progetto a sviluppato da <b>Riccardo Fasan</b> con Ionic Framework ed Angular."
+  "RETROPONG_INFO": "<b>retropong</b> è un gioco per smartphone progettato a sviluppato da <b>Riccardo Fasan</b> con Ionic Framework ed Angular."
 }
